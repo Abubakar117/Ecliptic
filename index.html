@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecliptic — A Field Guide to the Solar System</title>
+<meta name="description" content="An interactive field guide to the Sun, the eight planets, and the Kuiper Belt — a 3D orrery, an Explore mode, side-by-side comparisons, and knowledge tests of 10, 25, or 50 questions.">
+<meta name="theme-color" content="#07070f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =========================================================================
+   ECLIPTIC — STYLE SYSTEM
+   Palette is drawn from the subject: each body's accent is close to its
+   real observed color, set via --section-accent and cascaded through.
+   ========================================================================= */
+
+:root {
+  --bg-void: #07070f;
+  --bg-panel: rgba(255, 255, 255, 0.045);
+  --bg-panel-strong: rgba(255, 255, 255, 0.08);
+  --border-glass: rgba(255, 255, 255, 0.1);
+  --ink: #efece3;
+  --ink-dim: #a7a49b;
+  --ink-faint: #7a776f;
+  --accent-primary: #ffb454;
+  --accent-good: #7fd4a0;
+  --accent-bad: #e58a7a;
+
+  --font-display: "Bricolage Grotesque", system-ui, -apple-system, sans-serif;
+  --font-serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+
+  --measure: 640px;
+  --wide: 980px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 26px;
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+[hidden] { display: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--bg-void);
+  color: var(--ink);
+  font-family: var(--font-serif);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+p { margin: 0 0 1em; }
+button { font-family: inherit; }
+img, svg, canvas { display: block; max-width: 100%; }
+a { color: inherit; }
+
+:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 3px; border-radius: 4px; }
+
+.noscript-banner { background: var(--accent-bad); color: #1a0705; text-align: center; padding: 0.9em 1em; font-family: var(--font-mono); font-size: 0.85rem; }
+
+.skip-link {
+  position: fixed; top: -60px; left: 1rem; z-index: 500;
+  background: var(--accent-primary); color: #1a1305;
+  padding: 0.6em 1em; border-radius: var(--radius-sm);
+  font-family: var(--font-mono); font-size: 0.85rem;
+  text-decoration: none; transition: top 0.2s var(--ease);
+}
+.skip-link:focus { top: 1rem; }
+
+/* ---------- starfield (ambient, CSS-driven drift) ---------- */
+
+.stars-layer {
+  position: fixed; top: -20vh; left: -10vw;
+  width: 120vw; height: 1px; pointer-events: none; z-index: 0;
+  border-radius: 50%;
+}
+@keyframes drift { from { transform: translate(0, 0); } to { transform: translate(-46px, -34px); } }
+.stars-layer--far { animation: drift 100s linear infinite alternate; }
+.stars-layer--mid { animation: drift 65s linear infinite alternate; }
+.stars-layer--near { animation: drift 42s linear infinite alternate; }
+
+/* ---------- topbar ---------- */
+
+.topbar {
+  position: sticky; top: 0; z-index: 300;
+  display: flex; align-items: center; gap: 1.4rem;
+  padding: 0.85rem 1.5rem;
+  background: rgba(7, 7, 15, 0.85);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-glass);
+}
+.topbar__brand { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.09em; font-size: 0.95rem; color: var(--ink); background: none; border: none; cursor: pointer; padding: 0; }
+.topbar__links { display: flex; gap: 1.4rem; margin-right: auto; margin-left: 0.4rem; }
+.topbar__link { font-family: var(--font-display); font-size: 1rem; font-weight: 600; color: var(--ink-dim); text-decoration: none; cursor: pointer; background: none; border: none; padding: 0.5em 0.95em; border-radius: 999px; transition: background 0.2s, color 0.2s; }
+.topbar__link.is-active, .topbar__link:hover { background: var(--bg-panel); color: var(--ink); }
+.topbar__link.is-active { color: var(--accent-primary); background: var(--bg-panel-strong); }
+.topbar__menu-btn { display: none; width: 38px; height: 38px; border-radius: 8px; border: 1px solid var(--border-glass); background: none; color: var(--ink); font-size: 1rem; cursor: pointer; }
+
+.hud { display: flex; flex-direction: column; align-items: flex-end; gap: 0.1rem; background: var(--bg-panel-strong); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.9em; cursor: pointer; }
+.hud__rank { font-family: var(--font-display); font-size: 0.72rem; font-weight: 600; color: var(--accent-primary); }
+.hud__score { font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-dim); }
+
+@media (max-width: 760px) {
+  .topbar { flex-wrap: wrap; }
+  .topbar__links {
+    display: none; position: absolute; top: 100%; left: 0; right: 0;
+    flex-direction: column; background: #0c0c16; border-bottom: 1px solid var(--border-glass);
+    padding: 1rem 1.5rem; gap: 0.9rem; margin: 0;
+  }
+  .topbar__links.is-open { display: flex; }
+  .topbar__menu-btn { display: block; }
+}
+
+/* ---------- cookie banner ---------- */
+
+.cookie-banner {
+  position: fixed; left: 1rem; right: 1rem; bottom: 1rem; z-index: 400;
+  max-width: 560px; margin: 0 auto;
+  background: var(--bg-panel-strong); border: 1px solid var(--border-glass);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-radius: var(--radius-md); padding: 1.2rem 1.4rem;
+  display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between;
+}
+.cookie-banner p { margin: 0; font-size: 0.85rem; color: var(--ink-dim); flex: 1 1 260px; }
+.cookie-banner__actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+
+/* ---------- shared layout helpers ---------- */
+
+.section__inner { max-width: var(--measure); margin: 0 auto; padding: 5.5rem 1.5rem; position: relative; }
+.section__inner.wide { max-width: var(--wide); }
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.6s var(--ease), transform 0.6s var(--ease); }
+.reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+.section__eyebrow { display: block; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--section-accent, var(--accent-primary)); margin-bottom: 1rem; }
+.section__title { font-size: clamp(2rem, 4.5vw, 3rem); margin-bottom: 0.5rem; }
+.section__tag { font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-faint); margin-bottom: 1.4rem; }
+.section__hook { font-size: 1.2rem; font-weight: 500; color: var(--ink); font-family: var(--font-serif); font-style: italic; border-left: 2px solid var(--section-accent, var(--accent-primary)); padding-left: 1.1rem; margin-bottom: 1.8rem; }
+.section__copy { color: var(--ink-dim); font-size: 1.02rem; }
+
+.btn { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; padding: 0.85em 1.6em; border-radius: 999px; border: 1px solid transparent; cursor: pointer; transition: transform 0.2s var(--ease), background 0.2s; }
+.btn--primary { background: var(--accent-primary); color: #1a1305; }
+.btn--primary:hover { transform: translateY(-2px); }
+.btn--ghost { background: transparent; border-color: var(--border-glass); color: var(--ink); }
+.btn--ghost:hover { background: var(--bg-panel); }
+
+.stat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border-glass); border: 1px solid var(--border-glass); border-radius: var(--radius-md); overflow: hidden; margin-bottom: 2rem; }
+.stat-card { background: var(--bg-panel); padding: 1rem 1.1rem; display: flex; flex-direction: column; gap: 0.3rem; }
+.stat-card__label { font-family: var(--font-mono); font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); }
+.stat-card__value { font-family: var(--font-mono); font-size: 0.92rem; color: var(--ink); }
+@media (max-width: 640px) { .stat-grid { grid-template-columns: repeat(2, 1fr); } }
+
+/* CSS-rendered planet sphere used in Explore (no second WebGL context) */
+.explore-visual { width: 110px; height: 110px; border-radius: 50%; margin: 1.4rem 0 1.8rem; background: radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--section-accent, var(--accent-primary)) 65%, white 35%), var(--section-accent, var(--accent-primary)) 55%, color-mix(in srgb, var(--section-accent, var(--accent-primary)) 55%, black 45%) 100%); box-shadow: inset -12px -12px 26px rgba(0,0,0,0.5), 0 0 34px -8px var(--section-accent, var(--accent-primary)); }
+.explore-visual[data-mode="banded"] { background-image: repeating-linear-gradient(180deg, transparent 0px, transparent 7px, rgba(0,0,0,0.12) 7px, rgba(0,0,0,0.12) 12px), radial-gradient(circle at 32% 28%, color-mix(in srgb, var(--section-accent, var(--accent-primary)) 65%, white 35%), var(--section-accent, var(--accent-primary)) 55%, color-mix(in srgb, var(--section-accent, var(--accent-primary)) 55%, black 45%) 100%); }
+.explore-visual[data-mode="earth"] { background: radial-gradient(circle at 30% 25%, #78c0ee, #2f6fa8 45%, #1d4a75 100%); box-shadow: inset -12px -12px 26px rgba(0,0,0,0.5), 0 0 34px -8px #4f9dc7; }
+.explore-visual[data-mode="sun"] { background: radial-gradient(circle at 40% 35%, #fff2c2, #ffb454 50%, #ff8a3d 100%); box-shadow: 0 0 50px 8px rgba(255,180,84,0.5); }
+
+/* ---------- hero / orrery (landing screen) ---------- */
+
+.hero { min-height: 92vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; padding: 4.5rem 1.5rem 2rem; position: relative; }
+.hero__inner { max-width: 720px; margin: 0 auto 1.5rem; position: relative; z-index: 2; }
+.hero__eyebrow { display: block; font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent-primary); margin-bottom: 1rem; }
+.hero__title { font-size: clamp(2.8rem, 10vw, 6rem); letter-spacing: -0.02em; background: linear-gradient(180deg, #fff, #c9c4b6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero__tagline { font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-dim); max-width: 46ch; margin: 1.1rem auto 0; }
+.mission-clock { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: var(--ink-faint); margin: 0.9rem 0 0; }
+.hero__actions { display: flex; gap: 0.9rem; justify-content: center; margin-top: 1.8rem; flex-wrap: wrap; }
+
+.orrery { position: relative; width: min(94vw, 780px); aspect-ratio: 16 / 11; margin: 1.2rem auto 0; }
+.orrery-canvas { width: 100%; height: 100%; }
+.orrery-canvas canvas { border-radius: var(--radius-lg); }
+.orrery__label { position: absolute; z-index: 5; pointer-events: none; font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; background: rgba(8,8,16,0.85); border: 1px solid var(--border-glass); padding: 0.3em 0.7em; border-radius: 999px; white-space: nowrap; }
+.orrery__hint { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); text-align: center; margin-top: 0.8rem; }
+
+.orrery-fallback { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.orrery-fallback__sun { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-primary); box-shadow: 0 0 40px 10px rgba(255, 180, 84, 0.5); }
+.orrery-fallback__ring { position: absolute; border: 1px dashed rgba(255, 255, 255, 0.18); border-radius: 50%; animation: spin linear infinite; }
+.orrery-fallback__ring--1 { width: 130px; height: 130px; animation-duration: 8s; }
+.orrery-fallback__ring--2 { width: 200px; height: 200px; animation-duration: 14s; }
+.orrery-fallback__ring--3 { width: 280px; height: 280px; animation-duration: 22s; animation-direction: reverse; }
+.orrery-fallback__ring--4 { width: 360px; height: 360px; animation-duration: 30s; }
+.orrery-fallback__planet { position: absolute; top: -5px; left: 50%; width: 10px; height: 10px; border-radius: 50%; background: var(--ink-dim); }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (max-width: 640px) { .hero { min-height: auto; padding: 3rem 1.25rem 2rem; } }
+
+/* ---------- landing: about + bodies grid + contact ---------- */
+
+.landing-about, .landing-bodies, .landing-contact { border-top: 1px solid var(--border-glass); }
+
+.landing-bodies__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.6rem; }
+.landing-body-card { text-align: left; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.2s var(--ease), border-color 0.2s; }
+.landing-body-card:hover { transform: translateY(-3px); border-color: var(--section-accent, var(--accent-primary)); }
+.landing-body-card__dot { width: 10px; height: 10px; border-radius: 50%; background: var(--section-accent, var(--accent-primary)); }
+.landing-body-card__name { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; color: var(--ink); }
+.landing-body-card__hook { font-size: 0.82rem; color: var(--ink-faint); line-height: 1.5; }
+
+.contact-form { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.4rem; }
+.contact-form input { flex: 1 1 220px; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink); padding: 0.75em 1em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.88rem; }
+.contact-form input::placeholder { color: var(--ink-faint); }
+.contact-form__actions { display: flex; gap: 0.6rem; width: 100%; }
+.contact-status { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-good); }
+
+/* ---------- footer ---------- */
+
+.footer { border-top: 1px solid var(--border-glass); padding: 3rem 0; }
+.footer__inner { text-align: center; padding-top: 0; padding-bottom: 0; }
+.footer__brand { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.1em; color: var(--accent-primary); margin-bottom: 0.6rem; }
+.footer__note { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-faint); max-width: 46ch; margin: 0 auto; }
+.footer__version { font-family: var(--font-mono); font-size: 0.66rem; color: var(--ink-faint); opacity: 0.55; max-width: 46ch; margin: 0.7rem auto 0; }
+
+/* ---------- explore screen ---------- */
+
+.explore-layout { display: flex; gap: 2.5rem; max-width: 1100px; margin: 0 auto; padding: 3.5rem 1.5rem 5rem; align-items: flex-start; }
+.explore-list { width: 230px; flex-shrink: 0; display: flex; flex-direction: column; gap: 0.35rem; position: sticky; top: 5.5rem; }
+.explore-list__item { display: flex; align-items: center; gap: 0.7rem; text-align: left; background: transparent; border: 1px solid transparent; color: var(--ink-dim); padding: 0.6em 0.85em; border-radius: var(--radius-sm); cursor: pointer; font-family: var(--font-display); font-size: 0.88rem; }
+.explore-list__dot { width: 9px; height: 9px; border-radius: 50%; background: var(--section-accent, var(--accent-primary)); flex-shrink: 0; }
+.explore-list__item:hover { background: var(--bg-panel); color: var(--ink); }
+.explore-list__item.is-active { background: var(--bg-panel-strong); border-color: var(--border-glass); color: var(--ink); }
+.explore-detail-wrap { flex: 1; min-width: 0; }
+.explore-detail { padding: 0; max-width: none; }
+.explore-detail__name { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1; margin-bottom: 0.3rem; }
+.explore-compare-btn { margin-top: 0.6rem; background: transparent; border: 1px solid var(--border-glass); color: var(--ink-dim); font-family: var(--font-mono); font-size: 0.78rem; padding: 0.7em 1.1em; border-radius: var(--radius-sm); cursor: pointer; }
+.explore-compare-btn:hover { border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
+
+.explore-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 1.6rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border-glass); }
+.explore-tab { background: transparent; border: 1px solid var(--border-glass); color: var(--ink-dim); font-family: var(--font-mono); font-size: 0.76rem; padding: 0.5em 1em; border-radius: 999px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+.explore-tab:hover { border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
+.explore-tab.is-active { background: var(--section-accent, var(--accent-primary)); border-color: var(--section-accent, var(--accent-primary)); color: #1a1305; }
+.explore-tab-content { min-height: 90px; margin-bottom: 1rem; }
+.explore-tab-content p { animation: tabFadeIn 0.3s var(--ease); }
+@keyframes tabFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+
+.explore-visual--big { width: 190px; height: 190px; margin: 1.6rem 0 2rem; }
+.explore-visual { animation: spherespin 18s linear infinite; }
+.explore-visual[data-mode="banded"] { animation: bandslide 8s linear infinite; }
+@keyframes spherespin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes bandslide { from { background-position: 0 0; } to { background-position: 260px 0; } }
+@media (max-width: 640px) { .explore-visual--big { width: 150px; height: 150px; } }
+
+@media (max-width: 860px) {
+  .explore-layout { flex-direction: column; padding: 2.5rem 1.25rem 3rem; gap: 1.1rem; }
+  .explore-list { width: 100%; flex-direction: row; overflow-x: auto; position: static; padding-bottom: 0.4rem; gap: 0.5rem; }
+  .explore-list__item { flex-shrink: 0; white-space: nowrap; }
+}
+
+/* ---------- compare screen ---------- */
+
+.compare-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: flex-start; justify-content: space-between; margin-bottom: 1rem; }
+.compare-picker { display: flex; flex-wrap: wrap; gap: 0.5rem; flex: 1 1 400px; }
+.compare-chip { background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink-dim); font-family: var(--font-display); font-size: 0.82rem; padding: 0.5em 1em; border-radius: 999px; cursor: pointer; }
+.compare-chip.is-selected { background: var(--bg-panel-strong); border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
+.compare-controls__actions { display: flex; gap: 0.5rem; flex-shrink: 0; }
+.compare-table-wrap { overflow-x: auto; margin-top: 1.5rem; border: 1px solid var(--border-glass); border-radius: var(--radius-md); }
+.compare-table { border-collapse: collapse; width: 100%; min-width: 480px; }
+.compare-table th, .compare-table td { padding: 0.85em 1.1em; text-align: left; border-bottom: 1px solid var(--border-glass); white-space: nowrap; font-size: 0.88rem; }
+.compare-table thead th { font-family: var(--font-display); font-weight: 600; color: var(--ink); background: var(--bg-panel); }
+.compare-table tbody th { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-faint); font-weight: 500; }
+.compare-table td { font-family: var(--font-mono); color: var(--ink-dim); }
+.compare-table__dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--section-accent, var(--accent-primary)); margin-right: 0.5em; }
+
+/* ---------- test + quiz widgets (shared by Test mode) ---------- */
+
+.test-setup { margin-top: 0.5rem; }
+.test-length-options { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+.test-length-btn { flex: 1 1 180px; text-align: left; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem 1.3rem; color: var(--ink); font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.35rem; transition: border-color 0.2s, transform 0.2s; }
+.test-length-btn span { font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; color: var(--ink-faint); }
+.test-length-btn:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+
+.quiz__options { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.1rem; }
+.quiz__option { text-align: left; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); color: var(--ink); padding: 0.75em 1em; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.92rem; font-family: var(--font-serif); transition: border-color 0.15s, background 0.15s; }
+.quiz__option:hover:not(:disabled) { border-color: var(--accent-primary); }
+.quiz__option.is-selected { border-color: var(--accent-primary); background: rgba(255, 255, 255, 0.06); }
+.quiz__option.is-correct { border-color: var(--accent-good); background: rgba(127, 212, 160, 0.12); }
+.quiz__option.is-incorrect { border-color: var(--accent-bad); background: rgba(229, 138, 122, 0.12); }
+.quiz__option:disabled { cursor: default; opacity: 0.85; }
+
+.cert-quiz { margin-top: 2.5rem; }
+.cert-question { border: none; padding: 0; margin: 0 0 2.2rem; }
+.cert-question__prompt { font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; margin-bottom: 1rem; padding: 0; }
+.cert-question__explain { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-dim); margin-top: 0.6rem; }
+.cert-actions { text-align: center; margin-top: 2.2rem; }
+.cert-hint { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-faint); margin-bottom: 1rem; }
+.cert-hint.is-warning { color: var(--accent-bad); }
+.cert-submit, .cert-retake { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; background: var(--accent-primary); color: #1a1305; border: none; padding: 0.7em 1.4em; border-radius: 999px; cursor: pointer; }
+.cert-results__card { text-align: center; padding: 2.2rem; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); margin-top: 1.5rem; }
+.cert-results__score { font-family: var(--font-display); font-size: 1.7rem; margin-bottom: 0.5rem; }
+.cert-results__best, .cert-results__rank { font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-dim); margin-bottom: 0.4rem; }
+.cert-retake { margin-top: 1.2rem; }
+
+/* ---------- scoreboard screen ---------- */
+
+.scoreboard-summary { display: flex; flex-wrap: wrap; gap: 2rem; align-items: flex-start; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-lg); padding: 1.8rem; margin-bottom: 2.2rem; }
+.scoreboard-summary__number { font-family: var(--font-mono); font-size: 2rem; color: var(--accent-primary); }
+.scoreboard-summary__label { display: block; font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 0.3rem; }
+.scoreboard-summary__rank { flex: 1; min-width: 220px; }
+.scoreboard-summary__rank-name { display: block; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; }
+.scoreboard-summary__rank-blurb { display: block; color: var(--ink-dim); font-size: 0.9rem; margin: 0.2rem 0 0.9rem; }
+.rank-progress__track { height: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; }
+.rank-progress__fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent-primary), #fff); transition: width 0.4s var(--ease); }
+.rank-progress__next { display: block; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); margin-top: 0.5rem; }
+
+.rank-ladder { display: grid; gap: 0.65rem; margin-bottom: 2.6rem; }
+.rank-rung { display: grid; grid-template-columns: 70px 1fr; gap: 0 1rem; align-items: baseline; padding: 0.85rem 1.1rem; border: 1px solid var(--border-glass); border-radius: var(--radius-sm); opacity: 0.45; transition: opacity 0.2s, border-color 0.2s; }
+.rank-rung.is-reached { opacity: 1; }
+.rank-rung.is-current { border-color: var(--accent-primary); background: rgba(255, 180, 84, 0.06); }
+.rank-rung__min { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+.rank-rung__name { font-family: var(--font-display); font-weight: 600; grid-row: 1; }
+.rank-rung__blurb { grid-column: 2; font-size: 0.84rem; color: var(--ink-dim); }
+
+.badges-title { font-size: 1.25rem; margin-bottom: 1.1rem; }
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem; margin-bottom: 2.2rem; }
+.badge-card { border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem 1rem; text-align: center; opacity: 0.4; filter: grayscale(1); transition: opacity 0.3s, filter 0.3s, transform 0.3s; }
+.badge-card.is-unlocked { opacity: 1; filter: none; background: var(--bg-panel); }
+.badge-card:hover { transform: translateY(-3px); }
+.badge-card__icon { display: block; font-size: 1.7rem; color: var(--accent-primary); margin-bottom: 0.5rem; }
+.badge-card__name { display: block; font-family: var(--font-display); font-weight: 600; font-size: 0.83rem; margin-bottom: 0.35rem; }
+.badge-card__desc { display: block; font-size: 0.74rem; color: var(--ink-faint); }
+
+.reset-btn { display: block; margin: 0 auto; background: none; border: 1px solid var(--border-glass); color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.75rem; padding: 0.6em 1.2em; border-radius: 999px; cursor: pointer; }
+.reset-btn:hover { border-color: var(--accent-bad); color: var(--accent-bad); }
+
+/* ---------- badge toast ---------- */
+
+.badge-toast {
+  position: fixed; bottom: 1.4rem; left: 50%; transform: translate(-50%, 20px);
+  display: flex; align-items: center; gap: 0.8rem;
+  background: var(--bg-panel-strong); border: 1px solid var(--accent-primary);
+  backdrop-filter: blur(14px); padding: 0.8em 1.3em; border-radius: var(--radius-md);
+  opacity: 0; transition: opacity 0.35s var(--ease), transform 0.35s var(--ease);
+  z-index: 650; pointer-events: none; max-width: 90vw;
+}
+.badge-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.badge-toast__icon { font-size: 1.5rem; color: var(--accent-primary); flex-shrink: 0; }
+.badge-toast__text { font-size: 0.85rem; line-height: 1.3; }
+
+/* ---------- generic screen visibility ---------- */
+
+.screen[hidden] { display: none; }
+</style>
+</head>
+<body>
+<noscript><div class="noscript-banner">Ecliptic is an interactive app and needs JavaScript enabled to run.</div></noscript>
+<a class="skip-link" href="#heroTitle">Skip to content</a>
+
+<div class="stars-layer stars-layer--far" id="starsFar" aria-hidden="true"></div>
+<div class="stars-layer stars-layer--mid" id="starsMid" aria-hidden="true"></div>
+<div class="stars-layer stars-layer--near" id="starsNear" aria-hidden="true"></div>
+
+<div class="cookie-banner" id="cookieBanner" hidden>
+  <p>Ecliptic uses a small cookie to remember your consent and any optional contact info you choose to share. No third-party tracking.</p>
+  <div class="cookie-banner__actions">
+    <button type="button" class="btn btn--ghost" id="cookieDecline">Decline</button>
+    <button type="button" class="btn btn--primary" id="cookieAccept">Accept</button>
+  </div>
+</div>
+
+<nav class="topbar" id="topbar">
+  <button type="button" class="topbar__brand" data-goto="landing">ECLIPTIC</button>
+  <div class="topbar__links" id="topbarLinks">
+    <a href="#/explore" class="topbar__link" data-screen="explore">Explore</a>
+    <a href="#/compare" class="topbar__link" data-screen="compare">Compare</a>
+    <a href="#/test" class="topbar__link" data-screen="test">Test</a>
+    <a href="#/scoreboard" class="topbar__link" data-screen="scoreboard">Scoreboard</a>
+  </div>
+  <button type="button" class="hud" id="hud" aria-label="View scoreboard">
+    <span class="hud__rank" id="hudRank">Cadet</span>
+    <span class="hud__score" id="hudScore">0 pts</span>
+  </button>
+  <button type="button" class="topbar__menu-btn" id="topbarMenuBtn" aria-label="Menu" aria-expanded="false">\u2630</button>
+</nav>
+
+<section id="screen-landing" class="screen">
+  <header class="hero">
+    <div class="hero__inner">
+      <p class="hero__eyebrow reveal">A Field Guide to the Solar System</p>
+      <h1 class="hero__title reveal" id="heroTitle">ECLIPTIC</h1>
+      <p class="hero__tagline reveal">Explore the Sun, eight planets, and the Kuiper Belt in 3D, compare them side by side, then put your knowledge to the test.</p>
+      <p class="mission-clock" id="missionClock"></p>
+      <div class="hero__actions reveal">
+        <button type="button" class="btn btn--primary" data-goto="explore">Explore Planets</button>
+        <button type="button" class="btn btn--ghost" data-goto="test">Take a Test</button>
+      </div>
+    </div>
+    <div class="orrery">
+      <div class="orrery-canvas" id="orreryCanvas" role="img" aria-label="Interactive 3D model of the solar system. Drag to rotate, scroll to zoom, click a planet to explore it."></div>
+      <span class="orrery__label" id="orreryLabel" hidden></span>
+      <div class="orrery-fallback" id="orreryFallback" hidden aria-hidden="true">
+        <div class="orrery-fallback__sun"></div>
+        <div class="orrery-fallback__ring orrery-fallback__ring--1"><span class="orrery-fallback__planet"></span></div>
+        <div class="orrery-fallback__ring orrery-fallback__ring--2"><span class="orrery-fallback__planet"></span></div>
+        <div class="orrery-fallback__ring orrery-fallback__ring--3"><span class="orrery-fallback__planet"></span></div>
+        <div class="orrery-fallback__ring orrery-fallback__ring--4"><span class="orrery-fallback__planet"></span></div>
+      </div>
+      <p class="orrery__hint">Drag to rotate \u00b7 Scroll to zoom \u00b7 Click a planet to explore</p>
+    </div>
+  </header>
+
+  <section class="landing-about">
+    <div class="section__inner">
+      <span class="section__eyebrow reveal">About Ecliptic</span>
+      <h2 class="section__title reveal">A hands-on field guide</h2>
+      <p class="section__copy reveal">Ecliptic is an interactive guide to our solar system, built for anyone curious about the Sun, the eight planets, and the icy frontier beyond Neptune. Drag the orrery above, or head straight into Explore or Test mode.</p>
+      <p class="section__copy reveal">Explore covers all ten bodies in depth: real astronomical data and what makes each one distinct, with nothing else mixed in. Test pulls from a bank of solar-system and general astronomy questions, in a length you choose: 10, 25, or 50 questions. Compare puts any set of bodies side by side. Your points, rank, and badges are saved on this device as you go.</p>
+    </div>
+  </section>
+
+  <section class="landing-bodies">
+    <div class="section__inner wide">
+      <span class="section__eyebrow reveal">The Ten Bodies</span>
+      <h2 class="section__title reveal">Sun to Kuiper Belt</h2>
+      <div class="landing-bodies__grid" id="landingBodiesGrid"></div>
+    </div>
+  </section>
+
+  <section class="landing-contact" id="contactCard">
+    <div class="section__inner">
+      <span class="section__eyebrow reveal">Stay in the Loop</span>
+      <h2 class="section__title reveal">Want updates? (Optional)</h2>
+      <p class="section__copy reveal">Leave an email or phone if you'd like \u2014 totally optional, saved only on this device, and you can skip it entirely.</p>
+      <form class="contact-form reveal" id="contactForm">
+        <input type="email" id="contactEmail" placeholder="Email (optional)" autocomplete="email">
+        <input type="tel" id="contactPhone" placeholder="Phone (optional)" autocomplete="tel">
+        <div class="contact-form__actions">
+          <button type="submit" class="btn btn--primary">Save</button>
+          <button type="button" class="btn btn--ghost" id="contactSkip">Skip</button>
+        </div>
+      </form>
+      <p class="contact-status" id="contactStatus" hidden></p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="section__inner footer__inner">
+      <p class="footer__brand">ECLIPTIC</p>
+      <p class="footer__note">A field guide to the Sun, eight planets, and the Kuiper Belt. Figures are approximate and rounded for readability.</p>
+      <p class="footer__version">Build 5 \u2014 cookie-banner fix, 8-tab planet deep dives, 10-row compare, bigger nav</p>
+    </div>
+  </footer>
+</section>
+
+<section id="screen-explore" class="screen" hidden>
+  <div class="explore-layout">
+    <nav class="explore-list" id="exploreList" aria-label="Planet list"></nav>
+    <div class="explore-detail-wrap" id="exploreDetailWrap">
+      <div class="explore-detail section__inner" id="explorePanel"></div>
+    </div>
+  </div>
+</section>
+
+<section id="screen-compare" class="screen" hidden>
+  <div class="section__inner wide">
+    <span class="section__eyebrow">Compare</span>
+    <h2 class="section__title">Compare Planets</h2>
+    <p class="section__hook">Pick two or more bodies, or compare all ten at once.</p>
+    <div class="compare-controls">
+      <div class="compare-picker" id="comparePicker"></div>
+      <div class="compare-controls__actions">
+        <button type="button" class="btn btn--ghost" id="compareAllBtn">Select All</button>
+        <button type="button" class="btn btn--ghost" id="compareClearBtn">Clear</button>
+      </div>
+    </div>
+    <p class="cert-hint" id="compareHint">Select at least two bodies to compare.</p>
+    <div class="compare-table-wrap" id="compareTableWrap"></div>
+  </div>
+</section>
+
+<section id="screen-test" class="screen" hidden>
+  <div class="section__inner">
+    <span class="section__eyebrow">Knowledge Test</span>
+    <h2 class="section__title">Test Your Knowledge</h2>
+    <p class="section__hook">Questions are pulled at random from a bank covering the whole solar system, general astronomy included.</p>
+    <div class="test-setup" id="testSetup">
+      <p class="section__copy">How many questions?</p>
+      <div class="test-length-options">
+        <button type="button" class="test-length-btn" data-length="10">10 Questions<span>Quick check, ~3 min</span></button>
+        <button type="button" class="test-length-btn" data-length="25">25 Questions<span>Standard test, ~8 min</span></button>
+        <button type="button" class="test-length-btn" data-length="50">50 Questions<span>Full exam, ~15 min</span></button>
+      </div>
+    </div>
+    <div class="cert-quiz" id="testRun" hidden></div>
+    <div class="cert-results" id="testResults" hidden></div>
+  </div>
+</section>
+
+<section id="screen-scoreboard" class="screen" hidden>
+  <div class="section__inner wide">
+    <span class="section__eyebrow">Mission Control</span>
+    <h2 class="section__title">Your Scoreboard</h2>
+    <p class="section__hook">Track your rank, your points, and every badge you've earned.</p>
+
+    <div class="scoreboard-summary">
+      <div class="scoreboard-summary__score">
+        <span class="scoreboard-summary__number" id="scoreTotal">0</span>
+        <span class="scoreboard-summary__label">Mission Points \u00b7 <span id="scoreTestsTaken">0</span> Tests Taken</span>
+      </div>
+      <div class="scoreboard-summary__rank">
+        <span class="scoreboard-summary__rank-name" id="currentRankName">Cadet</span>
+        <span class="scoreboard-summary__rank-blurb" id="currentRankBlurb">Just getting your mission briefing.</span>
+        <div class="rank-progress">
+          <div class="rank-progress__track"><div class="rank-progress__fill" id="rankProgressFill"></div></div>
+          <span class="rank-progress__next" id="rankProgressNext">150 pts to Navigator</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-ladder" id="rankLadder"></div>
+
+    <h3 class="badges-title">Badges</h3>
+    <div class="badge-grid" id="badgeGrid"></div>
+
+    <button type="button" class="reset-btn" id="resetProgressBtn">Reset Mission Progress</button>
+  </div>
+</section>
+<script>
+/* =========================================================================
+   ECLIPTIC — DATA MODULE
+   Astronomical content, the question bank, badge/rank definitions, and
+   orrery params. Every other module reads from this file.
+   ========================================================================= */
+
+const QUICK_QUIZ_POINTS = 10; // points per correct answer, any test length
+
+const PLANETS = [
+  {
+    id: "sun",
+    index: "00",
+    kicker: "The Star",
+    name: "The Sun",
+    tag: "G2V Main-Sequence Star",
+    accent: "#ffb454",
+    visual: "sun",
+    hook: "Ninety-three million miles away, a ball of plasma bigger than a million Earths fuses hydrogen into helium and quietly makes every living thing on this planet possible.",
+    paragraphs: [
+      "The Sun is a G-type main-sequence star, a fairly ordinary, middle-aged star as these things go. At its core, temperatures reach roughly 15 million degrees Celsius, hot enough to fuse hydrogen nuclei into helium. That reaction releases the energy that eventually reaches Earth, eight minutes and twenty seconds later, as sunlight.",
+      "Despite holding 99.8% of all the mass in the solar system, the Sun is unremarkable as stars go: a yellow dwarf roughly halfway through a ten-billion-year life. In about five billion years it will swell into a red giant, then shed its outer layers and settle into a slowly cooling white dwarf."
+    ],
+    stats: [
+      { label: "Type", value: "G2V Main-Sequence Star" },
+      { label: "Diameter", value: "1,392,700 km" },
+      { label: "Surface Temp", value: "\u22485,500\u00b0C" },
+      { label: "Core Temp", value: "\u224815,000,000\u00b0C" },
+      { label: "Age", value: "\u22484.6 billion years" },
+      { label: "Composition", value: "73% H, 25% He" }
+    ],
+    compare: { diameter: "1,392,700 km", mass: "333,000\u00d7 Earth", gravity: "27.9g", distance: "0 AU (center)", orbitalPeriod: "\u2014", dayLength: "\u224827 days (equator)", tilt: "\u2014", moons: "\u2014", temp: "\u22485,500\u00b0C (surface)" },
+    deepDive: {
+      physical: "The Sun's interior is layered: a fusion-powered core, a radiative zone where energy slowly diffuses outward over hundreds of thousands of years, and a convective zone where hot plasma physically churns to the surface, like water boiling in a pot. What we see as the Sun's visible surface, the photosphere, is only about 400 km thick.",
+      atmosphere: "Above the photosphere sits the chromosphere, a thin, reddish layer visible briefly during eclipses, and beyond that the corona, a tenuous, superheated atmosphere reaching millions of degrees, hotter than the surface below it. Why the corona is so much hotter than the surface it surrounds is still an active area of solar physics research.",
+      orbit: "The Sun doesn't orbit anything in our solar system; everything else orbits it. It does, however, orbit the center of the Milky Way galaxy, taking roughly 225 to 250 million years to complete one galactic circuit, sometimes called a 'cosmic year.'",
+      moons: "The Sun has no moons or rings of its own. Instead, it holds the entire solar system, including all eight planets, in orbit through its gravity.",
+      exploration: "Spacecraft including NASA's Parker Solar Probe and the ESA/NASA Solar Orbiter have flown closer to the Sun than any previous mission, directly sampling its outer atmosphere to study the solar wind and corona.",
+      facts: "The Sun is so large that about 1.3 million Earths could fit inside it. Its light takes just over 8 minutes to reach Earth, but photons generated by fusion in the core can take tens of thousands of years to fight their way out to the surface first.",
+      vsEarth: "The Sun's diameter is about 109 times Earth's, and its volume could hold roughly 1.3 million Earths. Its surface gravity is about 28 times Earth's, so a 70 kg person would effectively weigh nearly 2 tonnes there, if they could somehow stand on it."
+    }
+  },
+  {
+    id: "mercury",
+    index: "01",
+    kicker: "Terrestrial Planet",
+    name: "Mercury",
+    tag: "The Swift Planet",
+    accent: "#a9a49c",
+    visual: "rocky",
+    hook: "The smallest planet and the fastest orbiter, Mercury swings around the Sun in just 88 days, yet a single day there, sunrise to sunrise, outlasts its entire year.",
+    paragraphs: [
+      "Mercury has almost no atmosphere to speak of, just a thin, fragile exosphere stripped by the solar wind. Without air to trap or spread heat, its surface swings from 430\u00b0C in direct sunlight to -180\u00b0C in shadow, the widest temperature range of any planet.",
+      "Its cratered, grey surface looks a lot like the Moon's, scarred by billions of years of impacts with almost nothing to erode them away. Beneath that ancient crust sits an oversized iron core, taking up roughly 85% of the planet's radius."
+    ],
+    stats: [
+      { label: "Diameter", value: "4,879 km" },
+      { label: "Distance from Sun", value: "57.9M km (0.39 AU)" },
+      { label: "Orbital Period", value: "88 days" },
+      { label: "Day Length", value: "176 days" },
+      { label: "Moons", value: "0" },
+      { label: "Temp Range", value: "-180\u00b0C to 430\u00b0C" }
+    ],
+    compare: { diameter: "4,879 km", mass: "0.055\u00d7 Earth", gravity: "0.38g", distance: "0.39 AU", orbitalPeriod: "88 days", dayLength: "176 days", tilt: "~0\u00b0", moons: "0", temp: "-180\u00b0C to 430\u00b0C" },
+    deepDive: {
+      physical: "Mercury's interior is dominated by an enormous iron core, roughly 4,000 km across, about 85% of the planet's radius. That's proportionally the largest core of any planet in the solar system, likely the result of an ancient collision that stripped away much of its outer rocky layers.",
+      atmosphere: "Mercury's 'atmosphere' is technically an exosphere: an extremely thin layer of atoms like oxygen, sodium, and helium, sourced from solar wind bombardment and surface material knocked loose by micrometeorites. It's far too thin to create weather, wind, or any meaningful pressure.",
+      orbit: "Mercury has the most eccentric (elongated) orbit of any planet, and it's locked into a rare 3:2 spin-orbit resonance: it rotates on its axis exactly three times for every two trips around the Sun.",
+      moons: "Mercury has no moons and no ring system. Along with Venus, it's one of only two planets in the solar system without a single natural satellite.",
+      exploration: "Only two NASA missions have visited Mercury: Mariner 10, which flew by three times in the mid-1970s, and MESSENGER, which orbited the planet from 2011 to 2015 and mapped its surface in detail. The European/Japanese BepiColombo mission is currently en route.",
+      facts: "Because of its slow rotation and 3:2 spin-orbit resonance, a visitor standing on Mercury would see the Sun rise, stop, briefly reverse course near noon, then continue, an effect caused by the planet's orbital speed briefly exceeding its rotational speed near closest approach to the Sun.",
+      vsEarth: "Mercury is about 38% of Earth's diameter and just 5.5% of its volume, but thanks to its dense iron core, its surface gravity is still about 38% of Earth's, similar to Mars despite being much smaller."
+    }
+  },
+  {
+    id: "venus",
+    index: "02",
+    kicker: "Terrestrial Planet",
+    name: "Venus",
+    tag: "Earth's Twin, Gone Wrong",
+    accent: "#e8c987",
+    visual: "banded",
+    hook: "Venus is close to Earth's size, yet its thick, toxic atmosphere traps enough heat to make it the hottest planet in the solar system, hotter even than Mercury, which sits closer to the Sun.",
+    paragraphs: [
+      "A crushing carbon-dioxide atmosphere, roughly 92 times Earth's sea-level pressure, wraps Venus in clouds of sulfuric acid and drives a runaway greenhouse effect. Surface temperatures average around 465\u00b0C, hot enough to melt lead.",
+      "Venus also rotates backwards compared to most planets, and painfully slowly: one full spin on its axis takes 243 Earth days, longer than its 225-day trip around the Sun, the only planet where a full rotation outlasts its own year."
+    ],
+    stats: [
+      { label: "Diameter", value: "12,104 km" },
+      { label: "Distance from Sun", value: "108.2M km (0.72 AU)" },
+      { label: "Orbital Period", value: "225 days" },
+      { label: "Day Length", value: "243 days" },
+      { label: "Moons", value: "0" },
+      { label: "Surface Temp", value: "\u2248465\u00b0C" }
+    ],
+    compare: { diameter: "12,104 km", mass: "0.815\u00d7 Earth", gravity: "0.90g", distance: "0.72 AU", orbitalPeriod: "225 days", dayLength: "243 days", tilt: "177.4\u00b0", moons: "0", temp: "\u2248465\u00b0C" },
+    deepDive: {
+      physical: "Venus is built much like Earth: an iron core, a rocky mantle, and a thin crust. Unlike Earth, though, it shows no evidence of ongoing plate tectonics; its crust appears to be one continuous shell, which may be why heat builds up until periodic, planet-wide resurfacing events flood the surface with lava.",
+      atmosphere: "Venus's atmosphere is about 96% carbon dioxide with clouds of sulfuric acid, and its surface pressure is roughly 92 times Earth's, equivalent to the crushing pressure found nearly a kilometer deep in Earth's oceans. Every uncrewed lander that has touched down has survived only a few hours before the heat and pressure destroyed it.",
+      orbit: "Venus has the most circular orbit of any planet, deviating from a perfect circle by less than 1%. Combined with its slow, backwards rotation, a single Venusian day, sunrise to sunrise, lasts about 117 Earth days, shorter than its 243-day rotation because of the retrograde spin.",
+      moons: "Venus has no moons and no rings, one of only two planets, along with Mercury, with no natural satellites at all.",
+      exploration: "The Soviet Venera program achieved the first successful landing on another planet when Venera 7 touched down on Venus in 1970. NASA's DAVINCI and VERITAS, and ESA's EnVision, are upcoming missions planned to study the planet in more depth.",
+      facts: "Venus is the brightest natural object in Earth's night sky after the Moon, and it's sometimes visible in broad daylight if you know exactly where to look. Its clouds reflect about 70% of the sunlight that hits them, far more than Earth's roughly 30%.",
+      vsEarth: "Venus is often called Earth's twin because its size, mass, and composition are so similar; its diameter is about 95% of Earth's. But its runaway greenhouse atmosphere makes it the least Earth-like place to actually visit in the inner solar system."
+    }
+  },
+  {
+    id: "earth",
+    index: "03",
+    kicker: "Terrestrial Planet",
+    name: "Earth",
+    tag: "The Blue Marble",
+    accent: "#4f9dc7",
+    visual: "earth",
+    hook: "The only place we know of, so far, where geology, chemistry, and liquid water lined up long enough for life to take hold and stick around for billions of years.",
+    paragraphs: [
+      "Roughly 71% of Earth's surface is covered in liquid water, kept stable by a nitrogen-and-oxygen atmosphere and a magnetic field generated deep within its molten iron core. That field deflects most of the solar wind that strips atmospheres from less protected worlds like Mars.",
+      "Earth is the only rocky planet with a single large moon relative to its own size. The leading theory holds that the Moon formed from debris after a Mars-sized body struck the early Earth, an impact that likely tilted our axis just enough to give us seasons."
+    ],
+    stats: [
+      { label: "Diameter", value: "12,742 km" },
+      { label: "Distance from Sun", value: "149.6M km (1 AU)" },
+      { label: "Orbital Period", value: "365.25 days" },
+      { label: "Day Length", value: "24 hours" },
+      { label: "Moons", value: "1" },
+      { label: "Avg Temp", value: "\u224815\u00b0C" }
+    ],
+    compare: { diameter: "12,742 km", mass: "1\u00d7 Earth", gravity: "1g", distance: "1 AU", orbitalPeriod: "365.25 days", dayLength: "24 hours", tilt: "23.4\u00b0", moons: "1", temp: "\u224815\u00b0C" },
+    deepDive: {
+      physical: "Earth is built in layers: a solid inner core of iron and nickel, a liquid outer core that generates the planet's magnetic field, a thick rocky mantle that slowly flows over geological time, and a thin outer crust broken into tectonic plates that drift a few centimeters a year.",
+      atmosphere: "Earth's atmosphere is roughly 78% nitrogen and 21% oxygen, a mix no other known planet shares. That oxygen-rich composition is itself a product of billions of years of photosynthetic life, not a starting condition of the planet.",
+      orbit: "Earth's axis is tilted about 23.4 degrees relative to its orbit, which is what gives us seasons: different hemispheres receive more or less direct sunlight as the planet moves around the Sun each year, regardless of the much smaller changes in Earth-Sun distance.",
+      moons: "Earth has one moon, unusually large relative to the planet it orbits. That size ratio is part of why Earth and the Moon are sometimes considered close to a double-planet system, and why the Moon's gravity is strong enough to raise Earth's ocean tides.",
+      exploration: "Human exploration of Earth is, naturally, ongoing across essentially every field of science. In a solar-system context, Earth is unique for being the launch point for every spacecraft ever sent to study the other nine bodies in this guide.",
+      facts: "Earth is the only planet not named after a Greek or Roman god; its name comes from Old English and Germanic words simply meaning 'ground' or 'soil.' It's also the densest planet in the solar system.",
+      vsEarth: "This one's a given \u2014 Earth is the baseline every other comparison in this guide is measured against."
+    }
+  },
+  {
+    id: "mars",
+    index: "04",
+    kicker: "Terrestrial Planet",
+    name: "Mars",
+    tag: "The Red Planet",
+    accent: "#c1633f",
+    visual: "rocky",
+    hook: "The Red Planet gets its color from iron oxide, literally rust, dusted across a cold desert world that may once have had rivers, lakes, and maybe even oceans.",
+    paragraphs: [
+      "Mars is home to Olympus Mons, the largest volcano and tallest planetary mountain known in the solar system at roughly 21.9 km high, nearly two and a half times the height of Mount Everest. Nearby, the Valles Marineris canyon system stretches over 4,000 km.",
+      "Its thin, mostly carbon-dioxide atmosphere can't hold much heat, so temperatures average around -63\u00b0C. Two small, irregularly shaped moons, Phobos and Deimos, are thought to be captured asteroids rather than moons that formed alongside the planet."
+    ],
+    stats: [
+      { label: "Diameter", value: "6,779 km" },
+      { label: "Distance from Sun", value: "227.9M km (1.52 AU)" },
+      { label: "Orbital Period", value: "687 days" },
+      { label: "Day Length", value: "24.6 hours" },
+      { label: "Moons", value: "2" },
+      { label: "Avg Temp", value: "\u2248-63\u00b0C" }
+    ],
+    compare: { diameter: "6,779 km", mass: "0.107\u00d7 Earth", gravity: "0.38g", distance: "1.52 AU", orbitalPeriod: "687 days", dayLength: "24.6 hours", tilt: "25.2\u00b0", moons: "2", temp: "\u2248-63\u00b0C" },
+    deepDive: {
+      physical: "Mars has a smaller, likely partially solid iron core, a rocky mantle, and a crust thicker than Earth's relative to its size. NASA's InSight lander used seismometers between 2018 and 2022 to measure 'marsquakes' and map these layers directly for the first time.",
+      atmosphere: "Mars's atmosphere is about 95% carbon dioxide but so thin, less than 1% of Earth's sea-level pressure, that liquid water can't stay on the surface for long; it would boil away even in freezing temperatures because the pressure is too low.",
+      orbit: "Mars has a noticeably tilted axis, about 25 degrees, similar to Earth's, which gives it seasons too, though each Martian season lasts roughly twice as long as Earth's because a Martian year is almost two Earth years.",
+      moons: "Mars has two small moons, Phobos and Deimos, both irregularly shaped and likely captured asteroids. Phobos orbits so close and fast that it will eventually either crash into Mars or break apart into a ring, in tens of millions of years.",
+      exploration: "Mars is by far the most explored planet besides Earth, with active rovers (Curiosity, Perseverance), orbiters, and a helicopter (Ingenuity) that made the first powered flight on another planet in 2021.",
+      facts: "Mars is home to both the tallest volcano (Olympus Mons) and one of the largest canyon systems (Valles Marineris) in the solar system. Dust storms there can occasionally grow large enough to engulf the entire planet for weeks.",
+      vsEarth: "A day on Mars is only slightly longer than Earth's, about 24 hours 37 minutes, closer to Earth's day length than any other planet. But its gravity is only about 38% of Earth's, so a 70 kg person would weigh about 26 kg there."
+    }
+  },
+  {
+    id: "jupiter",
+    index: "05",
+    kicker: "Gas Giant",
+    name: "Jupiter",
+    tag: "The King of Planets",
+    accent: "#d99a5b",
+    visual: "banded",
+    hook: "Jupiter is bigger than every other planet combined, a gas giant so massive its gravity helps shepherd asteroids and comets, shielding the inner solar system from some impacts.",
+    paragraphs: [
+      "The Great Red Spot, Jupiter's most famous feature, is a storm wider than Earth that has raged for at least 150 years, possibly far longer. Turbulent, colorful cloud bands circle the planet, driven by winds that can exceed 600 km/h.",
+      "Jupiter has more confirmed moons than any planet besides Saturn, including the four large Galilean moons discovered in 1610: Io, Europa, Ganymede, and Callisto. Ganymede is larger than the planet Mercury, and Europa likely hides a liquid ocean beneath its icy shell."
+    ],
+    stats: [
+      { label: "Diameter", value: "139,820 km" },
+      { label: "Distance from Sun", value: "778.5M km (5.20 AU)" },
+      { label: "Orbital Period", value: "11.9 years" },
+      { label: "Day Length", value: "9.9 hours" },
+      { label: "Moons", value: "90+" },
+      { label: "Avg Temp", value: "\u2248-110\u00b0C" }
+    ],
+    compare: { diameter: "139,820 km", mass: "317.8\u00d7 Earth", gravity: "2.53g", distance: "5.20 AU", orbitalPeriod: "11.9 years", dayLength: "9.9 hours", tilt: "3.1\u00b0", moons: "90+", temp: "\u2248-110\u00b0C" },
+    deepDive: {
+      physical: "Jupiter likely has a dense, partially dissolved core of rock and ice, surrounded by a thick layer of metallic hydrogen, hydrogen compressed so intensely it behaves like a liquid metal, which is what generates Jupiter's enormous magnetic field, the strongest of any planet.",
+      atmosphere: "Jupiter's atmosphere is mostly hydrogen and helium, with colorful bands of ammonia and other compound clouds driven by intense internal heat and the planet's rapid rotation. Winds in some jet streams exceed 600 km/h.",
+      orbit: "Jupiter's axis is barely tilted, about 3 degrees, so it has almost no seasons. Its powerful gravity also plays traffic cop for the inner solar system, deflecting or capturing many comets and asteroids that might otherwise threaten the inner planets.",
+      moons: "Jupiter has more confirmed moons than any planet besides Saturn, and a faint, dusty ring system discovered in 1979 by Voyager 1, far less prominent than Saturn's.",
+      exploration: "Multiple missions have studied Jupiter up close, including Pioneer, Voyager, Galileo (which orbited from 1995 to 2003), and Juno, currently mapping its interior and magnetic field. The Europa Clipper mission is en route to study its icy moon Europa.",
+      facts: "Jupiter radiates more heat than it receives from the Sun, left over from its formation and slow gravitational contraction. If it had formed roughly 80 times more massive, it could have become a small star instead of a planet.",
+      vsEarth: "Jupiter's mass is about 318 times Earth's, more than all the other planets combined. Despite that, a day on Jupiter is under 10 hours, the fastest rotation of any planet, which flattens it into a visibly oblate shape."
+    }
+  },
+  {
+    id: "saturn",
+    index: "06",
+    kicker: "Gas Giant",
+    name: "Saturn",
+    tag: "Lord of the Rings",
+    accent: "#e3cd8f",
+    visual: "banded",
+    hook: "Saturn's rings make it the most recognizable planet in the solar system, a disk of ice and rock so thin that, to scale, it would be like a sheet of paper stretched across a football field.",
+    paragraphs: [
+      "The rings are made almost entirely of water ice with a small amount of rocky debris, in particles ranging from dust grains to chunks the size of a house. They may be the remains of a shattered moon or comet, though their exact origin is still debated.",
+      "Saturn is the least dense planet in the solar system, less dense than water, meaning it would float if you could find an ocean big enough. Its largest moon, Titan, is bigger than the planet Mercury and has a thick atmosphere with lakes of liquid methane."
+    ],
+    stats: [
+      { label: "Diameter", value: "116,460 km" },
+      { label: "Distance from Sun", value: "1.43B km (9.54 AU)" },
+      { label: "Orbital Period", value: "29.5 years" },
+      { label: "Day Length", value: "10.7 hours" },
+      { label: "Moons", value: "140+" },
+      { label: "Avg Temp", value: "\u2248-140\u00b0C" }
+    ],
+    compare: { diameter: "116,460 km", mass: "95.2\u00d7 Earth", gravity: "1.07g", distance: "9.54 AU", orbitalPeriod: "29.5 years", dayLength: "10.7 hours", tilt: "26.7\u00b0", moons: "140+", temp: "\u2248-140\u00b0C" },
+    deepDive: {
+      physical: "Like Jupiter, Saturn likely has a rock-and-ice core surrounded by metallic hydrogen and then molecular hydrogen. Its lower density than Jupiter's, despite similar composition, is part of why Saturn is the only planet less dense than water.",
+      atmosphere: "Saturn's atmosphere is dominated by hydrogen and helium, with pale yellow bands less vivid than Jupiter's because a haze layer sits above the cloud tops. A hexagon-shaped jet stream around its north pole, thousands of kilometers across, is one of the more bizarre weather features found on any planet.",
+      orbit: "Saturn's axis is tilted about 27 degrees, similar to Earth's, which is why its rings appear to open and close from our viewpoint on Earth over its roughly 29.5-year orbit, sometimes appearing nearly edge-on and almost invisible.",
+      moons: "Saturn's rings, made of ice and rock, span roughly 280,000 km across but are startlingly thin, in most places under a kilometer thick. Its moon Enceladus shoots geysers of water ice into space from a subsurface ocean, making it a major target in the search for life.",
+      exploration: "The Cassini-Huygens mission remains the most detailed study of Saturn to date, orbiting from 2004 to 2017 and landing the Huygens probe on Titan's surface in 2005, the only landing ever made in the outer solar system.",
+      facts: "Saturn is the least dense planet in the solar system, less dense than water, so it would theoretically float. Its rings are thought to be relatively young in astronomical terms, possibly only 100 to 400 million years old.",
+      vsEarth: "Saturn's volume could hold over 750 Earths, yet its low density means its mass is only about 95 times Earth's, far less than you'd expect from its size."
+    }
+  },
+  {
+    id: "uranus",
+    index: "07",
+    kicker: "Ice Giant",
+    name: "Uranus",
+    tag: "The Sideways Planet",
+    accent: "#7fd4d1",
+    visual: "banded",
+    hook: "Uranus rotates almost completely on its side, tilted about 98 degrees, likely the result of a massive collision billions of years ago.",
+    paragraphs: [
+      "That extreme tilt gives Uranus the strangest seasons in the solar system: each pole gets roughly 42 years of continuous sunlight, followed by 42 years of darkness. Its pale blue-green color comes from methane gas, which absorbs red light and reflects blue back into space.",
+      "Uranus is classified as an ice giant, distinct from gas giants like Jupiter and Saturn, with a mantle of water, ammonia, and methane ices around a small rocky core. It also has a faint ring system, discovered in 1977, decades before it could be photographed directly."
+    ],
+    stats: [
+      { label: "Diameter", value: "50,724 km" },
+      { label: "Distance from Sun", value: "2.87B km (19.2 AU)" },
+      { label: "Orbital Period", value: "84 years" },
+      { label: "Day Length", value: "17.2 hours" },
+      { label: "Moons", value: "27" },
+      { label: "Avg Temp", value: "\u2248-195\u00b0C" }
+    ],
+    compare: { diameter: "50,724 km", mass: "14.5\u00d7 Earth", gravity: "0.89g", distance: "19.2 AU", orbitalPeriod: "84 years", dayLength: "17.2 hours", tilt: "97.8\u00b0", moons: "27", temp: "\u2248-195\u00b0C" },
+    deepDive: {
+      physical: "Uranus and Neptune are classified separately from Jupiter and Saturn as 'ice giants' because their interiors are dominated by dense, hot fluids of water, ammonia, and methane ices surrounding a small rocky core, rather than the mostly-hydrogen interiors of the larger gas giants.",
+      atmosphere: "Uranus's atmosphere is hydrogen, helium, and methane; that methane absorbs red light, giving the planet its pale blue-green color. Its atmosphere is also the coldest in the solar system, with cloud-top temperatures dropping to around -224\u00b0C, despite not being the most distant planet.",
+      orbit: "Uranus's defining feature is its roughly 98-degree axial tilt, meaning it essentially orbits the Sun on its side, likely the result of a massive collision early in its history. Each pole gets about 42 years of continuous daylight, then 42 years of darkness.",
+      moons: "Uranus has 27 known moons, mostly named after characters from the works of William Shakespeare and Alexander Pope rather than mythology. It also has a faint system of 13 known rings, discovered in 1977, decades before Voyager 2 photographed them directly.",
+      exploration: "Uranus has been visited by only one spacecraft: Voyager 2, which flew past in January 1986. No dedicated mission has ever orbited it, though a Uranus orbiter has been recommended as a priority for future NASA missions.",
+      facts: "Uranus was the first planet discovered with a telescope rather than known since antiquity, found by William Herschel in 1781. He initially wanted to name it 'Georgium Sidus' after King George III.",
+      vsEarth: "Uranus is about 4 times Earth's diameter and roughly 63 times its volume, but its low density means it has only about 14.5 times Earth's mass."
+    }
+  },
+  {
+    id: "neptune",
+    index: "08",
+    kicker: "Ice Giant",
+    name: "Neptune",
+    tag: "The Windy Planet",
+    accent: "#4d6fd6",
+    visual: "banded",
+    hook: "The most distant planet from the Sun was found not by accident but by math: astronomers predicted its position from wobbles in Uranus's orbit before anyone had actually seen it.",
+    paragraphs: [
+      "Neptune was first observed in 1846 by Johann Galle, working from calculations by Urbain Le Verrier, making it the only planet discovered through prediction rather than direct observation. It takes 165 Earth years to complete a single orbit; it only completed its first full lap since discovery in 2011.",
+      "Despite its distance from the Sun, Neptune has the strongest winds in the solar system, with gusts recorded up to roughly 2,100 km/h. Its largest moon, Triton, orbits backwards relative to Neptune's own rotation, suggesting it was captured from the Kuiper Belt rather than born alongside the planet."
+    ],
+    stats: [
+      { label: "Diameter", value: "49,244 km" },
+      { label: "Distance from Sun", value: "4.50B km (30.1 AU)" },
+      { label: "Orbital Period", value: "165 years" },
+      { label: "Day Length", value: "16.1 hours" },
+      { label: "Moons", value: "14" },
+      { label: "Avg Temp", value: "\u2248-200\u00b0C" }
+    ],
+    compare: { diameter: "49,244 km", mass: "17.1\u00d7 Earth", gravity: "1.14g", distance: "30.1 AU", orbitalPeriod: "165 years", dayLength: "16.1 hours", tilt: "28.3\u00b0", moons: "14", temp: "\u2248-200\u00b0C" },
+    deepDive: {
+      physical: "Neptune shares Uranus's ice-giant structure: a small rocky core inside a deep mantle of hot, compressed water, ammonia, and methane, topped by a hydrogen-helium atmosphere. Neptune generates far more internal heat than Uranus does, which may explain why it has more active weather despite being farther from the Sun.",
+      atmosphere: "Neptune's atmosphere holds the solar system's fastest recorded winds, gusting up to roughly 2,100 km/h, and features large, dark storm systems similar in concept to Jupiter's Great Red Spot, though they tend to appear and dissipate over just a few years rather than centuries.",
+      orbit: "Neptune's axial tilt, about 28 degrees, is close to Earth's, giving it seasons too, though each one lasts over 40 Earth years given its 165-year orbit. It's also in a stable resonance with the dwarf planet Pluto, completing 3 orbits for every 2 of Pluto's.",
+      moons: "Neptune has 14 known moons and a faint system of rings and partial ring arcs. Its largest moon, Triton, is geologically active with nitrogen-ice geysers and orbits backwards, strong evidence it's a captured Kuiper Belt object rather than a moon that formed with the planet.",
+      exploration: "Neptune has been visited by only one spacecraft, Voyager 2, which flew past in August 1989 on its way out of the solar system. It remains the most distant planet ever visited by a spacecraft.",
+      facts: "Neptune was the first planet found through mathematical prediction rather than direct observation, when its gravitational pull on Uranus revealed its existence before anyone had seen it through a telescope.",
+      vsEarth: "Neptune is about 3.9 times Earth's diameter and 58 times its volume, with roughly 17 times Earth's mass, making it slightly smaller but denser than Uranus."
+    }
+  },
+  {
+    id: "kuiper",
+    index: "09",
+    kicker: "Trans-Neptunian Region",
+    name: "The Kuiper Belt",
+    tag: "The Frozen Frontier",
+    accent: "#a8a0e8",
+    visual: "rocky",
+    hook: "Beyond Neptune lies a vast, dark ring of icy leftovers from the solar system's formation, a frontier that includes Pluto and thousands of other small, frozen worlds.",
+    paragraphs: [
+      "The Kuiper Belt stretches from roughly 30 to 50 times Earth's distance from the Sun. It's home to dwarf planets like Pluto, Eris, Haumea, and Makemake, along with an estimated hundreds of thousands of icy bodies larger than 100 km across.",
+      "Pluto, discovered by Clyde Tombaugh in 1930 and long considered the ninth planet, was reclassified as a dwarf planet in 2006 after astronomers formally defined what a planet is. It still has five known moons, including Charon, over half Pluto's diameter and big enough that the two form something close to a double-world system."
+    ],
+    stats: [
+      { label: "Belt Distance", value: "30\u201350 AU" },
+      { label: "Pluto Diameter", value: "2,377 km" },
+      { label: "Pluto Orbital Period", value: "248 years" },
+      { label: "Pluto Day Length", value: "6.4 days" },
+      { label: "Pluto's Moons", value: "5" },
+      { label: "Avg Temp", value: "\u2248-225\u00b0C" }
+    ],
+    compare: { diameter: "2,377 km (Pluto)", mass: "0.0022\u00d7 Earth (Pluto)", gravity: "0.06g (Pluto)", distance: "30\u201350 AU (belt)", orbitalPeriod: "248 years (Pluto)", dayLength: "6.4 days (Pluto)", tilt: "122.5\u00b0 (Pluto)", moons: "5 (Pluto)", temp: "\u2248-225\u00b0C" },
+    deepDive: {
+      physical: "Unlike the planets, the Kuiper Belt isn't one body but a disc-shaped swarm of icy, rocky remnants left over from the solar system's formation, similar in concept to the asteroid belt but far larger, colder, and more distant.",
+      atmosphere: "Most Kuiper Belt objects are far too small and cold to hold a lasting atmosphere. Pluto is an exception: it has a thin, seasonal nitrogen atmosphere that partly freezes onto the surface as it moves farther from the Sun and thickens again as it moves closer.",
+      orbit: "Pluto's orbit is more tilted and elongated than any planet's, and it's locked in the same 3:2 resonance with Neptune mentioned elsewhere, meaning it periodically comes closer to the Sun than Neptune does without any risk of collision.",
+      moons: "Pluto has five known moons. The largest, Charon, is so large relative to Pluto that the two bodies technically orbit a shared point of gravity above Pluto's surface rather than Pluto simply being orbited by Charon.",
+      exploration: "NASA's New Horizons spacecraft performed the first, and so far only, close flyby of Pluto in July 2015, revealing mountains of water ice, glaciers of nitrogen ice, and a surprisingly complex, geologically active surface.",
+      facts: "The Kuiper Belt is named after astronomer Gerard Kuiper, though Kenneth Edgeworth had proposed a similar idea earlier; some scientists call it the Edgeworth-Kuiper Belt for that reason. It's thought to be the source of many short-period comets.",
+      vsEarth: "Pluto is tiny by planetary standards, about 18% of Earth's diameter and less than 1% of its mass, smaller even than Earth's own Moon."
+    }
+  }
+];
+
+/* ---------------------------------------------------------------------
+   QUESTION BANK — 66 questions covering every body plus general
+   astronomy. Test mode draws a random N (10 / 25 / 50) from this pool.
+   --------------------------------------------------------------------- */
+const QUESTION_BANK = [
+  { topic: "sun", question: "What type of star is the Sun?", options: ["A red giant", "A G-type main-sequence star", "A white dwarf", "A neutron star"], correctIndex: 1, explanation: "The Sun is a G2V main-sequence star, an average, middle-aged star currently fusing hydrogen into helium at its core." },
+  { topic: "sun", question: "What powers the Sun?", options: ["Chemical combustion", "Radioactive decay", "Nuclear fusion of hydrogen into helium", "Gravitational collapse"], correctIndex: 2, explanation: "In its core, the Sun fuses hydrogen nuclei into helium, releasing the energy that eventually reaches us as sunlight." },
+  { topic: "sun", question: "About how long does sunlight take to reach Earth?", options: ["8 seconds", "8 minutes", "8 hours", "8 days"], correctIndex: 1, explanation: "Light from the Sun takes about 8 minutes and 20 seconds to reach Earth, traveling roughly 150 million km." },
+  { topic: "sun", question: "Roughly what share of the solar system's total mass does the Sun make up?", options: ["About 25%", "About 50%", "About 75%", "About 99.8%"], correctIndex: 3, explanation: "The Sun accounts for roughly 99.8% of all the mass in the solar system." },
+  { topic: "sun", question: "What is the Sun's faint outer atmosphere, visible during a total solar eclipse, called?", options: ["The photosphere", "The chromosphere", "The corona", "The core"], correctIndex: 2, explanation: "The corona is the Sun's faint outer atmosphere, visible to the naked eye only during a total solar eclipse." },
+  { topic: "sun", question: "About how old is the Sun?", options: ["10 million years", "1 billion years", "4.6 billion years", "13.8 billion years"], correctIndex: 2, explanation: "The Sun formed about 4.6 billion years ago from a collapsing cloud of gas and dust." },
+  { topic: "sun", question: "What will eventually happen to the Sun, in roughly 5 billion years?", options: ["It will explode as a supernova", "It will collapse into a black hole", "It will swell into a red giant", "It will simply go dark"], correctIndex: 2, explanation: "Stars the Sun's size don't go supernova. In about 5 billion years it will swell into a red giant, then shed its outer layers and become a white dwarf." },
+
+  { topic: "mercury", question: "Why does Mercury swing between such extreme hot and cold temperatures?", options: ["It has almost no atmosphere to trap or spread heat", "It doesn't rotate at all", "It has too many moons blocking sunlight", "It's made entirely of ice"], correctIndex: 0, explanation: "With virtually no atmosphere, Mercury has nothing to hold onto heat or spread it around, so surface temperatures swing from 430\u00b0C to -180\u00b0C." },
+  { topic: "mercury", question: "Which planet is closest to the Sun?", options: ["Venus", "Mercury", "Earth", "Mars"], correctIndex: 1, explanation: "Mercury is the closest planet to the Sun, orbiting at just 0.39 AU." },
+  { topic: "mercury", question: "How does Mercury compare in size to Earth's Moon?", options: ["It's smaller than the Moon", "It's larger than the Moon, but still the smallest planet", "It's larger than Jupiter", "It's exactly the same size as the Moon"], correctIndex: 1, explanation: "Mercury is larger than Earth's Moon, but still smaller than every other planet, making it the smallest planet in the solar system." },
+  { topic: "mercury", question: "What makes up most of Mercury's interior?", options: ["An oversized iron core", "Liquid water", "Frozen methane", "Molten rock only"], correctIndex: 0, explanation: "Mercury has an oversized iron core that takes up roughly 85% of the planet's radius." },
+  { topic: "mercury", question: "Mercury has virtually no atmosphere. What does it have instead?", options: ["A thick layer of clouds", "A thin exosphere", "A ring system", "A permanent dust storm"], correctIndex: 1, explanation: "Mercury has only a thin, fragile exosphere, made of atoms blasted off its surface by solar wind and micrometeorite impacts." },
+
+  { topic: "venus", question: "Why is Venus hotter than Mercury, even though it's farther from the Sun?", options: ["Venus has active volcanoes heating its surface", "A runaway greenhouse effect from its thick CO2 atmosphere", "Venus is actually closer to the Sun at times", "Venus has no clouds to reflect sunlight"], correctIndex: 1, explanation: "Venus's dense carbon-dioxide atmosphere traps heat so effectively that its surface reaches about 465\u00b0C, hotter than Mercury despite being twice as far from the Sun." },
+  { topic: "venus", question: "What's unusual about a 'day' on Venus?", options: ["It doesn't rotate at all", "A single rotation takes longer than its entire year", "It has two sunrises per day", "Its day is exactly 24 hours"], correctIndex: 1, explanation: "Venus takes 243 Earth days to rotate once on its axis, longer than its 225-day year." },
+  { topic: "venus", question: "Which planet is often called Earth's 'sister planet' because of its similar size?", options: ["Mars", "Venus", "Mercury", "Neptune"], correctIndex: 1, explanation: "Venus is close to Earth in size and mass, though its atmosphere makes surface conditions radically different." },
+  { topic: "venus", question: "What are the clouds of Venus mostly made of?", options: ["Water vapor", "Sulfuric acid droplets", "Ice crystals", "Carbon dust"], correctIndex: 1, explanation: "Venus's thick clouds are made of sulfuric acid droplets, part of what makes its atmosphere so hostile." },
+  { topic: "venus", question: "In which direction does Venus rotate, compared to most planets?", options: ["The same direction", "Backwards (retrograde)", "It doesn't rotate", "Randomly, with no fixed direction"], correctIndex: 1, explanation: "Venus rotates in the opposite direction (retrograde) from most planets in the solar system." },
+  { topic: "venus", question: "Venus is often visible from Earth without a telescope. What is it commonly called in the sky?", options: ["The Evening Star or Morning Star", "The Red Star", "The North Star", "The Twin Star"], correctIndex: 0, explanation: "Venus is often called the 'Evening Star' or 'Morning Star' because it's one of the brightest objects visible near sunrise or sunset." },
+
+  { topic: "earth", question: "Roughly what percentage of Earth's surface is covered by water?", options: ["30%", "50%", "71%", "90%"], correctIndex: 2, explanation: "About 71% of Earth's surface is covered by oceans, making it the only known 'blue planet.'" },
+  { topic: "earth", question: "What protects Earth's atmosphere from being stripped away by the solar wind?", options: ["Its thick clouds", "Its magnetic field", "Its ozone layer alone", "Its distance from the Sun"], correctIndex: 1, explanation: "Earth's magnetic field, generated by its molten iron core, deflects most of the solar wind that would otherwise strip away the atmosphere." },
+  { topic: "earth", question: "What is the leading theory for how Earth's Moon formed?", options: ["It was captured by Earth's gravity", "A Mars-sized body struck early Earth", "It formed separately and drifted into orbit", "Volcanic eruptions on Earth ejected it"], correctIndex: 1, explanation: "The leading theory holds the Moon formed from debris after a Mars-sized body struck the early Earth." },
+  { topic: "earth", question: "Which layer of Earth generates its magnetic field?", options: ["The crust", "The mantle", "The molten outer core", "The stratosphere"], correctIndex: 2, explanation: "Earth's molten outer core, made largely of iron and nickel, generates the planet's magnetic field." },
+  { topic: "earth", question: "How many natural moons does Earth have?", options: ["0", "1", "2", "4"], correctIndex: 1, explanation: "Earth has one natural moon, simply called the Moon." },
+
+  { topic: "mars", question: "What is Olympus Mons?", options: ["A Martian moon", "The largest volcano in the solar system", "An ancient Martian ocean", "A giant impact crater"], correctIndex: 1, explanation: "Olympus Mons stands roughly 21.9 km tall, making it the largest known volcano and mountain in the solar system." },
+  { topic: "mars", question: "What gives Mars its reddish color?", options: ["Reflected sunlight", "Iron oxide (rust) in its soil", "Its thick red clouds", "Volcanic ash"], correctIndex: 1, explanation: "Mars's surface is covered in iron oxide, essentially rust, which gives the planet its distinctive red color." },
+  { topic: "mars", question: "What are the names of Mars's two small moons?", options: ["Phobos and Deimos", "Titan and Triton", "Io and Europa", "Charon and Nix"], correctIndex: 0, explanation: "Mars has two small, irregularly shaped moons named Phobos and Deimos, likely captured asteroids." },
+  { topic: "mars", question: "What is Valles Marineris?", options: ["A Martian volcano", "A giant canyon system on Mars", "A Martian polar ice cap", "A Martian moon"], correctIndex: 1, explanation: "Valles Marineris is a canyon system on Mars stretching over 4,000 km, among the largest in the solar system." },
+  { topic: "mars", question: "What is Mars's atmosphere mostly made of?", options: ["Nitrogen", "Oxygen", "Carbon dioxide", "Methane"], correctIndex: 2, explanation: "Mars has a thin atmosphere that's mostly carbon dioxide." },
+
+  { topic: "jupiter", question: "What is the Great Red Spot?", options: ["A giant impact crater", "An ancient volcano", "A storm larger than Earth", "A moon's shadow"], correctIndex: 2, explanation: "The Great Red Spot is a massive storm, wider than Earth, that has been raging for at least 150 years." },
+  { topic: "jupiter", question: "Which is the largest planet in the solar system?", options: ["Saturn", "Neptune", "Jupiter", "Uranus"], correctIndex: 2, explanation: "Jupiter is the largest planet in the solar system, more massive than all the other planets combined." },
+  { topic: "jupiter", question: "Jupiter's four largest moons, discovered in 1610, are collectively known as what?", options: ["The Jovian Four", "The Galilean moons", "The Great Moons", "The Titan group"], correctIndex: 1, explanation: "Io, Europa, Ganymede, and Callisto are known as the Galilean moons, discovered by Galileo Galilei in 1610." },
+  { topic: "jupiter", question: "Which Galilean moon of Jupiter is thought to hide a liquid ocean beneath its icy shell?", options: ["Io", "Europa", "Callisto", "Ganymede"], correctIndex: 1, explanation: "Europa's icy shell likely covers a subsurface ocean, making it a target in the search for possible life." },
+  { topic: "jupiter", question: "What is Jupiter primarily made of?", options: ["Rock and metal", "Ice only", "Hydrogen and helium", "Liquid water"], correctIndex: 2, explanation: "Like the Sun, Jupiter is made mostly of hydrogen and helium, making it a gas giant." },
+
+  { topic: "saturn", question: "What are Saturn's rings mostly made of?", options: ["Solid rock", "Ice and rock particles", "Liquid metal", "Frozen gas"], correctIndex: 1, explanation: "Saturn's rings are made almost entirely of water ice, mixed with a small amount of rocky debris." },
+  { topic: "saturn", question: "What's unusual about Saturn's density compared to other planets?", options: ["It's the densest planet", "It's less dense than water", "It has no measurable density", "It's exactly as dense as Earth"], correctIndex: 1, explanation: "Saturn is the least dense planet in the solar system, less dense than water." },
+  { topic: "saturn", question: "What is Titan, Saturn's largest moon, notable for?", options: ["Being the smallest moon in the solar system", "Having lakes of liquid methane and a thick atmosphere", "Being made entirely of ice with no atmosphere", "Orbiting Saturn backwards"], correctIndex: 1, explanation: "Titan has a thick atmosphere and lakes of liquid methane, making it one of the most Earth-like moons in some respects." },
+  { topic: "saturn", question: "Saturn's rings are made of countless particles. What's their general size range?", options: ["Only microscopic dust", "From dust grains to chunks the size of a house", "Only boulders larger than a car", "A single solid sheet of ice"], correctIndex: 1, explanation: "Ring particles range enormously in size, from tiny dust grains to chunks as large as a house." },
+  { topic: "saturn", question: "Which spacecraft orbited Saturn for over a decade before deliberately plunging into the planet in 2017?", options: ["Voyager 1", "New Horizons", "Cassini", "Galileo"], correctIndex: 2, explanation: "NASA's Cassini spacecraft orbited Saturn from 2004 until 2017, when it was deliberately deorbited into the planet." },
+
+  { topic: "uranus", question: "What is unusual about how Uranus rotates?", options: ["It doesn't rotate at all", "It rotates on its side, tilted about 98\u00b0", "It spins faster than any other planet", "It rotates in random directions"], correctIndex: 1, explanation: "Uranus is tipped over on its side at roughly a 98\u00b0 axial tilt, likely from a massive ancient collision." },
+  { topic: "uranus", question: "Who is credited with discovering Uranus, in 1781?", options: ["Galileo Galilei", "William Herschel", "Johannes Kepler", "Edmond Halley"], correctIndex: 1, explanation: "William Herschel discovered Uranus in 1781, the first planet found using a telescope." },
+  { topic: "uranus", question: "How is Uranus classified?", options: ["A gas giant", "An ice giant", "A terrestrial planet", "A dwarf planet"], correctIndex: 1, explanation: "Uranus is classified as an ice giant, made largely of water, ammonia, and methane ices around a small rocky core." },
+  { topic: "uranus", question: "About how long does it take Uranus to orbit the Sun once?", options: ["8 years", "29.5 years", "84 years", "165 years"], correctIndex: 2, explanation: "Uranus takes about 84 Earth years to complete one orbit of the Sun." },
+
+  { topic: "neptune", question: "How was Neptune discovered?", options: ["By accident through a telescope", "Predicted mathematically before it was observed", "By a spacecraft flyby", "By ancient astronomers"], correctIndex: 1, explanation: "Neptune's position was predicted from irregularities in Uranus's orbit, then confirmed observationally by Johann Galle in 1846." },
+  { topic: "neptune", question: "Which planet has the strongest winds in the solar system?", options: ["Jupiter", "Saturn", "Uranus", "Neptune"], correctIndex: 3, explanation: "Neptune has the strongest recorded winds in the solar system, with gusts up to roughly 2,100 km/h." },
+  { topic: "neptune", question: "Neptune's largest moon orbits backwards relative to the planet's rotation. What is it called?", options: ["Titan", "Triton", "Europa", "Charon"], correctIndex: 1, explanation: "Triton orbits Neptune backwards, suggesting it was a captured object rather than a moon that formed alongside the planet." },
+  { topic: "neptune", question: "About how long does Neptune take to orbit the Sun once?", options: ["84 years", "165 years", "248 years", "29.5 years"], correctIndex: 1, explanation: "Neptune takes about 165 Earth years to complete a single orbit of the Sun." },
+
+  { topic: "kuiper", question: "What happened to Pluto's classification in 2006?", options: ["It was renamed", "It was declared a moon of Neptune", "It was reclassified as a dwarf planet", "It was declared a comet"], correctIndex: 2, explanation: "In 2006, the IAU adopted a formal definition of 'planet' that Pluto didn't meet, reclassifying it as a dwarf planet." },
+  { topic: "kuiper", question: "What is the Kuiper Belt?", options: ["An asteroid belt between Mars and Jupiter", "A ring around Saturn", "A disc of icy bodies and dwarf planets beyond Neptune", "A cloud of comets at the far edge of the solar system"], correctIndex: 2, explanation: "The Kuiper Belt is a disc-shaped region beyond Neptune filled with icy bodies and dwarf planets like Pluto." },
+  { topic: "kuiper", question: "Who discovered Pluto, in 1930?", options: ["Clyde Tombaugh", "Percival Lowell", "Edwin Hubble", "Carl Sagan"], correctIndex: 0, explanation: "Clyde Tombaugh discovered Pluto in 1930 while searching for a predicted 'Planet X.'" },
+  { topic: "kuiper", question: "What is Charon, in relation to Pluto?", options: ["Pluto's largest moon", "A rival dwarf planet nearby", "A ring around Pluto", "An asteroid that once hit Pluto"], correctIndex: 0, explanation: "Charon is Pluto's largest moon, over half Pluto's diameter, forming something close to a double-world system." },
+  { topic: "kuiper", question: "Roughly how far from the Sun does the Kuiper Belt extend?", options: ["1 to 2 AU", "5 to 10 AU", "30 to 50 AU", "100 to 200 AU"], correctIndex: 2, explanation: "The Kuiper Belt stretches from roughly 30 to 50 times Earth's distance from the Sun." },
+  { topic: "kuiper", question: "Besides Pluto, which of these is also a recognized dwarf planet in the Kuiper Belt region?", options: ["Ceres", "Eris", "Titan", "Io"], correctIndex: 1, explanation: "Eris is a dwarf planet in the Kuiper Belt region, similar in size to Pluto. Ceres is a dwarf planet too, but it orbits in the asteroid belt, not the Kuiper Belt." },
+
+  { topic: "general", question: "What is the correct order of the four inner, rocky planets from the Sun?", options: ["Mercury, Venus, Earth, Mars", "Venus, Mercury, Mars, Earth", "Earth, Venus, Mercury, Mars", "Mercury, Earth, Venus, Mars"], correctIndex: 0, explanation: "From the Sun outward, the rocky inner planets run Mercury, Venus, Earth, then Mars." },
+  { topic: "general", question: "What is the correct order of all eight planets from the Sun outward?", options: ["Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, Neptune", "Mercury, Venus, Earth, Mars, Saturn, Jupiter, Neptune, Uranus", "Venus, Mercury, Earth, Mars, Jupiter, Saturn, Uranus, Neptune", "Mercury, Venus, Mars, Earth, Jupiter, Saturn, Uranus, Neptune"], correctIndex: 0, explanation: "In order from the Sun: Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus, and Neptune." },
+  { topic: "general", question: "Which two planets have no moons at all?", options: ["Earth and Mars", "Mercury and Venus", "Mars and Jupiter", "Uranus and Neptune"], correctIndex: 1, explanation: "Mercury and Venus are the only two planets in the solar system without any known moons." },
+  { topic: "general", question: "Which planet is home to Olympus Mons, the tallest known mountain in the solar system?", options: ["Earth", "Venus", "Mars", "Jupiter"], correctIndex: 2, explanation: "Olympus Mons, a shield volcano roughly 21.9 km tall, sits on Mars." },
+  { topic: "general", question: "What are the four giant planets, Jupiter, Saturn, Uranus, and Neptune, mostly made of?", options: ["Solid rock and metal", "Hydrogen, helium, and icy volatiles", "Pure liquid water", "Frozen nitrogen"], correctIndex: 1, explanation: "Unlike the rocky inner planets, the outer giants are made mostly of hydrogen, helium, and icy compounds rather than solid rock." },
+  { topic: "general", question: "Why do Uranus and Neptune appear blue-green?", options: ["Reflected ocean water", "Methane in their atmospheres absorbing red light", "Frozen nitrogen ice", "Iron oxide dust"], correctIndex: 1, explanation: "Methane gas in their atmospheres absorbs red light and reflects blue-green light back into space." },
+  { topic: "general", question: "What is an Astronomical Unit (AU) used to measure?", options: ["The mass of a planet", "The average distance from Earth to the Sun", "The temperature of a star", "The speed of light"], correctIndex: 1, explanation: "One Astronomical Unit (AU) equals the average distance from Earth to the Sun, about 150 million km." },
+  { topic: "general", question: "Which of these is NOT one of the four terrestrial (rocky) inner planets?", options: ["Mercury", "Venus", "Jupiter", "Mars"], correctIndex: 2, explanation: "Jupiter is a gas giant, not a terrestrial planet. The four terrestrial planets are Mercury, Venus, Earth, and Mars." },
+  { topic: "general", question: "Which of these is a 'gas giant' rather than an 'ice giant'?", options: ["Uranus", "Neptune", "Saturn", "Pluto"], correctIndex: 2, explanation: "Jupiter and Saturn are gas giants, made mostly of hydrogen and helium. Uranus and Neptune are ice giants, with more icy compounds in their makeup." },
+  { topic: "general", question: "What causes a solar eclipse?", options: ["Earth passes directly between the Sun and Moon", "The Moon passes directly between the Sun and Earth", "The Sun temporarily dims", "Mercury passes in front of the Sun"], correctIndex: 1, explanation: "A solar eclipse happens when the Moon passes between the Sun and Earth, blocking some or all of the Sun's light." },
+  { topic: "general", question: "What is a comet primarily made of?", options: ["Solid iron and nickel", "Ice, dust, and rocky material", "Pure liquid water", "Compressed hydrogen gas"], correctIndex: 1, explanation: "Comets are often described as 'dirty snowballs,' made of ice, dust, and rocky material that vaporizes into a glowing tail as they near the Sun." },
+  { topic: "general", question: "Where is the asteroid belt located?", options: ["A ring around Saturn", "Between Mars and Jupiter", "Another name for the Kuiper Belt", "Beyond Neptune"], correctIndex: 1, explanation: "The asteroid belt is a region of rocky debris orbiting the Sun between Mars and Jupiter." },
+  { topic: "general", question: "Which planet spins fastest on its axis, completing a day in under 10 hours?", options: ["Earth", "Mars", "Jupiter", "Saturn"], correctIndex: 2, explanation: "Jupiter has the shortest day of any planet, rotating once in under 10 hours." },
+  { topic: "general", question: "According to the IAU's 2006 definition, what makes a body a 'dwarf planet' rather than a full planet?", options: ["It's smaller than Mercury", "It orbits the Sun and is round, but hasn't cleared its orbital neighborhood", "It has no moons", "It has no atmosphere"], correctIndex: 1, explanation: "The IAU defines a dwarf planet as a body that orbits the Sun and is roughly round, but has not cleared the neighborhood around its orbit of other debris." }
+];
+
+const BADGES = [
+  { id: "first-contact", name: "First Contact", icon: "\u2726", desc: "Complete your first test." },
+  { id: "field-researcher", name: "Field Researcher", icon: "\u25d0", desc: "View full info for all ten bodies in Explore." },
+  { id: "comparative-analyst", name: "Comparative Analyst", icon: "\u2b21", desc: "Compare two or more planets." },
+  { id: "grand-tour", name: "Grand Tour", icon: "\u2744", desc: "Complete a 50-question test." },
+  { id: "sharp-shooter", name: "Sharp Shooter", icon: "\u25ce", desc: "Score 100% on any test." },
+  { id: "persistent-explorer", name: "Persistent Explorer", icon: "\u25b2", desc: "Complete 5 tests in total." },
+  { id: "solar-scholar", name: "Solar Scholar", icon: "\u2609", desc: "Earn 1,000+ mission points." },
+  { id: "system-master", name: "System Master", icon: "\u273a", desc: "Reach Flight Director rank." }
+];
+
+const RANKS = [
+  { name: "Cadet", min: 0, blurb: "Just getting your mission briefing." },
+  { name: "Navigator", min: 150, blurb: "Finding your way around the solar system." },
+  { name: "Pilot", min: 400, blurb: "Comfortable running solo missions." },
+  { name: "Commander", min: 800, blurb: "Leading full expeditions." },
+  { name: "Astronaut", min: 1500, blurb: "Veteran of deep-space assignments." },
+  { name: "Flight Director", min: 2500, blurb: "Full command of the mission." }
+];
+
+/* Orrery params: stylised, not-to-scale. Colors are hex strings so they can
+   feed both THREE.js materials and the procedural canvas textures. Tilt is
+   in degrees; spin is a relative, stylised self-rotation rate (Venus is
+   negative because it really does spin backwards). */
+const ORRERY_BODIES = [
+  { id: "mercury", color: "#a9a49c", size: 0.34, orbitRadius: 4.2, speed: 0.90, tilt: 0, spin: 0.9, textureMode: "rocky" },
+  { id: "venus", color: "#e8c987", size: 0.55, orbitRadius: 5.6, speed: 0.62, tilt: 3, spin: -0.4, textureMode: "banded" },
+  { id: "earth", color: "#4f9dc7", size: 0.58, orbitRadius: 7.2, speed: 0.50, tilt: 23, spin: 1.6, textureMode: "earth" },
+  { id: "mars", color: "#c1633f", size: 0.44, orbitRadius: 8.8, speed: 0.38, tilt: 25, spin: 1.5, textureMode: "rocky" },
+  { id: "jupiter", color: "#d99a5b", size: 1.35, orbitRadius: 11.6, speed: 0.22, tilt: 3, spin: 2.2, textureMode: "banded" },
+  { id: "saturn", color: "#e3cd8f", size: 1.15, orbitRadius: 14.4, speed: 0.16, tilt: 27, spin: 2.0, hasRing: true, textureMode: "banded" },
+  { id: "uranus", color: "#7fd4d1", size: 0.85, orbitRadius: 16.8, speed: 0.11, tilt: 98, spin: 1.2, textureMode: "banded" },
+  { id: "neptune", color: "#4d6fd6", size: 0.82, orbitRadius: 19.0, speed: 0.08, tilt: 28, spin: 1.3, textureMode: "banded" }
+];
+
+/* =========================================================================
+   ECLIPTIC — COOKIES MODULE
+   Small cookie utility plus the consent banner and optional contact form.
+   Everything here is stored on-device only; there is no backend, so the
+   UI is honest about that rather than implying data is sent anywhere.
+   ========================================================================= */
+
+const Cookies = (function () {
+
+  function set(name, value, days) {
+    try {
+      const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+      document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires + "; path=/; SameSite=Lax";
+    } catch (e) { /* cookies unavailable in this context */ }
+  }
+
+  function get(name) {
+    try {
+      const match = document.cookie.match(new RegExp("(?:^|; )" + name + "=([^;]*)"));
+      return match ? decodeURIComponent(match[1]) : null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function remove(name) {
+    try { document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/;"; } catch (e) {}
+  }
+
+  function initConsent() {
+    const banner = document.getElementById("cookieBanner");
+    if (!banner) return;
+    if (get("ecliptic_consent")) return;
+    banner.hidden = false;
+
+    const accept = document.getElementById("cookieAccept");
+    const decline = document.getElementById("cookieDecline");
+    if (accept) accept.addEventListener("click", function () {
+      set("ecliptic_consent", "accepted", 365);
+      banner.hidden = true;
+    });
+    if (decline) decline.addEventListener("click", function () {
+      set("ecliptic_consent", "declined", 365);
+      banner.hidden = true;
+    });
+  }
+
+  function initContactForm() {
+    const form = document.getElementById("contactForm");
+    const status = document.getElementById("contactStatus");
+    if (!form || !status) return;
+
+    const saved = get("ecliptic_contact");
+    if (saved) {
+      status.textContent = "Saved on this device \u2014 thanks!";
+      status.hidden = false;
+    }
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      const email = document.getElementById("contactEmail").value.trim();
+      const phone = document.getElementById("contactPhone").value.trim();
+      if (!email && !phone) {
+        status.textContent = "Add an email or phone, or just skip \u2014 both are optional.";
+        status.hidden = false;
+        return;
+      }
+      set("ecliptic_contact", JSON.stringify({ email: email, phone: phone }), 365);
+      status.textContent = "Saved on this device \u2014 thanks!";
+      status.hidden = false;
+      form.reset();
+    });
+
+    const skipBtn = document.getElementById("contactSkip");
+    if (skipBtn) skipBtn.addEventListener("click", function () {
+      const card = document.getElementById("contactCard");
+      if (card) card.hidden = true;
+    });
+  }
+
+  function init() {
+    initConsent();
+    initContactForm();
+  }
+
+  return { init: init, set: set, get: get, remove: remove };
+})();
+
+/* =========================================================================
+   ECLIPTIC — GAMIFICATION MODULE
+   Points accumulate across tests (10 pts per correct answer, any length).
+   Also tracks Explore and Compare engagement for badges. Persists to
+   localStorage (progress is larger, structured data — cookies handle the
+   smaller consent/contact fields, see cookies.js).
+   ========================================================================= */
+
+const Gamification = (function () {
+  const STORAGE_KEY = "ecliptic:progress:v2";
+
+  function defaultState() {
+    return {
+      points: 0,
+      testsTaken: [],       // [{ length, correctCount, points, completedAt }]
+      exploredPlanets: [],  // planet ids viewed in Explore
+      comparedAtLeastOnce: false,
+      badges: []
+    };
+  }
+
+  let state = load();
+
+  function load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return defaultState();
+      const parsed = JSON.parse(raw);
+      return Object.assign(defaultState(), parsed);
+    } catch (e) {
+      return defaultState();
+    }
+  }
+
+  function save() {
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+  }
+
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function totalScore() { return state.points; }
+
+  function getRank(score) {
+    let current = RANKS[0];
+    let next = null;
+    for (let i = 0; i < RANKS.length; i++) {
+      if (score >= RANKS[i].min) {
+        current = RANKS[i];
+        next = RANKS[i + 1] || null;
+      }
+    }
+    return { current: current, next: next };
+  }
+
+  function hasBadge(id) { return state.badges.indexOf(id) !== -1; }
+
+  function evaluateBadges() {
+    const newlyUnlocked = [];
+    function unlock(id) { if (!hasBadge(id)) { state.badges.push(id); newlyUnlocked.push(id); } }
+
+    if (state.testsTaken.length >= 1) unlock("first-contact");
+    if (state.exploredPlanets.length >= PLANETS.length) unlock("field-researcher");
+    if (state.comparedAtLeastOnce) unlock("comparative-analyst");
+    if (state.testsTaken.some(function (t) { return t.length >= 50; })) unlock("grand-tour");
+    if (state.testsTaken.some(function (t) { return t.correctCount === t.length; })) unlock("sharp-shooter");
+    if (state.testsTaken.length >= 5) unlock("persistent-explorer");
+    if (state.points >= 1000) unlock("solar-scholar");
+    if (state.points >= 2500) unlock("system-master");
+
+    if (newlyUnlocked.length) save();
+    return newlyUnlocked;
+  }
+
+  function recordTest(length, correctCount, points) {
+    state.points += points;
+    state.testsTaken.push({ length: length, correctCount: correctCount, points: points, completedAt: new Date().toISOString() });
+    save();
+    const newBadges = evaluateBadges();
+    return { newBadges: newBadges };
+  }
+
+  function recordExplored(id) {
+    if (state.exploredPlanets.indexOf(id) === -1) {
+      state.exploredPlanets.push(id);
+      save();
+      const newBadges = evaluateBadges();
+      renderAll();
+      announceBadges(newBadges);
+    }
+  }
+
+  function recordCompare() {
+    if (!state.comparedAtLeastOnce) {
+      state.comparedAtLeastOnce = true;
+      save();
+      const newBadges = evaluateBadges();
+      renderAll();
+      announceBadges(newBadges);
+    }
+  }
+
+  function reset() {
+    state = defaultState();
+    save();
+  }
+
+  /* ---------------------------- UI rendering ---------------------------- */
+
+  function renderHUD() {
+    const score = totalScore();
+    const rankInfo = getRank(score);
+    const hudRank = document.getElementById("hudRank");
+    const hudScore = document.getElementById("hudScore");
+    if (hudRank) hudRank.textContent = rankInfo.current.name;
+    if (hudScore) hudScore.textContent = score + " pts";
+  }
+
+  function renderRankLadder() {
+    const host = document.getElementById("rankLadder");
+    if (!host) return;
+    host.innerHTML = RANKS.map(function (r) {
+      return (
+        '<div class="rank-rung" data-rank="' + r.name + '" data-min="' + r.min + '">' +
+          '<span class="rank-rung__min">' + r.min + '+</span>' +
+          '<span class="rank-rung__name">' + r.name + '</span>' +
+          '<span class="rank-rung__blurb">' + r.blurb + '</span>' +
+        '</div>'
+      );
+    }).join("");
+  }
+
+  function renderBadgeGrid() {
+    const host = document.getElementById("badgeGrid");
+    if (!host) return;
+    host.innerHTML = BADGES.map(function (b) {
+      return (
+        '<div class="badge-card" data-badge="' + b.id + '">' +
+          '<span class="badge-card__icon">' + b.icon + '</span>' +
+          '<span class="badge-card__name">' + b.name + '</span>' +
+          '<span class="badge-card__desc">' + b.desc + '</span>' +
+        '</div>'
+      );
+    }).join("");
+  }
+
+  function renderScoreboardSection() {
+    const score = totalScore();
+    const rankInfo = getRank(score);
+
+    const scoreEl = document.getElementById("scoreTotal");
+    if (scoreEl) scoreEl.textContent = score;
+
+    const rankNameEl = document.getElementById("currentRankName");
+    if (rankNameEl) rankNameEl.textContent = rankInfo.current.name;
+
+    const rankBlurbEl = document.getElementById("currentRankBlurb");
+    if (rankBlurbEl) rankBlurbEl.textContent = rankInfo.current.blurb;
+
+    const testsEl = document.getElementById("scoreTestsTaken");
+    if (testsEl) testsEl.textContent = state.testsTaken.length;
+
+    const fillEl = document.getElementById("rankProgressFill");
+    const nextLabelEl = document.getElementById("rankProgressNext");
+    if (fillEl) {
+      if (rankInfo.next) {
+        const span = rankInfo.next.min - rankInfo.current.min;
+        const progressed = score - rankInfo.current.min;
+        const pct = Math.max(0, Math.min(100, (progressed / span) * 100));
+        fillEl.style.width = pct + "%";
+        if (nextLabelEl) nextLabelEl.textContent = (rankInfo.next.min - score) + " pts to " + rankInfo.next.name;
+      } else {
+        fillEl.style.width = "100%";
+        if (nextLabelEl) nextLabelEl.textContent = "Top rank achieved";
+      }
+    }
+
+    document.querySelectorAll(".rank-rung").forEach(function (el) {
+      el.classList.toggle("is-current", el.getAttribute("data-rank") === rankInfo.current.name);
+      el.classList.toggle("is-reached", score >= parseInt(el.getAttribute("data-min"), 10));
+    });
+
+    document.querySelectorAll(".badge-card").forEach(function (el) {
+      el.classList.toggle("is-unlocked", hasBadge(el.getAttribute("data-badge")));
+    });
+  }
+
+  function renderAll() {
+    renderHUD();
+    renderScoreboardSection();
+  }
+
+  function showBadgeToast(badgeId) {
+    const badge = BADGES.filter(function (b) { return b.id === badgeId; })[0];
+    if (!badge) return;
+    const toast = document.createElement("div");
+    toast.className = "badge-toast";
+    toast.innerHTML =
+      '<span class="badge-toast__icon">' + badge.icon + '</span>' +
+      '<span class="badge-toast__text"><strong>Badge unlocked</strong><br>' + badge.name + '</span>';
+    document.body.appendChild(toast);
+    requestAnimationFrame(function () { toast.classList.add("is-visible"); });
+    setTimeout(function () {
+      toast.classList.remove("is-visible");
+      setTimeout(function () { toast.remove(); }, 400);
+    }, 3200);
+  }
+
+  function announceBadges(ids) {
+    ids.forEach(function (id, i) {
+      setTimeout(function () { showBadgeToast(id); }, i * 900);
+    });
+  }
+
+  function initScoreboardUI() {
+    renderRankLadder();
+    renderBadgeGrid();
+    renderAll();
+
+    const resetBtn = document.getElementById("resetProgressBtn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        if (window.confirm("Reset all mission progress? This clears your points, test history, and badges.")) {
+          reset();
+          window.location.reload();
+        }
+      });
+    }
+
+    const hud = document.getElementById("hud");
+    if (hud) {
+      hud.addEventListener("click", function () { Router.goTo("scoreboard"); });
+    }
+  }
+
+  return {
+    totalScore: totalScore,
+    getRank: getRank,
+    hasBadge: hasBadge,
+    recordTest: recordTest,
+    recordExplored: recordExplored,
+    recordCompare: recordCompare,
+    reset: reset,
+    renderAll: renderAll,
+    announceBadges: announceBadges,
+    initScoreboardUI: initScoreboardUI
+  };
+})();
+
+/* =========================================================================
+   ECLIPTIC — AMBIENT / REVEAL MODULE
+   Generates the starfield once (drift is pure CSS now, since the app is
+   no longer one long scroll) and provides a reusable scroll-reveal utility
+   for content within any screen.
+   ========================================================================= */
+
+const ParallaxEngine = (function () {
+
+  function prefersReducedMotion() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function starShadow(count, alpha) {
+    const parts = [];
+    const w = Math.max(window.innerWidth, 800);
+    const h = Math.max(window.innerHeight, 600);
+    for (let i = 0; i < count; i++) {
+      const x = Math.floor(Math.random() * w);
+      const y = Math.floor(Math.random() * h);
+      parts.push(x + "px " + y + "px rgba(255,255,255," + alpha + ")");
+    }
+    return parts.join(",");
+  }
+
+  function buildLayer(id, count, alpha) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.style.width = "1px";
+    el.style.height = "1px";
+    el.style.boxShadow = starShadow(count, alpha);
+  }
+
+  function initStarfield() {
+    buildLayer("starsFar", 140, 0.5);
+    buildLayer("starsMid", 80, 0.7);
+    buildLayer("starsNear", 40, 0.95);
+  }
+
+  function initScrollReveal(root) {
+    const scope = root || document;
+    const targets = scope.querySelectorAll(".reveal:not(.is-visible)");
+    if (prefersReducedMotion() || !("IntersectionObserver" in window)) {
+      targets.forEach(function (el) { el.classList.add("is-visible"); });
+      return;
+    }
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
+    targets.forEach(function (el) { observer.observe(el); });
+  }
+
+  function debounce(fn, wait) {
+    let t;
+    return function () {
+      clearTimeout(t);
+      t = setTimeout(fn, wait);
+    };
+  }
+
+  function init() {
+    initStarfield();
+    initScrollReveal();
+    window.addEventListener("resize", debounce(initStarfield, 400));
+  }
+
+  return { init: init, prefersReducedMotion: prefersReducedMotion, initScrollReveal: initScrollReveal };
+})();
+
+/* =========================================================================
+   ECLIPTIC — EXPLORE MODULE
+   Left list, right detail panel. The name is deliberately oversized so
+   it's unmissable, and each planet now has 8 tabbed sections instead of
+   a single short blurb: Overview, Physical Traits, Atmosphere, Orbit &
+   Rotation, Moons & Rings, Exploration, Fun Facts, and Vs. Earth.
+   ========================================================================= */
+
+const Explore = (function () {
+  let activeId = "sun";
+
+  const TABS = [
+    { key: "overview", label: "Overview" },
+    { key: "physical", label: "Physical Traits" },
+    { key: "atmosphere", label: "Atmosphere" },
+    { key: "orbit", label: "Orbit & Rotation" },
+    { key: "moons", label: "Moons & Rings" },
+    { key: "exploration", label: "Exploration" },
+    { key: "facts", label: "Fun Facts" },
+    { key: "vsEarth", label: "Vs. Earth" }
+  ];
+
+  function renderList() {
+    const host = document.getElementById("exploreList");
+    if (!host || host.childElementCount) return; // build once, just re-highlight after
+    host.innerHTML = PLANETS.map(function (p) {
+      return (
+        '<button type="button" class="explore-list__item" data-id="' + p.id + '" style="--section-accent:' + p.accent + '">' +
+          '<span class="explore-list__dot"></span>' +
+          '<span class="explore-list__name">' + p.name + '</span>' +
+        '</button>'
+      );
+    }).join("");
+
+    host.querySelectorAll(".explore-list__item").forEach(function (btn) {
+      btn.addEventListener("click", function () { Router.goTo("explore", btn.dataset.id); });
+    });
+  }
+
+  function renderTabs(planet) {
+    const tabHost = document.getElementById("exploreTabs");
+    const contentHost = document.getElementById("exploreTabContent");
+
+    tabHost.innerHTML = TABS.map(function (t, i) {
+      return '<button type="button" class="explore-tab' + (i === 0 ? ' is-active' : '') + '" data-tab="' + t.key + '" role="tab">' + t.label + '</button>';
+    }).join("");
+
+    function showTab(key) {
+      tabHost.querySelectorAll(".explore-tab").forEach(function (b) {
+        b.classList.toggle("is-active", b.dataset.tab === key);
+      });
+      if (key === "overview") {
+        contentHost.innerHTML = planet.paragraphs.map(function (t) { return '<p class="section__copy">' + t + '</p>'; }).join("");
+      } else {
+        contentHost.innerHTML = '<p class="section__copy">' + (planet.deepDive[key] || "") + '</p>';
+      }
+    }
+
+    tabHost.querySelectorAll(".explore-tab").forEach(function (btn) {
+      btn.addEventListener("click", function () { showTab(btn.dataset.tab); });
+    });
+
+    showTab("overview");
+  }
+
+  function renderDetail(id) {
+    const planet = PLANETS.filter(function (p) { return p.id === id; })[0];
+    if (!planet) return;
+    activeId = id;
+
+    document.querySelectorAll(".explore-list__item").forEach(function (btn) {
+      btn.classList.toggle("is-active", btn.dataset.id === id);
+    });
+
+    const panel = document.getElementById("explorePanel");
+    panel.style.setProperty("--section-accent", planet.accent);
+    panel.innerHTML =
+      '<span class="section__eyebrow reveal">' + planet.index + ' / ' + planet.kicker + '</span>' +
+      '<h2 class="explore-detail__name reveal">' + planet.name + '</h2>' +
+      '<p class="section__tag reveal">' + planet.tag + '</p>' +
+      '<div class="explore-visual explore-visual--big reveal" data-mode="' + planet.visual + '" aria-hidden="true"></div>' +
+      '<p class="section__hook reveal">' + planet.hook + '</p>' +
+      '<div class="stat-grid reveal">' + planet.stats.map(function (s) {
+        return '<div class="stat-card"><span class="stat-card__label">' + s.label + '</span><span class="stat-card__value">' + s.value + '</span></div>';
+      }).join("") + '</div>' +
+      '<div class="explore-tabs reveal" id="exploreTabs" role="tablist"></div>' +
+      '<div class="explore-tab-content" id="exploreTabContent"></div>' +
+      '<button type="button" class="explore-compare-btn" id="exploreCompareBtn">Compare This Planet \u2192</button>';
+
+    renderTabs(planet);
+
+    document.getElementById("exploreCompareBtn").addEventListener("click", function () {
+      Router.goTo("compare", id);
+    });
+
+    ParallaxEngine.initScrollReveal(panel);
+    Gamification.recordExplored(id);
+
+    const detailWrap = document.getElementById("exploreDetailWrap");
+    if (detailWrap && window.innerWidth < 860) {
+      detailWrap.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+    }
+  }
+
+  function render(id) {
+    renderList();
+    renderDetail(id || activeId || "sun");
+  }
+
+  return { render: render };
+})();
+
+/* =========================================================================
+   ECLIPTIC — COMPARE MODULE
+   Select any 2+ bodies (up to all 10) and see a side-by-side table.
+   ========================================================================= */
+
+const Compare = (function () {
+  let selected = [];
+  let wired = false;
+
+  function renderPicker() {
+    const host = document.getElementById("comparePicker");
+    host.innerHTML = PLANETS.map(function (p) {
+      const isSel = selected.indexOf(p.id) !== -1;
+      return (
+        '<button type="button" class="compare-chip' + (isSel ? ' is-selected' : '') + '" data-id="' + p.id + '" style="--section-accent:' + p.accent + '">' +
+          p.name +
+        '</button>'
+      );
+    }).join("");
+
+    host.querySelectorAll(".compare-chip").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const id = btn.dataset.id;
+        const idx = selected.indexOf(id);
+        if (idx === -1) selected.push(id); else selected.splice(idx, 1);
+        renderPicker();
+        renderTable();
+      });
+    });
+  }
+
+  function renderTable() {
+    const host = document.getElementById("compareTableWrap");
+    const hint = document.getElementById("compareHint");
+    if (selected.length < 2) {
+      host.innerHTML = "";
+      hint.hidden = false;
+      return;
+    }
+    hint.hidden = true;
+
+    const chosen = PLANETS.filter(function (p) { return selected.indexOf(p.id) !== -1; });
+    const metrics = [
+      { key: "diameter", label: "Diameter" },
+      { key: "mass", label: "Mass" },
+      { key: "gravity", label: "Surface Gravity" },
+      { key: "distance", label: "Distance from Sun" },
+      { key: "orbitalPeriod", label: "Orbital Period" },
+      { key: "dayLength", label: "Day Length" },
+      { key: "tilt", label: "Axial Tilt" },
+      { key: "moons", label: "Moons" },
+      { key: "temp", label: "Temperature" }
+    ];
+
+    let html = '<table class="compare-table"><thead><tr><th></th>';
+    chosen.forEach(function (p) {
+      html += '<th style="--section-accent:' + p.accent + '"><span class="compare-table__dot"></span>' + p.name + '</th>';
+    });
+    html += '</tr></thead><tbody>';
+    html += '<tr><th>Type</th>';
+    chosen.forEach(function (p) { html += '<td>' + p.kicker + '</td>'; });
+    html += '</tr>';
+    metrics.forEach(function (m) {
+      html += '<tr><th>' + m.label + '</th>';
+      chosen.forEach(function (p) { html += '<td>' + (p.compare[m.key] || "\u2014") + '</td>'; });
+      html += '</tr>';
+    });
+    html += '</tbody></table>';
+    host.innerHTML = html;
+
+    Gamification.recordCompare();
+  }
+
+  function wireControls() {
+    if (wired) return;
+    wired = true;
+    document.getElementById("compareAllBtn").addEventListener("click", function () {
+      selected = PLANETS.map(function (p) { return p.id; });
+      renderPicker();
+      renderTable();
+    });
+    document.getElementById("compareClearBtn").addEventListener("click", function () {
+      selected = [];
+      renderPicker();
+      renderTable();
+    });
+  }
+
+  function onEnter(preselectId) {
+    if (preselectId && selected.indexOf(preselectId) === -1) selected = [preselectId];
+    wireControls();
+    renderPicker();
+    renderTable();
+  }
+
+  return { onEnter: onEnter };
+})();
+
+/* =========================================================================
+   ECLIPTIC — TEST MODULE
+   User picks a length (10 / 25 / 50); a random, non-repeating slice of the
+   question bank is presented; scoring feeds Gamification's points model.
+   ========================================================================= */
+
+const TestEngine = (function () {
+  let activeQuestions = [];
+  let answers = [];
+  let currentLength = null;
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function showSetup() {
+    document.getElementById("testSetup").hidden = false;
+    document.getElementById("testRun").hidden = true;
+    document.getElementById("testResults").hidden = true;
+    document.getElementById("testRun").innerHTML = "";
+    document.getElementById("testResults").innerHTML = "";
+  }
+
+  function start(length) {
+    currentLength = length;
+    const pool = shuffle(QUESTION_BANK);
+    activeQuestions = pool.slice(0, Math.min(length, pool.length));
+    answers = new Array(activeQuestions.length).fill(null);
+
+    document.getElementById("testSetup").hidden = true;
+    document.getElementById("testResults").hidden = true;
+    const run = document.getElementById("testRun");
+    run.hidden = false;
+
+    run.innerHTML = activeQuestions.map(function (q, qi) {
+      return (
+        '<fieldset class="cert-question" data-qi="' + qi + '">' +
+          '<legend class="cert-question__prompt">' + (qi + 1) + '. ' + q.question + '</legend>' +
+          '<div class="quiz__options" role="radiogroup">' +
+            q.options.map(function (opt, oi) {
+              return '<button type="button" class="quiz__option" data-qi="' + qi + '" data-index="' + oi + '">' + opt + '</button>';
+            }).join("") +
+          '</div>' +
+        '</fieldset>'
+      );
+    }).join("") +
+      '<div class="cert-actions">' +
+        '<p class="cert-hint" id="testHint">Answer every question, then submit.</p>' +
+        '<button type="button" class="cert-submit" id="testSubmitBtn">Submit Test</button>' +
+      '</div>';
+
+    run.querySelectorAll(".quiz__option").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const qi = parseInt(btn.dataset.qi, 10);
+        const oi = parseInt(btn.dataset.index, 10);
+        answers[qi] = oi;
+        run.querySelectorAll('.cert-question[data-qi="' + qi + '"] .quiz__option').forEach(function (o) { o.classList.remove("is-selected"); });
+        btn.classList.add("is-selected");
+      });
+    });
+
+    document.getElementById("testSubmitBtn").addEventListener("click", submit);
+    run.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+  }
+
+  function submit() {
+    const unanswered = answers.indexOf(null);
+    const hint = document.getElementById("testHint");
+    if (unanswered !== -1) {
+      hint.textContent = "Question " + (unanswered + 1) + " still needs an answer.";
+      hint.classList.add("is-warning");
+      const target = document.querySelector('.cert-question[data-qi="' + unanswered + '"]');
+      if (target) target.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
+    let correctCount = 0;
+    activeQuestions.forEach(function (q, qi) {
+      const isCorrect = answers[qi] === q.correctIndex;
+      if (isCorrect) correctCount++;
+      const optionEls = document.querySelectorAll('.cert-question[data-qi="' + qi + '"] .quiz__option');
+      optionEls.forEach(function (o, oi) {
+        o.disabled = true;
+        if (oi === q.correctIndex) o.classList.add("is-correct");
+        else if (oi === answers[qi]) o.classList.add("is-incorrect");
+      });
+      const explain = document.createElement("p");
+      explain.className = "cert-question__explain";
+      explain.textContent = q.explanation;
+      document.querySelector('.cert-question[data-qi="' + qi + '"]').appendChild(explain);
+    });
+
+    document.getElementById("testSubmitBtn").style.display = "none";
+    hint.style.display = "none";
+
+    const points = correctCount * QUICK_QUIZ_POINTS;
+    const result = Gamification.recordTest(activeQuestions.length, correctCount, points);
+    Gamification.renderAll();
+    Gamification.announceBadges(result.newBadges);
+    const pct = Math.round((correctCount / activeQuestions.length) * 100);
+    const rankInfo = Gamification.getRank(Gamification.totalScore());
+
+    const resultsEl = document.getElementById("testResults");
+    resultsEl.hidden = false;
+    resultsEl.innerHTML =
+      '<div class="cert-results__card">' +
+        '<p class="cert-results__score">' + correctCount + ' / ' + activeQuestions.length + ' correct (' + pct + '%)</p>' +
+        '<p class="cert-results__best">+' + points + ' mission points earned</p>' +
+        '<p class="cert-results__rank">Current rank: <strong>' + rankInfo.current.name + '</strong></p>' +
+        '<button type="button" class="cert-retake" id="testRetakeBtn">Take Another Test</button>' +
+      '</div>';
+    resultsEl.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+
+    document.getElementById("testRetakeBtn").addEventListener("click", showSetup);
+  }
+
+  function onEnter() { showSetup(); }
+
+  function init() {
+    document.querySelectorAll(".test-length-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () { start(parseInt(btn.dataset.length, 10)); });
+    });
+  }
+
+  return { init: init, onEnter: onEnter };
+})();
+
+/* =========================================================================
+   ECLIPTIC — ORRERY MODULE
+   Three.js hero scene. Textures are generated procedurally on a canvas
+   (no external image URLs — avoids CORS/tainted-canvas issues and works
+   even if the CDN texture host of the week goes away). Loads Three.js
+   itself from a CDN fallback chain; degrades to a CSS scene if that or
+   WebGL is unavailable. Clicking a body now opens it in Explore.
+   ========================================================================= */
+
+const Orrery = (function () {
+  const THREE_SOURCES = [
+    "https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js",
+    "https://unpkg.com/[email protected]/build/three.min.js",
+    "https://cdn.jsdelivr.net/npm/[email protected]/build/three.min.js"
+  ];
+
+  function loadScript(src) {
+    return new Promise(function (resolve, reject) {
+      const s = document.createElement("script");
+      s.src = src;
+      s.async = true;
+      s.onload = function () { resolve(); };
+      s.onerror = function () { reject(new Error("Failed: " + src)); };
+      document.head.appendChild(s);
+    });
+  }
+
+  function loadThree() {
+    if (window.THREE) return Promise.resolve(true);
+    let chain = Promise.resolve(false);
+    THREE_SOURCES.forEach(function (src) {
+      chain = chain.then(function (done) {
+        if (done || window.THREE) return true;
+        return loadScript(src).then(function () { return !!window.THREE; }).catch(function () { return false; });
+      });
+    });
+    return chain;
+  }
+
+  function showFallback() {
+    const fallback = document.getElementById("orreryFallback");
+    const canvasHost = document.getElementById("orreryCanvas");
+    if (fallback) fallback.hidden = false;
+    if (canvasHost) canvasHost.hidden = true;
+  }
+
+  /* ---------------------------- textures ---------------------------- */
+
+  function shade(hex, amt) {
+    const num = parseInt(hex.replace("#", ""), 16);
+    let r = (num >> 16) + Math.round(255 * amt);
+    let g = ((num >> 8) & 0xff) + Math.round(255 * amt);
+    let b = (num & 0xff) + Math.round(255 * amt);
+    r = Math.max(0, Math.min(255, r));
+    g = Math.max(0, Math.min(255, g));
+    b = Math.max(0, Math.min(255, b));
+    return "rgb(" + r + "," + g + "," + b + ")";
+  }
+
+  function makeTexture(baseColor, mode) {
+    const w = 512, h = 256;
+    const canvas = document.createElement("canvas");
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext("2d");
+
+    ctx.fillStyle = baseColor;
+    ctx.fillRect(0, 0, w, h);
+
+    if (mode === "banded") {
+      const bands = 14 + Math.floor(Math.random() * 6);
+      for (let i = 0; i < bands; i++) {
+        const y = (i / bands) * h;
+        ctx.fillStyle = shade(baseColor, (Math.random() - 0.5) * 0.25);
+        ctx.globalAlpha = 0.3 + Math.random() * 0.3;
+        ctx.fillRect(0, y, w, h / bands + 1);
+      }
+      ctx.globalAlpha = 1;
+    } else if (mode === "rocky") {
+      for (let i = 0; i < 900; i++) {
+        const x = Math.random() * w, y = Math.random() * h, r = 0.5 + Math.random() * 3;
+        ctx.fillStyle = shade(baseColor, (Math.random() - 0.5) * 0.4);
+        ctx.globalAlpha = 0.25 + Math.random() * 0.35;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    } else if (mode === "earth") {
+      ctx.fillStyle = "#2f6fa8";
+      ctx.fillRect(0, 0, w, h);
+      for (let i = 0; i < 36; i++) {
+        const x = Math.random() * w, y = Math.random() * h;
+        const rw = 18 + Math.random() * 55, rh = 10 + Math.random() * 26;
+        ctx.fillStyle = Math.random() > 0.45 ? "#4a7c3f" : "#8a7355";
+        ctx.globalAlpha = 0.75;
+        ctx.beginPath();
+        ctx.ellipse(x, y, rw, rh, Math.random() * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 0.3;
+      for (let i = 0; i < 16; i++) {
+        const x = Math.random() * w, y = Math.random() * h;
+        ctx.fillStyle = "#ffffff";
+        ctx.beginPath();
+        ctx.ellipse(x, y, 26 + Math.random() * 40, 7 + Math.random() * 9, Math.random() * Math.PI, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    } else if (mode === "sun") {
+      for (let i = 0; i < 1400; i++) {
+        const x = Math.random() * w, y = Math.random() * h;
+        ctx.fillStyle = Math.random() > 0.5 ? "#fff2c2" : "#ff8a3d";
+        ctx.globalAlpha = 0.15 + Math.random() * 0.25;
+        ctx.beginPath();
+        ctx.arc(x, y, 1 + Math.random() * 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    return canvas;
+  }
+
+  /* ---------------------------- interaction ---------------------------- */
+
+  function openPlanet(id) { Router.goTo("explore", id); }
+
+  function debounce(fn, wait) {
+    let t;
+    return function () {
+      const args = arguments;
+      clearTimeout(t);
+      t = setTimeout(function () { fn.apply(null, args); }, wait);
+    };
+  }
+
+  function build() {
+    const host = document.getElementById("orreryCanvas");
+    if (!host) return;
+
+    let width = host.clientWidth || 800;
+    let height = host.clientHeight || 560;
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 500);
+
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    } catch (e) {
+      showFallback();
+      return;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(width, height);
+    host.appendChild(renderer.domElement);
+
+    scene.add(new THREE.AmbientLight(0x40424c, 1.1));
+    const sunLight = new THREE.PointLight(0xfff2d6, 2.4, 0, 0);
+    scene.add(sunLight);
+
+    const sunTexture = new THREE.CanvasTexture(makeTexture("#ffb454", "sun"));
+    const sun = new THREE.Mesh(
+      new THREE.SphereGeometry(1.7, 32, 32),
+      new THREE.MeshBasicMaterial({ map: sunTexture })
+    );
+    sun.userData.sectionId = "sun";
+    scene.add(sun);
+
+    const glow = new THREE.Mesh(
+      new THREE.SphereGeometry(2.15, 32, 32),
+      new THREE.MeshBasicMaterial({ color: 0xffb454, transparent: true, opacity: 0.18 })
+    );
+    scene.add(glow);
+
+    const clickable = [sun];
+    const pivots = [];
+    const spinners = [];
+
+    ORRERY_BODIES.forEach(function (body) {
+      const pivot = new THREE.Object3D();
+      pivot.rotation.y = Math.random() * Math.PI * 2;
+      scene.add(pivot);
+
+      const texture = new THREE.CanvasTexture(makeTexture(body.color, body.textureMode));
+      const mesh = new THREE.Mesh(
+        new THREE.SphereGeometry(body.size, 24, 24),
+        new THREE.MeshStandardMaterial({ map: texture, roughness: 0.85, metalness: 0.05 })
+      );
+      mesh.position.x = body.orbitRadius;
+      mesh.rotation.z = (body.tilt || 0) * (Math.PI / 180);
+      mesh.userData.sectionId = body.id;
+      pivot.add(mesh);
+      clickable.push(mesh);
+      spinners.push({ mesh: mesh, spin: body.spin || 1 });
+
+      if (body.hasRing) {
+        const ring = new THREE.Mesh(
+          new THREE.RingGeometry(body.size * 1.4, body.size * 2.2, 48),
+          new THREE.MeshBasicMaterial({ color: 0xe3cd8f, side: THREE.DoubleSide, transparent: true, opacity: 0.65 })
+        );
+        ring.rotation.x = Math.PI / 2.3;
+        ring.position.x = body.orbitRadius;
+        pivot.add(ring);
+      }
+
+      const orbitPoints = [];
+      for (let i = 0; i <= 96; i++) {
+        const a = (i / 96) * Math.PI * 2;
+        orbitPoints.push(new THREE.Vector3(Math.cos(a) * body.orbitRadius, 0, Math.sin(a) * body.orbitRadius));
+      }
+      scene.add(new THREE.LineLoop(
+        new THREE.BufferGeometry().setFromPoints(orbitPoints),
+        new THREE.LineBasicMaterial({ color: 0x6a6f82, transparent: true, opacity: 0.35 })
+      ));
+
+      pivots.push({ pivot: pivot, speed: body.speed });
+    });
+
+    /* ---------- camera controls: drag to rotate, wheel to zoom ---------- */
+    let radius = 26, theta = Math.PI / 3.4, phi = Math.PI / 2.6;
+    const minRadius = 10, maxRadius = 42;
+    let dragging = false, lastX = 0, lastY = 0, moved = 0;
+
+    function updateCamera() {
+      camera.position.x = radius * Math.sin(phi) * Math.sin(theta);
+      camera.position.y = radius * Math.cos(phi);
+      camera.position.z = radius * Math.sin(phi) * Math.cos(theta);
+      camera.lookAt(0, 0, 0);
+    }
+    updateCamera();
+
+    const dom = renderer.domElement;
+    dom.style.touchAction = "none";
+    dom.style.cursor = "grab";
+
+    const raycaster = new THREE.Raycaster();
+    const pointer = new THREE.Vector2();
+    const label = document.getElementById("orreryLabel");
+
+    dom.addEventListener("pointerdown", function (e) {
+      dragging = true;
+      moved = 0;
+      lastX = e.clientX;
+      lastY = e.clientY;
+      dom.style.cursor = "grabbing";
+
+      // Touch devices have no hover state, so the hover listener below never
+      // fires on touch (dragging is already true by the time it would check).
+      // Show the name right at touch-down instead.
+      const rect = dom.getBoundingClientRect();
+      pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(clickable);
+      if (hits.length && label) {
+        const planet = PLANETS.filter(function (p) { return p.id === hits[0].object.userData.sectionId; })[0];
+        if (planet) {
+          label.textContent = planet.name;
+          label.style.left = (e.clientX - rect.left + 16) + "px";
+          label.style.top = (e.clientY - rect.top + 12) + "px";
+          label.hidden = false;
+        }
+      } else if (label) {
+        label.hidden = true;
+      }
+    });
+
+    window.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      moved += Math.abs(dx) + Math.abs(dy);
+      if (moved > 4 && label && !label.hidden) label.hidden = true;
+      theta -= dx * 0.006;
+      phi = Math.max(0.35, Math.min(Math.PI - 0.35, phi - dy * 0.006));
+      lastX = e.clientX;
+      lastY = e.clientY;
+      updateCamera();
+    });
+
+    dom.addEventListener("pointermove", function (e) {
+      if (dragging) return;
+      const rect = dom.getBoundingClientRect();
+      pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(pointer, camera);
+      const hits = raycaster.intersectObjects(clickable);
+      if (hits.length) {
+        dom.style.cursor = "pointer";
+        const planet = PLANETS.filter(function (p) { return p.id === hits[0].object.userData.sectionId; })[0];
+        if (planet && label) {
+          label.textContent = planet.name;
+          label.style.left = (e.clientX - rect.left + 16) + "px";
+          label.style.top = (e.clientY - rect.top + 12) + "px";
+          label.hidden = false;
+        }
+      } else {
+        dom.style.cursor = "grab";
+        if (label) label.hidden = true;
+      }
+    });
+
+    dom.addEventListener("pointerleave", function () { if (label) label.hidden = true; });
+
+    window.addEventListener("pointerup", function (e) {
+      if (!dragging) return;
+      dragging = false;
+      dom.style.cursor = "grab";
+      if (moved < 6) {
+        const rect = dom.getBoundingClientRect();
+        pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+        pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+        raycaster.setFromCamera(pointer, camera);
+        const hits = raycaster.intersectObjects(clickable);
+        if (hits.length) openPlanet(hits[0].object.userData.sectionId);
+      }
+    });
+
+    dom.addEventListener("wheel", function (e) {
+      e.preventDefault();
+      radius = Math.max(minRadius, Math.min(maxRadius, radius + e.deltaY * 0.02));
+      updateCamera();
+    }, { passive: false });
+
+    /* ---------- resize ---------- */
+    window.addEventListener("resize", debounce(function () {
+      width = host.clientWidth || width;
+      height = host.clientHeight || height;
+      camera.aspect = width / height;
+      camera.updateProjectionMatrix();
+      renderer.setSize(width, height);
+    }, 200));
+
+    /* ---------- animation loop ---------- */
+    const clock = new THREE.Clock();
+    const reduceMotion = ParallaxEngine.prefersReducedMotion();
+    const landingEl = document.getElementById("screen-landing");
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const dt = clock.getDelta();
+      if (!reduceMotion) {
+        pivots.forEach(function (p) { p.pivot.rotation.y += dt * 0.18 * p.speed; });
+        spinners.forEach(function (s) { s.mesh.rotation.y += dt * 0.6 * s.spin; });
+        sun.rotation.y += dt * 0.05;
+      }
+      if (!landingEl || !landingEl.hidden) renderer.render(scene, camera);
+    }
+    animate();
+  }
+
+  function init() {
+    loadThree().then(function (ok) {
+      if (!ok || !window.THREE) { showFallback(); return; }
+      try { build(); } catch (e) { showFallback(); }
+    });
+  }
+
+  return { init: init };
+})();
+
+/* =========================================================================
+   ECLIPTIC — ROUTER MODULE
+   Lightweight hash-based routing between screens. #/explore/mars deep-links
+   a specific planet; back/forward buttons work since it's real URL state.
+   ========================================================================= */
+
+const Router = (function () {
+  const SCREENS = ["landing", "explore", "compare", "test", "scoreboard"];
+
+  function parseHash() {
+    const raw = (window.location.hash || "").replace(/^#\/?/, "");
+    const parts = raw.split("/").filter(Boolean);
+    const screen = SCREENS.indexOf(parts[0]) !== -1 ? parts[0] : "landing";
+    return { screen: screen, param: parts[1] || null };
+  }
+
+  function show(screen) {
+    SCREENS.forEach(function (s) {
+      const el = document.getElementById("screen-" + s);
+      if (el) el.hidden = (s !== screen);
+    });
+    document.querySelectorAll(".topbar__link").forEach(function (a) {
+      a.classList.toggle("is-active", a.getAttribute("data-screen") === screen);
+    });
+  }
+
+  function closeMobileNav() {
+    const links = document.getElementById("topbarLinks");
+    const btn = document.getElementById("topbarMenuBtn");
+    if (links) links.classList.remove("is-open");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  }
+
+  function onRoute() {
+    const r = parseHash();
+    show(r.screen);
+    window.scrollTo(0, 0);
+    closeMobileNav();
+
+    if (r.screen === "explore") Explore.render(r.param);
+    else if (r.screen === "compare") Compare.onEnter(r.param);
+    else if (r.screen === "test") TestEngine.onEnter();
+    else if (r.screen === "scoreboard") Gamification.renderAll();
+    else if (r.screen === "landing") ParallaxEngine.initScrollReveal(document.getElementById("screen-landing"));
+  }
+
+  function goTo(screen, param) {
+    window.location.hash = "#/" + screen + (param ? "/" + param : "");
+  }
+
+  function init() {
+    window.addEventListener("hashchange", onRoute);
+    onRoute();
+  }
+
+  return { init: init, goTo: goTo };
+})();
+
+/* =========================================================================
+   ECLIPTIC — BOOTSTRAP MODULE
+   Renders landing-page content, wires the topbar/mobile nav and the live
+   mission clock, then boots every other module once the DOM is ready.
+   ========================================================================= */
+
+(function () {
+
+  function renderLandingBodies() {
+    const host = document.getElementById("landingBodiesGrid");
+    if (!host) return;
+    host.innerHTML = PLANETS.map(function (p) {
+      return (
+        '<button type="button" class="landing-body-card reveal" data-id="' + p.id + '" style="--section-accent:' + p.accent + '">' +
+          '<span class="landing-body-card__dot"></span>' +
+          '<span class="landing-body-card__name">' + p.name + '</span>' +
+          '<span class="landing-body-card__hook">' + p.hook + '</span>' +
+        '</button>'
+      );
+    }).join("");
+    host.querySelectorAll(".landing-body-card").forEach(function (btn) {
+      btn.addEventListener("click", function () { Router.goTo("explore", btn.dataset.id); });
+    });
+  }
+
+  function initMissionClock() {
+    const el = document.getElementById("missionClock");
+    if (!el) return;
+    const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
+    function pad(n) { return n < 10 ? "0" + n : "" + n; }
+    function tick() {
+      const d = new Date();
+      const time = pad(d.getUTCHours()) + ":" + pad(d.getUTCMinutes()) + ":" + pad(d.getUTCSeconds());
+      const date = months[d.getUTCMonth()] + " " + pad(d.getUTCDate()) + " " + d.getUTCFullYear();
+      el.textContent = "MISSION CLOCK \u2014 " + time + " UTC \u00b7 " + date;
+    }
+    tick();
+    setInterval(tick, 1000);
+  }
+
+  function initSkipLink() {
+    const skip = document.querySelector(".skip-link");
+    if (!skip) return;
+    skip.addEventListener("click", function (e) {
+      const target = document.getElementById("heroTitle");
+      if (target) {
+        e.preventDefault();
+        target.setAttribute("tabindex", "-1");
+        target.focus({ preventScroll: true });
+        target.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth" });
+      }
+    });
+  }
+
+  function initTopNav() {
+    document.querySelectorAll("[data-goto]").forEach(function (btn) {
+      btn.addEventListener("click", function () { Router.goTo(btn.getAttribute("data-goto")); });
+    });
+
+    const menuBtn = document.getElementById("topbarMenuBtn");
+    const links = document.getElementById("topbarLinks");
+    if (menuBtn && links) {
+      menuBtn.addEventListener("click", function () {
+        const open = links.classList.toggle("is-open");
+        menuBtn.setAttribute("aria-expanded", open ? "true" : "false");
+      });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    renderLandingBodies();
+    initMissionClock();
+    initSkipLink();
+    initTopNav();
+    Cookies.init();
+    Gamification.initScoreboardUI();
+    TestEngine.init();
+    ParallaxEngine.init();
+    Orrery.init();
+    Router.init();
+  });
+})();
+</script>
+</body>
+</html>
