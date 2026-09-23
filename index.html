@@ -6,10 +6,9 @@
 <title>Ecliptic — A Field Guide to the Solar System</title>
 <meta name="description" content="An interactive field guide to the Sun, the eight planets, and the Kuiper Belt — a 3D orrery, an Explore mode, side-by-side comparisons, and knowledge tests of 10, 25, or 50 questions.">
 <meta name="theme-color" content="#07070f">
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* =========================================================================
    ECLIPTIC — STYLE SYSTEM
@@ -383,7 +382,8 @@ a { color: inherit; }
     <span class="hud__rank" id="hudRank">Cadet</span>
     <span class="hud__score" id="hudScore">0 pts</span>
   </button>
-  <button type="button" class="topbar__menu-btn" id="topbarMenuBtn" aria-label="Menu" aria-expanded="false">\u2630</button>
+  <button type="button" class="btn btn--ghost" id="authNavBtn">Sign In</button>
+  <button type="button" class="topbar__menu-btn" id="topbarMenuBtn" aria-label="Menu" aria-expanded="false">☰</button>
 </nav>
 
 <section id="screen-landing" class="screen">
@@ -408,7 +408,7 @@ a { color: inherit; }
         <div class="orrery-fallback__ring orrery-fallback__ring--3"><span class="orrery-fallback__planet"></span></div>
         <div class="orrery-fallback__ring orrery-fallback__ring--4"><span class="orrery-fallback__planet"></span></div>
       </div>
-      <p class="orrery__hint">Drag to rotate \u00b7 Scroll to zoom \u00b7 Click a planet to explore</p>
+      <p class="orrery__hint">Drag to rotate · Scroll to zoom · Click a planet to explore</p>
     </div>
   </header>
 
@@ -433,7 +433,7 @@ a { color: inherit; }
     <div class="section__inner">
       <span class="section__eyebrow reveal">Stay in the Loop</span>
       <h2 class="section__title reveal">Want updates? (Optional)</h2>
-      <p class="section__copy reveal">Leave an email or phone if you'd like \u2014 totally optional, saved only on this device, and you can skip it entirely.</p>
+      <p class="section__copy reveal">Leave an email or phone if you'd like — totally optional, saved only on this device, and you can skip it entirely.</p>
       <form class="contact-form reveal" id="contactForm">
         <input type="email" id="contactEmail" placeholder="Email (optional)" autocomplete="email">
         <input type="tel" id="contactPhone" placeholder="Phone (optional)" autocomplete="tel">
@@ -450,7 +450,7 @@ a { color: inherit; }
     <div class="section__inner footer__inner">
       <p class="footer__brand">ECLIPTIC</p>
       <p class="footer__note">A field guide to the Sun, eight planets, and the Kuiper Belt. Figures are approximate and rounded for readability.</p>
-      <p class="footer__version">Build 5 \u2014 cookie-banner fix, 8-tab planet deep dives, 10-row compare, bigger nav</p>
+      <p class="footer__version">Build 5 — cookie-banner fix, 8-tab planet deep dives, 10-row compare, bigger nav</p>
     </div>
   </footer>
 </section>
@@ -508,7 +508,7 @@ a { color: inherit; }
     <div class="scoreboard-summary">
       <div class="scoreboard-summary__score">
         <span class="scoreboard-summary__number" id="scoreTotal">0</span>
-        <span class="scoreboard-summary__label">Mission Points \u00b7 <span id="scoreTestsTaken">0</span> Tests Taken</span>
+        <span class="scoreboard-summary__label">Mission Points · <span id="scoreTestsTaken">0</span> Tests Taken</span>
       </div>
       <div class="scoreboard-summary__rank">
         <span class="scoreboard-summary__rank-name" id="currentRankName">Cadet</span>
@@ -529,19 +529,6 @@ a { color: inherit; }
   </div>
 </section>
 <script>
-/* =========================================================================
-   CLOUD CONFIG — Supabase
-   ========================================================================= */
-
-const SUPABASE_URL = "https://uikuqyiyuaemdnssucsb.supabase.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpa3VxeWl5dWFlbWRuc3N1Y3NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODA1NzgsImV4cCI6MjEwNTY1NjU3OH0.ZedJ8AuzLuqZeAK3vFGhSYGxFeQBwQ1Qldj71tVwjC4";
-
-const sb = (window.supabase && window.supabase.createClient)
-  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-  : null;
-
-if (!sb) console.warn("[cloud] Supabase SDK not loaded — cloud sync disabled.");
-
 /* =========================================================================
    ECLIPTIC — DATA MODULE
    Astronomical content, the question bank, badge/rank definitions, and
@@ -1115,6 +1102,7 @@ const Gamification = (function () {
 
   function save() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+    document.dispatchEvent(new CustomEvent("progress:changed"));
   }
 
   function prefersReducedMotion() {
@@ -1185,6 +1173,16 @@ const Gamification = (function () {
   function reset() {
     state = defaultState();
     save();
+  }
+
+  function exportState() {
+    return JSON.parse(JSON.stringify(state));
+  }
+
+  function importState(s) {
+    state = Object.assign(defaultState(), s);
+    save();
+    renderAll();
   }
 
   /* ---------------------------- UI rendering ---------------------------- */
@@ -1323,300 +1321,11 @@ const Gamification = (function () {
     recordExplored: recordExplored,
     recordCompare: recordCompare,
     reset: reset,
+    exportState: exportState,
+    importState: importState,
     renderAll: renderAll,
     announceBadges: announceBadges,
-    initScoreboardUI: initScoreboardUI,
-    exportState: function () { return JSON.parse(JSON.stringify(state)); },
-    importState: function (s) { state = Object.assign(defaultState(), s || {}); save(); renderAll(); }
-  };
-})();
-/* =========================================================================
-   ECLIPTIC — CLOUD MODULE
-   Self-contained: injects its own CSS, dialog, and topbar button, then
-   handles auth + progress sync via Supabase.
-   ========================================================================= */
-
-const Cloud = (function () {
-  let currentUser = null;
-  let pushTimer = null;
-
-  function log() {
-    if (window.console && console.log) {
-      console.log.apply(console, ["[cloud]"].concat([].slice.call(arguments)));
-    }
-  }
-
-  function injectStyles() {
-    if (document.getElementById("cloudStyles")) return;
-    const style = document.createElement("style");
-    style.id = "cloudStyles";
-    style.textContent = [
-      '.topbar__auth { font-family: var(--font-display); font-size: 0.82rem; font-weight: 600; color: var(--ink-dim); background: var(--bg-panel); border: 1px solid var(--border-glass); padding: 0.5em 1em; border-radius: 999px; cursor: pointer; max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; transition: color 0.2s, border-color 0.2s; }',
-      '.topbar__auth:hover { color: var(--ink); border-color: var(--accent-primary); }',
-      '.topbar__auth.is-signed-in { color: var(--accent-good); border-color: rgba(127, 212, 160, 0.4); }',
-      '#authDialog { background: #0c0c16; color: var(--ink); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.8rem; max-width: 380px; width: calc(100vw - 2rem); }',
-      '#authDialog::backdrop { background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); }',
-      '#authDialog h3 { font-family: var(--font-display); font-size: 1.3rem; margin: 0 0 0.3rem; }',
-      '#authDialog .auth-sub { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); margin: 0 0 1.2rem; line-height: 1.5; }',
-      '#authDialog input { width: 100%; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink); padding: 0.7em 0.9em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.88rem; margin-bottom: 0.6rem; box-sizing: border-box; }',
-      '#authDialog input::placeholder { color: var(--ink-faint); }',
-      '#authDialog .auth-actions { display: flex; gap: 0.5rem; margin-top: 0.4rem; }',
-      '#authDialog .auth-actions .btn { flex: 1; font-size: 0.82rem; padding: 0.7em 1em; }',
-      '#authDialog .auth-msg { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent-bad); margin: 0.9rem 0 0; min-height: 1.2em; }',
-      '#authDialog .auth-msg.is-ok { color: var(--accent-good); }',
-      '#authDialog .auth-note { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); margin-top: 1rem; line-height: 1.5; }',
-      '@media (max-width: 760px) { .topbar__auth { display: none; } }'
-    ].join("\n");
-    document.head.appendChild(style);
-  }
-
-  function injectDialog() {
-    if (document.getElementById("authDialog")) return;
-    const dlg = document.createElement("dialog");
-    dlg.id = "authDialog";
-    dlg.innerHTML =
-      '<h3 id="authTitle">Sign In</h3>' +
-      '<p class="auth-sub" id="authSub">Sync your points, badges, and test history across devices.</p>' +
-      '<form id="authForm" novalidate>' +
-        '<input type="email" id="authEmail" placeholder="Email" autocomplete="email">' +
-        '<input type="password" id="authPass" placeholder="Password (min 6 characters)" autocomplete="current-password">' +
-        '<div class="auth-actions">' +
-          '<button type="submit" class="btn btn--primary" id="authSubmitBtn">Sign In</button>' +
-          '<button type="button" class="btn btn--ghost" id="authToggleBtn">Create Account</button>' +
-        '</div>' +
-      '</form>' +
-      '<p class="auth-msg" id="authMsg"></p>' +
-      '<p class="auth-note">Progress is stored on this device by default. Signing in copies it to your account so you can pick it up anywhere.</p>';
-    document.body.appendChild(dlg);
-  }
-
-  function injectButton() {
-    const topbar = document.getElementById("topbar");
-    if (!topbar || document.getElementById("authBtn")) return;
-    const btn = document.createElement("button");
-    btn.type = "button";
-    btn.className = "topbar__auth";
-    btn.id = "authBtn";
-    btn.textContent = "Sign In";
-    btn.setAttribute("aria-label", "Sign in to sync progress");
-    topbar.appendChild(btn);
-  }
-
-  async function signUp(email, password) {
-    if (!sb) throw new Error("Cloud unavailable — Supabase SDK did not load.");
-    const { data, error } = await sb.auth.signUp({ email: email, password: password });
-    if (error) throw error;
-    return data;
-  }
-
-  async function signIn(email, password) {
-    if (!sb) throw new Error("Cloud unavailable — Supabase SDK did not load.");
-    const { data, error } = await sb.auth.signInWithPassword({ email: email, password: password });
-    if (error) throw error;
-    return data;
-  }
-
-  async function signOut() {
-    if (!sb) return;
-    await sb.auth.signOut();
-  }
-
-  function dedupeTests(arr) {
-    const seen = new Set();
-    return (arr || [])
-      .filter(function (t) { return t && t.completedAt; })
-      .sort(function (a, b) { return new Date(a.completedAt) - new Date(b.completedAt); })
-      .filter(function (t) {
-        if (seen.has(t.completedAt)) return false;
-        seen.add(t.completedAt);
-        return true;
-      });
-  }
-  function union(a, b) { return Array.from(new Set([].concat(a || [], b || []))); }
-
-  async function syncAfterLogin() {
-    if (!currentUser || !sb) return;
-    const local = Gamification.exportState();
-
-    const { data, error } = await sb
-      .from("profiles")
-      .select("*")
-      .eq("id", currentUser.id)
-      .maybeSingle();
-
-    if (error) { log("read failed", error); return; }
-
-    let merged = local;
-    if (data) {
-      merged = {
-        points: Math.max(data.points || 0, local.points || 0),
-        testsTaken: dedupeTests([].concat(data.tests_taken || [], local.testsTaken || [])),
-        exploredPlanets: union(data.explored_planets, local.exploredPlanets),
-        comparedAtLeastOnce: !!(data.compared_at_least_once || local.comparedAtLeastOnce),
-        badges: union(data.badges, local.badges)
-      };
-    }
-
-    Gamification.importState(merged);
-    await pushToCloud();
-    document.dispatchEvent(new CustomEvent("cloud:synced"));
-  }
-
-  async function pushToCloud() {
-    if (!currentUser || !sb) return;
-    const s = Gamification.exportState();
-    const { error } = await sb.from("profiles").upsert({
-      id: currentUser.id,
-      points: s.points,
-      tests_taken: s.testsTaken,
-      explored_planets: s.exploredPlanets,
-      compared_at_least_once: s.comparedAtLeastOnce,
-      badges: s.badges,
-      updated_at: new Date().toISOString()
-    });
-    if (error) log("push failed", error);
-  }
-
-  function schedulePush() {
-    if (!currentUser) return;
-    clearTimeout(pushTimer);
-    pushTimer = setTimeout(pushToCloud, 1200);
-  }
-
-  function hookGamification() {
-    ["recordTest", "recordExplored", "recordCompare"].forEach(function (name) {
-      const orig = Gamification[name];
-      if (typeof orig !== "function") return;
-      Gamification[name] = function () {
-        const result = orig.apply(this, arguments);
-        schedulePush();
-        return result;
-      };
-    });
-  }
-
-  let authMode = "signin";
-
-  function setAuthMode(mode) {
-    authMode = mode;
-    const title = document.getElementById("authTitle");
-    const sub = document.getElementById("authSub");
-    const submit = document.getElementById("authSubmitBtn");
-    const toggle = document.getElementById("authToggleBtn");
-    const msg = document.getElementById("authMsg");
-    const pass = document.getElementById("authPass");
-    if (msg) { msg.textContent = ""; msg.classList.remove("is-ok"); }
-    if (mode === "signin") {
-      if (title) title.textContent = "Sign In";
-      if (sub) sub.textContent = "Sync your points, badges, and test history across devices.";
-      if (submit) submit.textContent = "Sign In";
-      if (toggle) toggle.textContent = "Create Account";
-      if (pass) pass.setAttribute("autocomplete", "current-password");
-    } else {
-      if (title) title.textContent = "Create Account";
-      if (sub) sub.textContent = "Pick an email and password. Local progress will be uploaded and merged with your account.";
-      if (submit) submit.textContent = "Create Account";
-      if (toggle) toggle.textContent = "Have an account?";
-      if (pass) pass.setAttribute("autocomplete", "new-password");
-    }
-  }
-
-  function wireUI() {
-    const btn = document.getElementById("authBtn");
-    const dlg = document.getElementById("authDialog");
-    const form = document.getElementById("authForm");
-    const toggle = document.getElementById("authToggleBtn");
-    const msg = document.getElementById("authMsg");
-    if (!btn || !dlg || !form) return;
-
-    btn.addEventListener("click", function () {
-      if (currentUser) {
-        if (window.confirm("Sign out? Your progress stays on this device.")) signOut();
-      } else {
-        setAuthMode("signin");
-        dlg.showModal();
-      }
-    });
-
-    toggle.addEventListener("click", function () {
-      setAuthMode(authMode === "signin" ? "signup" : "signin");
-    });
-
-    form.addEventListener("submit", async function (e) {
-      e.preventDefault();
-      const email = document.getElementById("authEmail").value.trim();
-      const pass = document.getElementById("authPass").value;
-      const submit = document.getElementById("authSubmitBtn");
-      if (!email || !pass) { msg.textContent = "Email and password are required."; return; }
-      if (pass.length < 6) { msg.textContent = "Password must be at least 6 characters."; return; }
-      submit.disabled = true;
-      msg.classList.remove("is-ok");
-      msg.textContent = authMode === "signin" ? "Signing in…" : "Creating account…";
-      try {
-        if (authMode === "signin") await signIn(email, pass);
-        else await signUp(email, pass);
-        msg.textContent = "Signed in. Syncing…";
-        msg.classList.add("is-ok");
-      } catch (err) {
-        msg.textContent = (err && err.message) ? err.message : "Something went wrong.";
-        msg.classList.remove("is-ok");
-      } finally {
-        submit.disabled = false;
-      }
-    });
-
-    document.addEventListener("cloud:auth", function (e) {
-      const user = e.detail.user;
-      if (user) {
-        btn.textContent = user.email ? user.email.split("@")[0] : "Account";
-        btn.classList.add("is-signed-in");
-        btn.setAttribute("aria-label", "Signed in as " + user.email + " — click to sign out");
-        if (dlg.open) dlg.close();
-      } else {
-        btn.textContent = "Sign In";
-        btn.classList.remove("is-signed-in");
-        btn.setAttribute("aria-label", "Sign in to sync progress");
-      }
-    });
-
-    document.addEventListener("cloud:synced", function () { Gamification.renderAll(); });
-  }
-
-  function applyUser(nextUser) {
-    const changed = (nextUser && nextUser.id) !== (currentUser && currentUser.id);
-    currentUser = nextUser || null;
-    if (changed) {
-      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser } }));
-      if (currentUser) syncAfterLogin();
-    }
-  }
-
-  function init() {
-    injectStyles();
-    injectDialog();
-    injectButton();
-    wireUI();
-    hookGamification();
-
-    if (!sb) { log("SDK not loaded — cloud disabled, local play unaffected."); return; }
-
-    sb.auth.getSession().then(function (res) {
-      const session = res && res.data ? res.data.session : null;
-      applyUser(session ? session.user : null);
-    }).catch(function (e) { log("getSession failed", e); });
-
-    sb.auth.onAuthStateChange(function (_e, session) {
-      applyUser(session ? session.user : null);
-    });
-  }
-
-  return {
-    init: init,
-    signIn: signIn,
-    signUp: signUp,
-    signOut: signOut,
-    pushToCloud: pushToCloud,
-    getUser: function () { return currentUser; }
+    initScoreboardUI: initScoreboardUI
   };
 })();
 
@@ -2536,9 +2245,305 @@ const Router = (function () {
     ParallaxEngine.init();
     Orrery.init();
     Router.init();
-    Cloud.init();
   });
 })();
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+/* =========================================================================
+   ECLIPTIC — CLOUD SYNC (Supabase)
+   Signs users in/up, collects name/location/phone/address at signup
+   (email comes from the login itself), and keeps their progress
+   (points, badges, tests, explored planets) synced to a Supabase
+   profile, merging with whatever is already saved locally in
+   Gamification's localStorage state.
+
+   Setup still needed:
+   1. Create a project at https://supabase.com
+   2. Project Settings -> API -> paste your Project URL and anon public
+      key into the two constants below.
+   3. Run schema.sql once in the Supabase SQL Editor.
+   4. Authentication -> Providers -> Email -> confirm it's on. While
+      testing, you can turn off "Confirm email" so signups log you in
+      right away instead of waiting on a confirmation email.
+   ========================================================================= */
+
+// The anon key is safe to expose publicly - the row-level security
+// policies in schema.sql are what actually protect the data.
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
+const SUPABASE_ANON_KEY = "YOUR-ANON-KEY";
+
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+const Cloud = (function () {
+  let currentUser = null;
+  let currentProfile = null;
+  let pushTimer = null;
+  const PENDING_PROFILE_KEY = "ecliptic:pendingProfile";
+
+  function log(msg, err) {
+    console.log("[cloud]", msg, err);
+  }
+
+  // Profile fields are entered at signup time, but if Supabase's "Confirm
+  // email" setting is on, there's no active session yet to save them with -
+  // so they're stashed here and picked up once the user actually confirms
+  // and logs in (see syncAfterLogin). Keyed to the email so a stale, never-
+  // confirmed signup can't attach itself to a different account later.
+  function stashPendingProfile(email, profile) {
+    try {
+      localStorage.setItem(PENDING_PROFILE_KEY, JSON.stringify({ email: email, profile: profile }));
+    } catch (e) {}
+  }
+
+  function takePendingProfile(email) {
+    try {
+      const raw = localStorage.getItem(PENDING_PROFILE_KEY);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      localStorage.removeItem(PENDING_PROFILE_KEY);
+      if (parsed.email !== email) return null;
+      return parsed.profile;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function signUp(email, password, profile) {
+    stashPendingProfile(email, profile);
+    return sb.auth.signUp({ email: email, password: password }).then(function (result) {
+      if (result.error) throw result.error;
+      return result.data;
+    });
+  }
+
+  function signIn(email, password) {
+    return sb.auth.signInWithPassword({ email: email, password: password }).then(function (result) {
+      if (result.error) throw result.error;
+      return result.data;
+    });
+  }
+
+  function signOut() {
+    return sb.auth.signOut();
+  }
+
+  function uniqueArray(arr) {
+    return Array.from(new Set(arr));
+  }
+
+  function dedupeByTime(arr) {
+    const seen = new Set();
+    return (arr || [])
+      .filter(function (t) { return t && t.completedAt; })
+      .sort(function (a, b) { return new Date(a.completedAt) - new Date(b.completedAt); })
+      .filter(function (t) {
+        if (seen.has(t.completedAt)) return false;
+        seen.add(t.completedAt);
+        return true;
+      });
+  }
+
+  // Pull the cloud profile, merge with local progress, push the merged
+  // result back so both copies end up in sync.
+  function syncAfterLogin() {
+    if (!currentUser) return;
+    const local = Gamification.exportState();
+    const pending = takePendingProfile(currentUser.email);
+
+    return sb.from("profiles").select("*").eq("id", currentUser.id).maybeSingle().then(function (result) {
+      if (result.error) {
+        log("read failed", result.error);
+        return;
+      }
+
+      const data = result.data;
+
+      currentProfile = {
+        name: (pending && pending.name) || (data && data.name) || "",
+        location: (pending && pending.location) || (data && data.location) || "",
+        email: currentUser.email || (data && data.email) || "",
+        phone: (pending && pending.phone) || (data && data.phone) || "",
+        address: (pending && pending.address) || (data && data.address) || ""
+      };
+
+      let merged = local;
+      if (data) {
+        merged = {
+          points: Math.max(data.points || 0, local.points || 0),
+          testsTaken: dedupeByTime((data.tests_taken || []).concat(local.testsTaken || [])),
+          exploredPlanets: uniqueArray((data.explored_planets || []).concat(local.exploredPlanets || [])),
+          comparedAtLeastOnce: !!(data.compared_at_least_once || local.comparedAtLeastOnce),
+          badges: uniqueArray((data.badges || []).concat(local.badges || []))
+        };
+      }
+
+      Gamification.importState(merged);
+      return pushToCloud().then(function () {
+        document.dispatchEvent(new CustomEvent("cloud:synced"));
+      });
+    });
+  }
+
+  function pushToCloud() {
+    if (!currentUser) return;
+    const s = Gamification.exportState();
+    const payload = {
+      id: currentUser.id,
+      points: s.points,
+      tests_taken: s.testsTaken,
+      explored_planets: s.exploredPlanets,
+      compared_at_least_once: s.comparedAtLeastOnce,
+      badges: s.badges,
+      updated_at: new Date().toISOString()
+    };
+    // Only include profile fields once they're actually known (set in
+    // syncAfterLogin) - otherwise a progress-only save could blank them out.
+    if (currentProfile) {
+      payload.name = currentProfile.name;
+      payload.location = currentProfile.location;
+      payload.email = currentProfile.email;
+      payload.phone = currentProfile.phone;
+      payload.address = currentProfile.address;
+    }
+    return sb.from("profiles").upsert(payload).then(function (result) {
+      if (result.error) log("push failed", result.error);
+    });
+  }
+
+  // Wires the dialog's buttons. Runs every time, whether the markup
+  // already existed on the page or was just injected below - keeping
+  // this separate from the injection step is what avoids the "buttons
+  // silently do nothing" bug.
+  function wireDialog() {
+    let authMode = "signin";
+    const dialog = document.getElementById("authDialog");
+    const title = document.getElementById("authTitle");
+    const submitBtn = document.getElementById("authSubmit");
+    const toggleBtn = document.getElementById("authToggle");
+    const msg = document.getElementById("authMsg");
+    const profileFields = document.getElementById("authProfileFields");
+    const nameInput = document.getElementById("authName");
+
+    toggleBtn.onclick = function () {
+      authMode = authMode === "signin" ? "signup" : "signin";
+      title.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
+      submitBtn.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
+      profileFields.style.display = authMode === "signup" ? "block" : "none";
+      msg.textContent = "";
+    };
+
+    submitBtn.onclick = function () {
+      const email = document.getElementById("authEmail").value.trim();
+      const pass = document.getElementById("authPass").value;
+      msg.textContent = "";
+
+      if (!email || !pass) {
+        msg.textContent = "Enter an email and password.";
+        return;
+      }
+
+      let action;
+      if (authMode === "signin") {
+        action = signIn(email, pass);
+      } else {
+        const name = nameInput.value.trim();
+        if (!name) {
+          msg.textContent = "Enter your name.";
+          return;
+        }
+        action = signUp(email, pass, {
+          name: name,
+          location: document.getElementById("authLocation").value.trim(),
+          phone: document.getElementById("authPhone").value.trim(),
+          address: document.getElementById("authAddress").value.trim()
+        });
+      }
+
+      action.then(function () {
+        dialog.close();
+      }).catch(function (e) {
+        msg.textContent = e.message;
+      });
+    };
+  }
+
+  function ensureDialog() {
+    if (!document.getElementById("authDialog")) {
+      const inputStyle = "width:100%;margin-bottom:.5rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px";
+
+      document.body.insertAdjacentHTML(
+        "beforeend",
+        '<dialog id="authDialog" style="background:#0c0c16;color:#efece3;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;max-width:360px;max-height:85vh;overflow:auto">' +
+          '<h3 id="authTitle" style="font-family:var(--font-display);margin:0 0 1rem">Sign In</h3>' +
+          '<div id="authProfileFields" style="display:none">' +
+            '<input id="authName" type="text" placeholder="Full name" style="' + inputStyle + '">' +
+            '<input id="authLocation" type="text" placeholder="Location (optional)" style="' + inputStyle + '">' +
+            '<input id="authPhone" type="tel" placeholder="Phone (optional)" style="' + inputStyle + '">' +
+            '<input id="authAddress" type="text" placeholder="Address (optional)" style="' + inputStyle + '">' +
+          '</div>' +
+          '<input id="authEmail" type="email" placeholder="Email" style="' + inputStyle + '">' +
+          '<input id="authPass" type="password" placeholder="Password" style="width:100%;margin-bottom:1rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px">' +
+          '<div style="display:flex;gap:.5rem">' +
+            '<button id="authSubmit" class="btn btn--primary">Sign In</button>' +
+            '<button id="authToggle" class="btn btn--ghost">Need an account?</button>' +
+          '</div>' +
+          '<p id="authMsg" style="font-family:var(--font-mono);font-size:.75rem;color:#e58a7a;margin:.8rem 0 0"></p>' +
+        '</dialog>'
+      );
+    }
+    wireDialog();
+  }
+
+  function init() {
+    ensureDialog();
+
+    const dialog = document.getElementById("authDialog");
+    const navBtn = document.getElementById("authNavBtn");
+
+    if (navBtn) {
+      navBtn.onclick = function () {
+        if (currentUser) {
+          signOut();
+        } else {
+          dialog.showModal();
+        }
+      };
+    }
+
+    sb.auth.onAuthStateChange(function (event, session) {
+      currentUser = session ? session.user : null;
+      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser } }));
+
+      if (navBtn) {
+        navBtn.textContent = currentUser ? "Sign Out" : "Sign In";
+      }
+
+      if (currentUser) {
+        syncAfterLogin();
+      }
+    });
+
+    document.addEventListener("progress:changed", function () {
+      clearTimeout(pushTimer);
+      pushTimer = setTimeout(pushToCloud, 1500);
+    });
+  }
+
+  return {
+    init: init,
+    signUp: signUp,
+    signIn: signIn,
+    signOut: signOut,
+    pushToCloud: pushToCloud,
+    getUser: function () { return currentUser; }
+  };
+})();
+
+document.addEventListener("DOMContentLoaded", function () {
+  Cloud.init();
+});
 </script>
 </body>
 </html>
