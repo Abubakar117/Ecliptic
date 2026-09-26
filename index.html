@@ -44,6 +44,15 @@
 html { scroll-behavior: smooth; }
 [hidden] { display: none !important; }
 
+/* Desktop gets more breathing room than the mobile column widths above:
+   this is the "landscape, not a tall narrow strip" fix for wide viewports. */
+@media (min-width: 1000px) {
+  :root { --measure: 720px; --wide: 1180px; }
+}
+@media (min-width: 1400px) {
+  :root { --measure: 780px; --wide: 1320px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -83,17 +92,42 @@ a { color: inherit; }
 }
 .skip-link:focus { top: 1rem; }
 
-/* ---------- starfield (ambient, CSS-driven drift) ---------- */
+/* ---------- starfield (ambient, CSS-driven drift + per-star twinkle) ---------- */
 
 .stars-layer {
-  position: fixed; top: -20vh; left: -10vw;
-  width: 120vw; height: 1px; pointer-events: none; z-index: 0;
-  border-radius: 50%;
+  position: fixed; top: -10vh; left: -10vw;
+  width: 120vw; height: 120vh; pointer-events: none; z-index: 0;
+  overflow: visible;
 }
-@keyframes drift { from { transform: translate(0, 0); } to { transform: translate(-46px, -34px); } }
-.stars-layer--far { animation: drift 100s linear infinite alternate; }
-.stars-layer--mid { animation: drift 65s linear infinite alternate; }
-.stars-layer--near { animation: drift 42s linear infinite alternate; }
+.star {
+  position: absolute; border-radius: 50%; background: #fff;
+  animation-name: twinkle; animation-timing-function: ease-in-out; animation-iteration-count: infinite;
+}
+@keyframes twinkle { 0%, 100% { opacity: var(--min-op, 0.2); } 50% { opacity: var(--max-op, 0.9); } }
+
+/* A bigger, quicker pan than before - within a few seconds you can watch
+   the whole sky glide past, on top of each star's own twinkle. */
+@keyframes drift { from { transform: translate(0, 0); } to { transform: translate(-130px, -90px); } }
+.stars-layer--far { animation: drift 55s linear infinite alternate; }
+.stars-layer--mid { animation: drift 34s linear infinite alternate; }
+.stars-layer--near { animation: drift 20s linear infinite alternate; }
+
+/* ---------- the "tiny thing" - a small comet that drifts with scroll
+   and mouse/tilt movement, on top of the ambient starfield above ---------- */
+.stars-wanderer {
+  position: fixed; top: 20%; left: 72%;
+  width: 5px; height: 5px; z-index: 0; pointer-events: none;
+  border-radius: 50%;
+  background: #fff8ec;
+  box-shadow: 0 0 6px 1px rgba(255, 248, 236, 0.9), 0 0 18px 4px rgba(255, 180, 84, 0.5);
+  will-change: transform;
+}
+.stars-wanderer::before {
+  content: ""; position: absolute; top: 50%; right: 100%;
+  width: 70px; height: 1px; transform-origin: right center; transform: translateY(-50%) rotate(10deg);
+  background: linear-gradient(to left, rgba(255, 238, 214, 0.65), rgba(255, 238, 214, 0));
+}
+@media (max-width: 640px) { .stars-wanderer { top: 14%; left: 78%; } .stars-wanderer::before { width: 46px; } }
 
 /* ---------- topbar ---------- */
 
@@ -199,6 +233,27 @@ a { color: inherit; }
 
 @media (max-width: 640px) { .hero { min-height: auto; padding: 3rem 1.25rem 2rem; } }
 
+/* ---------- hero: landscape (side-by-side) layout for desktop ---------- */
+@media (min-width: 980px) {
+  .hero {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 4.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 3rem 3rem;
+  }
+  .hero__inner { text-align: left; max-width: 480px; margin: 0; flex-shrink: 0; }
+  .hero__tagline { margin: 1.1rem 0 0; }
+  .hero__actions { justify-content: flex-start; }
+  .orrery { width: min(48vw, 640px); margin: 0; flex-shrink: 0; }
+}
+@media (min-width: 1400px) {
+  .hero { gap: 6rem; }
+  .hero__inner { max-width: 540px; }
+}
+
 /* ---------- landing: about + bodies grid + contact ---------- */
 
 .landing-about, .landing-bodies { border-top: 1px solid var(--border-glass); }
@@ -238,7 +293,8 @@ a { color: inherit; }
 .explore-tab:hover { border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
 .explore-tab.is-active { background: var(--section-accent, var(--accent-primary)); border-color: var(--section-accent, var(--accent-primary)); color: #1a1305; }
 .explore-tab-content { min-height: 90px; margin-bottom: 1rem; }
-.explore-tab-content p { animation: tabFadeIn 0.3s var(--ease); }
+.explore-tab-panel { animation: tabFadeIn 0.3s var(--ease); }
+.explore-tab-panel__label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin-bottom: 0.6rem; }
 @keyframes tabFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 .explore-visual--big { width: 190px; height: 190px; margin: 1.6rem 0 2rem; }
@@ -413,9 +469,12 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
 .reader-bar__slider-group { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
 .reader-bar__slider-group input[type="range"] { width: 100px; accent-color: var(--accent-primary); }
 .reader-bar__readout { min-width: 3.4em; text-align: right; }
+.reader-bar__voice-group { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+.reader-bar__voice-select { max-width: 190px; background: var(--bg-panel); color: var(--ink); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.8em; font-family: var(--font-mono); font-size: 0.72rem; cursor: pointer; }
+.reader-bar__voice-select:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 2px; }
 .reader-bar__close { margin-left: auto; background: none; border: none; color: var(--ink-faint); font-size: 1.1rem; cursor: pointer; }
 .reader-bar__close:hover { color: var(--ink); }
-@media (max-width: 640px) { .reader-bar { justify-content: center; } .reader-bar__slider-group input[type="range"] { width: 70px; } }
+@media (max-width: 640px) { .reader-bar { justify-content: center; } .reader-bar__slider-group input[type="range"] { width: 70px; } .reader-bar__voice-select { max-width: 140px; } }
 </style>
 </head>
 <body>
@@ -425,6 +484,7 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
 <div class="stars-layer stars-layer--far" id="starsFar" aria-hidden="true"></div>
 <div class="stars-layer stars-layer--mid" id="starsMid" aria-hidden="true"></div>
 <div class="stars-layer stars-layer--near" id="starsNear" aria-hidden="true"></div>
+<div class="stars-wanderer" id="starsWanderer" aria-hidden="true"></div>
 
 <div class="cookie-banner" id="cookieBanner" hidden>
   <p>Ecliptic uses a small cookie to remember your cookie choice. No third-party tracking.</p>
@@ -1358,30 +1418,38 @@ const ParallaxEngine = (function () {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   }
 
-  function starShadow(count, alpha) {
-    const parts = [];
-    const w = Math.max(window.innerWidth, 800);
-    const h = Math.max(window.innerHeight, 600);
-    for (let i = 0; i < count; i++) {
-      const x = Math.floor(Math.random() * w);
-      const y = Math.floor(Math.random() * h);
-      parts.push(x + "px " + y + "px rgba(255,255,255," + alpha + ")");
-    }
-    return parts.join(",");
-  }
-
-  function buildLayer(id, count, alpha) {
+  // Each star is now its own small element (rather than one giant
+  // box-shadow trick) so every one can twinkle on its own random cycle,
+  // independent of its neighbors - that's what actually reads as "moving"
+  // up close, on top of the whole layer's slow drift.
+  function buildLayer(id, count, maxOpacity, sizePx) {
     const el = document.getElementById(id);
     if (!el) return;
-    el.style.width = "1px";
-    el.style.height = "1px";
-    el.style.boxShadow = starShadow(count, alpha);
+    el.innerHTML = "";
+    const w = Math.max(window.innerWidth, 800) * 1.2;
+    const h = Math.max(window.innerHeight, 600) * 1.2;
+    const frag = document.createDocumentFragment();
+    for (let i = 0; i < count; i++) {
+      const star = document.createElement("span");
+      star.className = "star";
+      const size = (sizePx * (0.7 + Math.random() * 0.6)).toFixed(2);
+      star.style.left = (Math.random() * w).toFixed(1) + "px";
+      star.style.top = (Math.random() * h).toFixed(1) + "px";
+      star.style.width = size + "px";
+      star.style.height = size + "px";
+      star.style.setProperty("--max-op", maxOpacity);
+      star.style.setProperty("--min-op", (Math.random() * 0.3).toFixed(2));
+      star.style.animationDuration = (2 + Math.random() * 4.5).toFixed(2) + "s";
+      star.style.animationDelay = "-" + (Math.random() * 6).toFixed(2) + "s";
+      frag.appendChild(star);
+    }
+    el.appendChild(frag);
   }
 
   function initStarfield() {
-    buildLayer("starsFar", 140, 0.5);
-    buildLayer("starsMid", 80, 0.7);
-    buildLayer("starsNear", 40, 0.95);
+    buildLayer("starsFar", 140, 0.55, 1.2);
+    buildLayer("starsMid", 80, 0.8, 1.6);
+    buildLayer("starsNear", 40, 1, 2.1);
   }
 
   function initScrollReveal(root) {
@@ -1410,8 +1478,53 @@ const ParallaxEngine = (function () {
     };
   }
 
+  // The wanderer drifts on its own (a slow figure-of-eight), leans toward
+  // wherever the pointer is, tilts with the device on phones/tablets, and
+  // eases back a little as the page is scrolled - so it's always gently
+  // moving, the way the reference clip's floating particles were.
+  function initWanderer() {
+    const el = document.getElementById("starsWanderer");
+    if (!el) return;
+    if (prefersReducedMotion()) return;
+
+    let pointerX = 0, pointerY = 0;      // -1..1, from mouse or device tilt
+    let curX = 0, curY = 0;              // eased current offset
+    let scrollOffset = 0;
+
+    window.addEventListener("mousemove", function (e) {
+      pointerX = (e.clientX / window.innerWidth) * 2 - 1;
+      pointerY = (e.clientY / window.innerHeight) * 2 - 1;
+    }, { passive: true });
+
+    // Phones/tablets: tilting the device left/right or forward/back nudges
+    // it the same way a mouse move would, when the browser grants access.
+    window.addEventListener("deviceorientation", function (e) {
+      if (typeof e.gamma === "number") pointerX = Math.max(-1, Math.min(1, e.gamma / 30));
+      if (typeof e.beta === "number") pointerY = Math.max(-1, Math.min(1, (e.beta - 40) / 30));
+    }, { passive: true });
+
+    window.addEventListener("scroll", function () {
+      scrollOffset = Math.max(-60, Math.min(60, window.scrollY * -0.06));
+    }, { passive: true });
+
+    function tick(time) {
+      const idleX = Math.sin(time / 4200) * 26;
+      const idleY = Math.cos(time / 5600) * 16;
+      const targetX = idleX + pointerX * 34;
+      const targetY = idleY + pointerY * 20 + scrollOffset;
+      // Ease toward the target instead of snapping straight to it, for a
+      // floaty, weighted feel rather than a cursor-locked one.
+      curX += (targetX - curX) * 0.04;
+      curY += (targetY - curY) * 0.04;
+      el.style.transform = "translate3d(" + curX.toFixed(1) + "px, " + curY.toFixed(1) + "px, 0)";
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
   function init() {
     initStarfield();
+    initWanderer();
     initScrollReveal();
     window.addEventListener("resize", debounce(initStarfield, 400));
   }
@@ -1466,15 +1579,27 @@ const Explore = (function () {
       return '<button type="button" class="explore-tab' + (i === 0 ? ' is-active' : '') + '" data-tab="' + t.key + '" role="tab">' + t.label + '</button>';
     }).join("");
 
+    // All eight panels are rendered up front (only the active one visible)
+    // instead of swapping a single container's innerHTML per click. That
+    // way the read-aloud tool - which walks the real DOM - can find and
+    // read every section's text, not just whichever tab happens to be
+    // showing when playback starts.
+    contentHost.innerHTML = TABS.map(function (t) {
+      const body = t.key === "overview"
+        ? planet.paragraphs.map(function (p) { return '<p class="section__copy">' + p + '</p>'; }).join("")
+        : '<p class="section__copy">' + (planet.deepDive[t.key] || "") + '</p>';
+      return '<div class="explore-tab-panel" data-tab="' + t.key + '" role="tabpanel"' + (t.key === "overview" ? "" : " hidden") + '>' +
+        '<span class="explore-tab-panel__label">' + t.label + '</span>' + body +
+      '</div>';
+    }).join("");
+
     function showTab(key) {
       tabHost.querySelectorAll(".explore-tab").forEach(function (b) {
         b.classList.toggle("is-active", b.dataset.tab === key);
       });
-      if (key === "overview") {
-        contentHost.innerHTML = planet.paragraphs.map(function (t) { return '<p class="section__copy">' + t + '</p>'; }).join("");
-      } else {
-        contentHost.innerHTML = '<p class="section__copy">' + (planet.deepDive[key] || "") + '</p>';
-      }
+      contentHost.querySelectorAll(".explore-tab-panel").forEach(function (panel) {
+        panel.hidden = panel.dataset.tab !== key;
+      });
     }
 
     tabHost.querySelectorAll(".explore-tab").forEach(function (btn) {
@@ -2297,6 +2422,34 @@ const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
 const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
+// Standard country list for the sign-up "Country" field's dropdown/autocomplete.
+const COUNTRIES = [
+  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", "Argentina", "Armenia",
+  "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium",
+  "Belize", "Benin", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria",
+  "Burkina Faso", "Burundi", "Cabo Verde", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad",
+  "Chile", "China", "Colombia", "Comoros", "Congo (Congo-Brazzaville)", "Costa Rica", "Croatia", "Cuba", "Cyprus",
+  "Czechia", "Democratic Republic of the Congo", "Denmark", "Djibouti", "Dominica", "Dominican Republic",
+  "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Eswatini", "Ethiopia", "Fiji",
+  "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala",
+  "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", "Indonesia", "Iran",
+  "Iraq", "Ireland", "Israel", "Italy", "Ivory Coast", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+  "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya",
+  "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta",
+  "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia",
+  "Montenegro", "Morocco", "Mozambique", "Myanmar (Burma)", "Namibia", "Nauru", "Nepal", "Netherlands",
+  "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
+  "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal",
+  "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis", "Saint Lucia",
+  "Saint Vincent and the Grenadines", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal",
+  "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
+  "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden",
+  "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor-Leste", "Togo", "Tonga",
+  "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", "Ukraine",
+  "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City",
+  "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
+
 const Cloud = (function () {
   let currentUser = null;
   let currentProfile = null;
@@ -2526,11 +2679,51 @@ const Cloud = (function () {
     const msg = document.getElementById("authMsg");
     const profileFields = document.getElementById("authProfileFields");
     const nameInput = document.getElementById("authName");
+    const resetBtn = document.getElementById("authReset");
+    const cancelBtn = document.getElementById("authCancel");
+
+    // Clears every field in both Sign In and Sign Up mode, plus any
+    // message, without changing which mode is currently showing.
+    function clearFields() {
+      ["authEmail", "authPass", "authName", "authLocation", "authPhone", "authAddress"].forEach(function (id) {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      msg.textContent = "";
+      msg.style.color = "";
+    }
+
+    resetBtn.onclick = function () {
+      clearFields();
+    };
+
+    cancelBtn.onclick = function () {
+      clearFields();
+      dialog.close();
+    };
+
+    // Whatever closes the dialog - Cancel above, a successful sign-in/up,
+    // the Esc key, or a click on the backdrop - should leave it blank and
+    // back on "Sign In" for the next time it's opened.
+    dialog.addEventListener("close", function () {
+      clearFields();
+      if (authMode !== "signin") {
+        authMode = "signin";
+        title.textContent = "Sign In";
+        submitBtn.textContent = "Sign In";
+        toggleBtn.textContent = "Need an account?";
+        profileFields.style.display = "none";
+      }
+    });
 
     toggleBtn.onclick = function () {
       authMode = authMode === "signin" ? "signup" : "signin";
       title.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
       submitBtn.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
+      // The toggle itself now names the mode you'd switch TO, not the one
+      // you're already looking at - so it reads "Need an account?" while
+      // signing in, and "Already have an account? Sign In" while signing up.
+      toggleBtn.textContent = authMode === "signin" ? "Need an account?" : "Already have an account? Sign In";
       profileFields.style.display = authMode === "signup" ? "block" : "none";
       msg.textContent = "";
       msg.style.color = "";
@@ -2552,14 +2745,19 @@ const Cloud = (function () {
         action = signIn(email, pass);
       } else {
         const name = nameInput.value.trim();
+        const phone = document.getElementById("authPhone").value.trim();
         if (!name) {
           msg.textContent = "Enter your name.";
+          return;
+        }
+        if (!phone) {
+          msg.textContent = "Enter your phone number.";
           return;
         }
         action = signUp(email, pass, {
           name: name,
           location: document.getElementById("authLocation").value.trim(),
-          phone: document.getElementById("authPhone").value.trim(),
+          phone: phone,
           address: document.getElementById("authAddress").value.trim()
         });
       }
@@ -2582,22 +2780,28 @@ const Cloud = (function () {
   function ensureDialog() {
     if (!document.getElementById("authDialog")) {
       const inputStyle = "width:100%;margin-bottom:.5rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px";
+      const COUNTRY_OPTIONS = COUNTRIES.map(function (c) { return '<option value="' + c + '">'; }).join("");
 
       document.body.insertAdjacentHTML(
         "beforeend",
         '<dialog id="authDialog" style="background:#0c0c16;color:#efece3;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;max-width:360px;max-height:85vh;overflow:auto">' +
           '<h3 id="authTitle" style="font-family:var(--font-display);margin:0 0 1rem">Sign In</h3>' +
           '<div id="authProfileFields" style="display:none">' +
-            '<input id="authName" type="text" placeholder="Full name" style="' + inputStyle + '">' +
-            '<input id="authLocation" type="text" placeholder="Location (optional)" style="' + inputStyle + '">' +
-            '<input id="authPhone" type="tel" placeholder="Phone (optional)" style="' + inputStyle + '">' +
+            '<input id="authName" type="text" placeholder="Full name *" required style="' + inputStyle + '">' +
+            '<input id="authLocation" type="text" list="authCountryList" autocomplete="off" placeholder="Country (optional)" style="' + inputStyle + '">' +
+            '<datalist id="authCountryList">' + COUNTRY_OPTIONS + '</datalist>' +
+            '<input id="authPhone" type="tel" placeholder="Phone *" required style="' + inputStyle + '">' +
             '<input id="authAddress" type="text" placeholder="Address (optional)" style="' + inputStyle + '">' +
           '</div>' +
-          '<input id="authEmail" type="email" placeholder="Email" style="' + inputStyle + '">' +
+          '<input id="authEmail" type="email" placeholder="Email *" required style="' + inputStyle + '">' +
           '<input id="authPass" type="password" placeholder="Password" style="width:100%;margin-bottom:1rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px">' +
-          '<div style="display:flex;gap:.5rem">' +
+          '<div style="display:flex;gap:.5rem;flex-wrap:wrap">' +
             '<button id="authSubmit" class="btn btn--primary">Sign In</button>' +
             '<button id="authToggle" class="btn btn--ghost">Need an account?</button>' +
+          '</div>' +
+          '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">' +
+            '<button id="authReset" type="button" class="btn btn--ghost">Reset</button>' +
+            '<button id="authCancel" type="button" class="btn btn--ghost">Cancel</button>' +
           '</div>' +
           '<p id="authMsg" style="font-family:var(--font-mono);font-size:.75rem;color:#e58a7a;margin:.8rem 0 0"></p>' +
         '</dialog>'
@@ -2967,7 +3171,7 @@ const EXTERNAL_LINKS = {
   const BLOCK_SELECTOR = "p, h1, h2, h3, h4, h5, h6, li, td, th, button, a, label, dt, dd";
 
   const Reader = (function () {
-    let toggle, bar, playBtn, rateInput, rateOut, volInput, volOut;
+    let toggle, bar, playBtn, rateInput, rateOut, volInput, volOut, voiceSelect;
     let utterances = [];
     let wordSpans = [];
     let currentIndex = -1;
@@ -2975,6 +3179,60 @@ const EXTERNAL_LINKS = {
     let isPlaying = false;
     let rate = 1;
     let volume = 1;
+    let voices = [];
+    let selectedVoiceURI = "";
+
+    // Buckets every voice the browser/OS offers into the three accents
+    // people most often ask for, so the accessibility voice picker reads
+    // "British / American / Australian" rather than a raw, unsorted list
+    // of engine names.
+    function accentGroup(voice) {
+      const lang = (voice.lang || "").toLowerCase();
+      if (lang === "en-gb" || lang === "en-ie") return "British";
+      if (lang === "en-us") return "American";
+      if (lang === "en-au") return "Australian";
+      if (lang.indexOf("en") === 0) return "Other English";
+      return "Other languages";
+    }
+
+    function populateVoices() {
+      if (!voiceSelect) return;
+      voices = speechSynthesis.getVoices() || [];
+      if (!voices.length) return;
+
+      const order = ["British", "American", "Australian", "Other English", "Other languages"];
+      const groups = {};
+      voices.forEach(function (v) {
+        const g = accentGroup(v);
+        (groups[g] = groups[g] || []).push(v);
+      });
+
+      const previous = selectedVoiceURI;
+      voiceSelect.innerHTML = '<option value="">System default</option>';
+      order.forEach(function (groupName) {
+        const list = groups[groupName];
+        if (!list || !list.length) return;
+        const optgroup = document.createElement("optgroup");
+        optgroup.label = groupName;
+        list.forEach(function (v) {
+          const opt = document.createElement("option");
+          opt.value = v.voiceURI;
+          opt.textContent = v.name + " (" + v.lang + ")";
+          optgroup.appendChild(opt);
+        });
+        voiceSelect.appendChild(optgroup);
+      });
+
+      // Re-select whatever was chosen before this (async) refresh, if it's
+      // still in the list; otherwise fall back to system default rather
+      // than silently jumping to an unrelated voice.
+      if (previous && voices.some(function (v) { return v.voiceURI === previous; })) {
+        voiceSelect.value = previous;
+      } else {
+        voiceSelect.value = "";
+        selectedVoiceURI = "";
+      }
+    }
 
     function shouldSkip(el) {
       let node = el;
@@ -3083,13 +3341,42 @@ const EXTERNAL_LINKS = {
       setPlayIcon();
     }
 
+    // If this block of text lives inside a currently-hidden Explore tab
+    // panel (Physical Traits, Atmosphere, etc.), switch the UI to that tab
+    // so what's on screen matches what's being read aloud.
+    function revealTabPanelFor(u) {
+      const firstSpan = u.spans && u.spans[0];
+      if (!firstSpan || !firstSpan.closest) return;
+      const panel = firstSpan.closest(".explore-tab-panel");
+      if (!panel || !panel.hidden) return;
+      const key = panel.dataset.tab;
+      const contentHost = panel.parentNode;
+      contentHost.querySelectorAll(".explore-tab-panel").forEach(function (p) {
+        p.hidden = p !== panel;
+      });
+      const tabHost = document.getElementById("exploreTabs");
+      if (tabHost) {
+        tabHost.querySelectorAll(".explore-tab").forEach(function (b) {
+          b.classList.toggle("is-active", b.dataset.tab === key);
+        });
+      }
+    }
+
     function speak(idx) {
       if (!utterances[idx]) { stopPlayback(); return; }
       currentIndex = idx;
       const u = utterances[idx];
+      revealTabPanelFor(u);
       const utter = new SpeechSynthesisUtterance(u.text);
       utter.rate = Math.max(rate, 0.1);
       utter.volume = volume;
+      if (selectedVoiceURI) {
+        const chosen = voices.find(function (v) { return v.voiceURI === selectedVoiceURI; });
+        if (chosen) {
+          utter.voice = chosen;
+          utter.lang = chosen.lang;
+        }
+      }
       utter.onboundary = function (e) {
         if (e.name && e.name !== "word") return;
         let wIdx = 0;
@@ -3194,6 +3481,10 @@ const EXTERNAL_LINKS = {
         '<input type="range" id="readerVolume" min="0" max="100" step="5" value="100">' +
         '<span class="reader-bar__readout" id="readerVolOut">100%</span>' +
         '</div>' +
+        '<div class="reader-bar__voice-group">' +
+        '<span>Voice</span>' +
+        '<select id="readerVoice" class="reader-bar__voice-select" aria-label="Reading voice and accent"><option value="">System default</option></select>' +
+        '</div>' +
         '<button type="button" class="reader-bar__close" id="readerClose" aria-label="Close reader">✕</button>';
 
       document.body.appendChild(toggle);
@@ -3204,6 +3495,7 @@ const EXTERNAL_LINKS = {
       rateOut = bar.querySelector("#readerRateOut");
       volInput = bar.querySelector("#readerVolume");
       volOut = bar.querySelector("#readerVolOut");
+      voiceSelect = bar.querySelector("#readerVoice");
 
       toggle.addEventListener("click", function () {
         if (isOpen) close(); else open();
@@ -3224,6 +3516,18 @@ const EXTERNAL_LINKS = {
         volOut.textContent = volInput.value + "%";
         applySettingsLive();
       });
+
+      voiceSelect.addEventListener("change", function () {
+        selectedVoiceURI = voiceSelect.value;
+        applySettingsLive();
+      });
+
+      // Voice lists load asynchronously in most browsers - populate now in
+      // case they're already there, and again the moment they arrive.
+      populateVoices();
+      if (typeof speechSynthesis.onvoiceschanged !== "undefined") {
+        speechSynthesis.onvoiceschanged = populateVoices;
+      }
 
       window.addEventListener("hashchange", function () {
         if (isOpen) close();
