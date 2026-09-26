@@ -201,7 +201,7 @@ a { color: inherit; }
 
 /* ---------- landing: about + bodies grid + contact ---------- */
 
-.landing-about, .landing-bodies, .landing-contact { border-top: 1px solid var(--border-glass); }
+.landing-about, .landing-bodies { border-top: 1px solid var(--border-glass); }
 
 .landing-bodies__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin-top: 1.6rem; }
 .landing-body-card { text-align: left; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.5rem; transition: transform 0.2s var(--ease), border-color 0.2s; }
@@ -210,11 +210,6 @@ a { color: inherit; }
 .landing-body-card__name { font-family: var(--font-display); font-weight: 600; font-size: 0.95rem; color: var(--ink); }
 .landing-body-card__hook { font-size: 0.82rem; color: var(--ink-faint); line-height: 1.5; }
 
-.contact-form { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.4rem; }
-.contact-form input { flex: 1 1 220px; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink); padding: 0.75em 1em; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.88rem; }
-.contact-form input::placeholder { color: var(--ink-faint); }
-.contact-form__actions { display: flex; gap: 0.6rem; width: 100%; }
-.contact-status { margin-top: 0.9rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-good); }
 
 /* ---------- footer ---------- */
 
@@ -348,10 +343,79 @@ a { color: inherit; }
 .badge-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
 .badge-toast__icon { font-size: 1.5rem; color: var(--accent-primary); flex-shrink: 0; }
 .badge-toast__text { font-size: 0.85rem; line-height: 1.3; }
+.badge-toast--error { border-color: var(--accent-bad); }
+.badge-toast--error .badge-toast__icon { color: var(--accent-bad); }
 
 /* ---------- generic screen visibility ---------- */
 
 .screen[hidden] { display: none; }
+/* ---------- explore detail external links ---------- */
+.explore-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0.7rem; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid var(--border-glass); }
+.explore-links__label { font-family: var(--font-mono); font-size: 0.75rem; color: var(--ink-faint); }
+.explore-links__link { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-primary); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+.explore-links__link:hover { color: var(--ink); }
+/* ---------- footer legal lines ---------- */
+.footer__legal { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); max-width: 46ch; margin: 0.6rem auto 0; }
+.footer__legal a { color: var(--ink-faint); }
+.footer__legal a:hover { color: var(--accent-primary); }
+.footer__legal-link { background: none; border: none; padding: 0; color: var(--ink-faint); text-decoration: underline; font-family: inherit; font-size: inherit; cursor: pointer; }
+.footer__legal-link:hover { color: var(--accent-primary); }
+/* ---------- privacy & copyright dialog ---------- */
+.legal-dialog { background: #0c0c16; color: var(--ink); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 2rem; max-width: 560px; width: 90vw; max-height: 80vh; overflow: auto; }
+.legal-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+.legal-dialog h2 { font-family: var(--font-display); margin-top: 0; }
+.legal-dialog h3 { font-family: var(--font-display); font-size: 1rem; margin: 1.3rem 0 0.4rem; }
+.legal-dialog p { font-size: 0.85rem; line-height: 1.6; color: var(--ink-dim); }
+.legal-dialog .btn { margin-top: 1.5rem; }
+/* ---------- post-sign-in welcome banner ---------- */
+.welcome-banner { position: fixed; left: 1rem; right: 1rem; top: 5.5rem; z-index: 450; max-width: 480px; margin: 0 auto; background: var(--bg-panel-strong); border: 1px solid var(--border-glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-radius: var(--radius-md); padding: 1.4rem 1.5rem; opacity: 0; transform: translateY(-10px); transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); pointer-events: none; }
+.welcome-banner.is-visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+.welcome-banner__greeting { font-family: var(--font-display); font-size: 1.1rem; margin: 0 1.6rem 0.3rem 0; }
+.welcome-banner__prompt { font-size: 0.85rem; color: var(--ink-dim); margin: 0 0 1rem; }
+.welcome-banner__actions { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.welcome-banner__actions .btn { padding: 0.6em 1.1em; font-size: 0.8rem; }
+.welcome-banner__close { position: absolute; top: 0.7rem; right: 0.8rem; background: none; border: none; color: var(--ink-faint); font-size: 1.1rem; cursor: pointer; line-height: 1; }
+.welcome-banner__close:hover { color: var(--ink); }
+/* ---------- floating mission mentor ---------- */
+.mentor-toggle { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 500; width: 56px; height: 56px; border-radius: 50%; background: var(--accent-primary); color: #1a1305; border: none; font-size: 1.4rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease); }
+.mentor-toggle:hover { transform: scale(1.06); }
+.mentor-panel { position: fixed; right: 1.2rem; bottom: 5.2rem; z-index: 500; width: min(360px, calc(100vw - 2.4rem)); height: min(520px, calc(100vh - 8rem)); background: var(--bg-void); border: 1px solid var(--border-glass); border-radius: var(--radius-md); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(12px) scale(0.97); pointer-events: none; transition: opacity 0.2s var(--ease), transform 0.2s var(--ease); }
+.mentor-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.mentor-panel__header { padding: 1rem 1.2rem; border-bottom: 1px solid var(--border-glass); display: flex; align-items: flex-start; justify-content: space-between; flex-shrink: 0; }
+.mentor-panel__title { font-family: var(--font-display); font-weight: 700; font-size: 0.95rem; margin: 0; }
+.mentor-panel__subtitle { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); margin: 0.15rem 0 0; }
+.mentor-panel__close { background: none; border: none; color: var(--ink-faint); font-size: 1.2rem; cursor: pointer; }
+.mentor-panel__body { flex: 1; overflow-y: auto; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.7rem; }
+.mentor-msg { max-width: 85%; padding: 0.6em 0.9em; border-radius: 14px; font-size: 0.85rem; line-height: 1.45; }
+.mentor-msg--bot { align-self: flex-start; background: var(--bg-panel); border: 1px solid var(--border-glass); border-bottom-left-radius: 4px; }
+.mentor-msg--user { align-self: flex-end; background: var(--accent-primary); color: #1a1305; border-bottom-right-radius: 4px; }
+.mentor-panel__quick { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0 1.2rem 0.8rem; flex-shrink: 0; }
+.mentor-chip { font-family: var(--font-mono); font-size: 0.72rem; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink-dim); border-radius: 999px; padding: 0.4em 0.8em; cursor: pointer; }
+.mentor-chip:hover { border-color: var(--accent-primary); color: var(--ink); }
+.mentor-panel__input { display: flex; gap: 0.5rem; padding: 0.9rem 1.2rem; border-top: 1px solid var(--border-glass); flex-shrink: 0; }
+.mentor-panel__input input { flex: 1; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.6em 1em; color: var(--ink); font-family: inherit; font-size: 0.85rem; }
+.mentor-panel__input input:focus { outline: 1px solid var(--accent-primary); }
+.mentor-panel__input button { background: var(--accent-primary); color: #1a1305; border: none; border-radius: 999px; width: 38px; height: 38px; flex-shrink: 0; cursor: pointer; font-size: 1rem; }
+@media (max-width: 480px) { .mentor-panel { right: 0.6rem; left: 0.6rem; width: auto; bottom: 4.6rem; } .mentor-toggle { right: 1rem; bottom: 1rem; } }
+/* ---------- accessibility: read aloud ---------- */
+.reader-toggle { position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 500; width: 56px; height: 56px; border-radius: 50%; background: var(--bg-panel-strong); border: 1px solid var(--border-glass); color: var(--ink); font-size: 1.3rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease), background 0.2s var(--ease); }
+.reader-toggle:hover { transform: scale(1.06); }
+.reader-toggle.is-active { background: var(--accent-primary); color: #1a1305; }
+body.reader-open .mentor-toggle { bottom: 5.7rem; }
+.reader-word { border-radius: 3px; transition: background 0.15s var(--ease), color 0.15s var(--ease); cursor: pointer; }
+.reader-word--active { background: var(--accent-primary); color: #1a1305; }
+.reader-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 600; background: var(--bg-panel-strong); border-top: 1px solid var(--border-glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 0.8rem 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; transform: translateY(100%); transition: transform 0.3s var(--ease); }
+.reader-bar.is-open { transform: translateY(0); }
+.reader-bar__transport { display: flex; align-items: center; gap: 0.4rem; }
+.reader-bar__btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink); font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+.reader-bar__btn:hover { border-color: var(--accent-primary); }
+.reader-bar__btn--play { background: var(--accent-primary); color: #1a1305; border: none; }
+.reader-bar__slider-group { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+.reader-bar__slider-group input[type="range"] { width: 100px; accent-color: var(--accent-primary); }
+.reader-bar__readout { min-width: 3.4em; text-align: right; }
+.reader-bar__close { margin-left: auto; background: none; border: none; color: var(--ink-faint); font-size: 1.1rem; cursor: pointer; }
+.reader-bar__close:hover { color: var(--ink); }
+@media (max-width: 640px) { .reader-bar { justify-content: center; } .reader-bar__slider-group input[type="range"] { width: 70px; } }
 </style>
 </head>
 <body>
@@ -363,7 +427,7 @@ a { color: inherit; }
 <div class="stars-layer stars-layer--near" id="starsNear" aria-hidden="true"></div>
 
 <div class="cookie-banner" id="cookieBanner" hidden>
-  <p>Ecliptic uses a small cookie to remember your consent and any optional contact info you choose to share. No third-party tracking.</p>
+  <p>Ecliptic uses a small cookie to remember your cookie choice. No third-party tracking.</p>
   <div class="cookie-banner__actions">
     <button type="button" class="btn btn--ghost" id="cookieDecline">Decline</button>
     <button type="button" class="btn btn--primary" id="cookieAccept">Accept</button>
@@ -429,28 +493,13 @@ a { color: inherit; }
     </div>
   </section>
 
-  <section class="landing-contact" id="contactCard">
-    <div class="section__inner">
-      <span class="section__eyebrow reveal">Stay in the Loop</span>
-      <h2 class="section__title reveal">Want updates? (Optional)</h2>
-      <p class="section__copy reveal">Leave an email or phone if you'd like — totally optional, saved only on this device, and you can skip it entirely.</p>
-      <form class="contact-form reveal" id="contactForm">
-        <input type="email" id="contactEmail" placeholder="Email (optional)" autocomplete="email">
-        <input type="tel" id="contactPhone" placeholder="Phone (optional)" autocomplete="tel">
-        <div class="contact-form__actions">
-          <button type="submit" class="btn btn--primary">Save</button>
-          <button type="button" class="btn btn--ghost" id="contactSkip">Skip</button>
-        </div>
-      </form>
-      <p class="contact-status" id="contactStatus" hidden></p>
-    </div>
-  </section>
-
   <footer class="footer">
     <div class="section__inner footer__inner">
       <p class="footer__brand">ECLIPTIC</p>
       <p class="footer__note">A field guide to the Sun, eight planets, and the Kuiper Belt. Figures are approximate and rounded for readability.</p>
       <p class="footer__version">Build 5 — cookie-banner fix, 8-tab planet deep dives, 10-row compare, bigger nav</p>
+      <p class="footer__legal">Learn more at <a href="https://solarsystem.nasa.gov" target="_blank" rel="noopener noreferrer">NASA Solar System Exploration</a> and <a href="https://en.wikipedia.org/wiki/Solar_System" target="_blank" rel="noopener noreferrer">Wikipedia</a>.</p>
+      <p class="footer__legal">© 2026 Ecliptic — an independent educational project, not affiliated with NASA. <button type="button" class="footer__legal-link" id="privacyLinkBtn">Privacy & Copyright</button></p>
     </div>
   </footer>
 </section>
@@ -980,7 +1029,7 @@ const ORRERY_BODIES = [
 
 /* =========================================================================
    ECLIPTIC — COOKIES MODULE
-   Small cookie utility plus the consent banner and optional contact form.
+   Small cookie utility plus the consent banner.
    Everything here is stored on-device only; there is no backend, so the
    UI is honest about that rather than implying data is sent anywhere.
    ========================================================================= */
@@ -1025,42 +1074,9 @@ const Cookies = (function () {
     });
   }
 
-  function initContactForm() {
-    const form = document.getElementById("contactForm");
-    const status = document.getElementById("contactStatus");
-    if (!form || !status) return;
-
-    const saved = get("ecliptic_contact");
-    if (saved) {
-      status.textContent = "Saved on this device \u2014 thanks!";
-      status.hidden = false;
-    }
-
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      const email = document.getElementById("contactEmail").value.trim();
-      const phone = document.getElementById("contactPhone").value.trim();
-      if (!email && !phone) {
-        status.textContent = "Add an email or phone, or just skip \u2014 both are optional.";
-        status.hidden = false;
-        return;
-      }
-      set("ecliptic_contact", JSON.stringify({ email: email, phone: phone }), 365);
-      status.textContent = "Saved on this device \u2014 thanks!";
-      status.hidden = false;
-      form.reset();
-    });
-
-    const skipBtn = document.getElementById("contactSkip");
-    if (skipBtn) skipBtn.addEventListener("click", function () {
-      const card = document.getElementById("contactCard");
-      if (card) card.hidden = true;
-    });
-  }
-
   function init() {
     initConsent();
-    initContactForm();
+    remove("ecliptic_contact"); // clean up the old on-device contact cookie
   }
 
   return { init: init, set: set, get: get, remove: remove };
@@ -1490,7 +1506,12 @@ const Explore = (function () {
       }).join("") + '</div>' +
       '<div class="explore-tabs reveal" id="exploreTabs" role="tablist"></div>' +
       '<div class="explore-tab-content" id="exploreTabContent"></div>' +
-      '<button type="button" class="explore-compare-btn" id="exploreCompareBtn">Compare This Planet \u2192</button>';
+      '<button type="button" class="explore-compare-btn" id="exploreCompareBtn">Compare This Planet \u2192</button>' +
+      '<div class="explore-links reveal">' +
+      '<span class="explore-links__label">Learn more:</span>' +
+      '<a class="explore-links__link" href="' + (EXTERNAL_LINKS[id] ? EXTERNAL_LINKS[id].nasa : "#") + '" target="_blank" rel="noopener noreferrer">NASA</a>' +
+      '<a class="explore-links__link" href="' + (EXTERNAL_LINKS[id] ? EXTERNAL_LINKS[id].wiki : "#") + '" target="_blank" rel="noopener noreferrer">Wikipedia</a>' +
+      '</div>';
 
     renderTabs(planet);
 
@@ -2286,6 +2307,44 @@ const Cloud = (function () {
     console.log("[cloud]", msg, err);
   }
 
+  let lastSyncErrorAt = 0;
+  let pushRetryQueued = false;
+  let retryListenerAttached = false;
+
+  // Sync runs in the background, so a silent failure is the worst case: the
+  // user keeps earning points they think are saved. Rate-limit so a flaky
+  // connection does not stack toasts.
+  function notify(message) {
+    const now = Date.now();
+    if (now - lastSyncErrorAt < 30000) return;
+    lastSyncErrorAt = now;
+    const toast = document.createElement("div");
+    toast.className = "badge-toast badge-toast--error";
+    toast.setAttribute("role", "status");
+    toast.setAttribute("aria-live", "polite");
+    toast.innerHTML =
+      '<span class="badge-toast__icon">⚠</span>' +
+      '<span class="badge-toast__text"><strong>Not synced</strong><br>' + message + '</span>';
+    document.body.appendChild(toast);
+    requestAnimationFrame(function () { toast.classList.add("is-visible"); });
+    setTimeout(function () {
+      toast.classList.remove("is-visible");
+      setTimeout(function () { toast.remove(); }, 400);
+    }, 4200);
+  }
+
+  // Retries a deferred cloud push once the connection comes back.
+  function retryPushWhenOnline() {
+    if (retryListenerAttached) return;
+    retryListenerAttached = true;
+    window.addEventListener("online", function () {
+      if (pushRetryQueued) {
+        pushRetryQueued = false;
+        pushToCloud();
+      }
+    });
+  }
+
   // Profile fields are entered at signup time, but if Supabase's "Confirm
   // email" setting is on, there's no active session yet to save them with -
   // so they're stashed here and picked up once the user actually confirms
@@ -2355,6 +2414,7 @@ const Cloud = (function () {
     return sb.from("profiles").select("*").eq("id", currentUser.id).maybeSingle().then(function (result) {
       if (result.error) {
         log("read failed", result.error);
+        notify("Your progress is still saved on this device.");
         return;
       }
 
@@ -2381,13 +2441,21 @@ const Cloud = (function () {
 
       Gamification.importState(merged);
       return pushToCloud().then(function () {
-        document.dispatchEvent(new CustomEvent("cloud:synced"));
+        document.dispatchEvent(new CustomEvent("cloud:synced", { detail: { profile: currentProfile } }));
       });
     });
   }
 
   function pushToCloud() {
     if (!currentUser) return;
+
+    if (typeof navigator !== "undefined" && navigator.onLine === false) {
+      pushRetryQueued = true;
+      retryPushWhenOnline();
+      log("push deferred - offline");
+      return Promise.resolve();
+    }
+
     const s = Gamification.exportState();
     const payload = {
       id: currentUser.id,
@@ -2407,9 +2475,42 @@ const Cloud = (function () {
       payload.phone = currentProfile.phone;
       payload.address = currentProfile.address;
     }
+
     return sb.from("profiles").upsert(payload).then(function (result) {
-      if (result.error) log("push failed", result.error);
+      if (result.error) {
+        log("push failed", result.error);
+        notify("Your progress is still saved on this device.");
+        pushRetryQueued = true;
+        retryPushWhenOnline();
+        return;
+      }
+      pushRetryQueued = false;
     });
+  }
+
+  // Supabase's error shapes vary by SDK version, so this checks the
+  // (more stable) HTTP status first and falls back to matching the
+  // message text.
+  function friendlyAuthError(e) {
+    const status = e && e.status;
+    if (status === 422) return "That email already has an account. Try signing in instead.";
+    if (status === 429) return "Too many attempts. Wait a minute and try again.";
+
+    const raw = (e && e.message) || "Something went wrong. Try again.";
+    const m = raw.toLowerCase();
+    if (m.indexOf("already registered") !== -1 || m.indexOf("already been registered") !== -1)
+      return "That email already has an account. Try signing in instead.";
+    if (m.indexOf("invalid login") !== -1 || m.indexOf("invalid credentials") !== -1)
+      return "Email or password is incorrect.";
+    if (m.indexOf("password") !== -1 && (m.indexOf("6") !== -1 || m.indexOf("least") !== -1))
+      return "Password must be at least 6 characters.";
+    if (m.indexOf("email") !== -1 && (m.indexOf("invalid") !== -1 || m.indexOf("valid") !== -1))
+      return "That does not look like a valid email address.";
+    if (m.indexOf("rate limit") !== -1 || m.indexOf("too many") !== -1)
+      return "Too many attempts. Wait a minute and try again.";
+    if (m.indexOf("failed to fetch") !== -1 || m.indexOf("network") !== -1)
+      return "Can't reach the server. Check your connection.";
+    return raw;
   }
 
   // Wires the dialog's buttons. Runs every time, whether the markup
@@ -2432,12 +2533,14 @@ const Cloud = (function () {
       submitBtn.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
       profileFields.style.display = authMode === "signup" ? "block" : "none";
       msg.textContent = "";
+      msg.style.color = "";
     };
 
     submitBtn.onclick = function () {
       const email = document.getElementById("authEmail").value.trim();
       const pass = document.getElementById("authPass").value;
       msg.textContent = "";
+      msg.style.color = "";
 
       if (!email || !pass) {
         msg.textContent = "Enter an email and password.";
@@ -2461,10 +2564,17 @@ const Cloud = (function () {
         });
       }
 
-      action.then(function () {
+      action.then(function (data) {
+        // With "Confirm email" on, signUp succeeds but returns no session.
+        // Closing the dialog there would look like a silent failure.
+        if (authMode === "signup" && data && data.user && !data.session) {
+          msg.style.color = "var(--accent-good)";
+          msg.textContent = "Check your email to confirm your account, then sign in.";
+          return;
+        }
         dialog.close();
       }).catch(function (e) {
-        msg.textContent = e.message;
+        msg.textContent = friendlyAuthError(e);
       });
     };
   }
@@ -2505,7 +2615,9 @@ const Cloud = (function () {
     if (navBtn) {
       navBtn.onclick = function () {
         if (currentUser) {
-          signOut();
+          if (window.confirm("Sign out? Your progress is saved to your account, so it'll be here next time you sign in.")) {
+            signOut();
+          }
         } else {
           dialog.showModal();
         }
@@ -2514,7 +2626,7 @@ const Cloud = (function () {
 
     sb.auth.onAuthStateChange(function (event, session) {
       currentUser = session ? session.user : null;
-      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser } }));
+      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser, event: event } }));
 
       if (navBtn) {
         navBtn.textContent = currentUser ? "Sign Out" : "Sign In";
@@ -2544,6 +2656,586 @@ const Cloud = (function () {
 document.addEventListener("DOMContentLoaded", function () {
   Cloud.init();
 });
+</script>
+<script>
+/* =========================================================================
+   ECLIPTIC — PRIVACY/COPYRIGHT, WELCOME GREETING & MISSION MENTOR
+   Adds a footer Privacy & Copyright dialog, a post-sign-in welcome banner
+   with a time-of-day greeting and quick actions, and a floating
+   rule-based mentor chatbot that explains any body in PLANETS and reads
+   the user's own quiz history via Gamification. Everything here runs
+   client-side only — no data leaves the browser beyond what Cloud
+   already syncs to Supabase, and this bot is scripted, not a live AI.
+   ========================================================================= */
+const EXTERNAL_LINKS = {
+  sun: { nasa: "https://solarsystem.nasa.gov/solar-system/sun/overview/", wiki: "https://en.wikipedia.org/wiki/Sun" },
+  mercury: { nasa: "https://solarsystem.nasa.gov/planets/mercury/overview/", wiki: "https://en.wikipedia.org/wiki/Mercury_(planet)" },
+  venus: { nasa: "https://solarsystem.nasa.gov/planets/venus/overview/", wiki: "https://en.wikipedia.org/wiki/Venus" },
+  earth: { nasa: "https://solarsystem.nasa.gov/planets/earth/overview/", wiki: "https://en.wikipedia.org/wiki/Earth" },
+  mars: { nasa: "https://solarsystem.nasa.gov/planets/mars/overview/", wiki: "https://en.wikipedia.org/wiki/Mars" },
+  jupiter: { nasa: "https://solarsystem.nasa.gov/planets/jupiter/overview/", wiki: "https://en.wikipedia.org/wiki/Jupiter" },
+  saturn: { nasa: "https://solarsystem.nasa.gov/planets/saturn/overview/", wiki: "https://en.wikipedia.org/wiki/Saturn" },
+  uranus: { nasa: "https://solarsystem.nasa.gov/planets/uranus/overview/", wiki: "https://en.wikipedia.org/wiki/Uranus" },
+  neptune: { nasa: "https://solarsystem.nasa.gov/planets/neptune/overview/", wiki: "https://en.wikipedia.org/wiki/Neptune" },
+  kuiper: { nasa: "https://solarsystem.nasa.gov/solar-system/kuiper-belt/overview/", wiki: "https://en.wikipedia.org/wiki/Kuiper_belt" }
+};
+
+(function () {
+
+  /* ---------- Privacy & Copyright dialog ---------- */
+  const Legal = (function () {
+    function ensureDialog() {
+      if (document.getElementById("legalDialog")) return;
+      const dialog = document.createElement("dialog");
+      dialog.id = "legalDialog";
+      dialog.className = "legal-dialog";
+      dialog.innerHTML =
+        '<h2>Privacy & Copyright</h2>' +
+        '<h3>What we collect</h3>' +
+        '<p>If you sign in, we store your name, email, and location, plus your quiz history, explored planets, and badges, in a Supabase database so your progress follows you between devices. A small cookie remembers your cookie-consent choice.</p>' +
+        '<h3>What we do not do</h3>' +
+        '<p>We do not sell your data, run third-party ad trackers, or share your information with anyone outside this project. If you never sign in, your progress stays only in this browser.</p>' +
+        '<h3>Your choices</h3>' +
+        '<p>You can sign out at any time, use Reset Mission Progress to clear local data, or contact the site owner to request deletion of your account.</p>' +
+        '<h3>Copyright</h3>' +
+        '<p>© 2026 Ecliptic. This is an independent educational project and is not affiliated with, endorsed by, or sponsored by NASA. Planetary facts are approximate and for educational use; the NASA and Wikipedia links throughout this site are provided for further reading and remain the property of their respective owners.</p>' +
+        '<button type="button" class="btn btn--primary" id="legalCloseBtn">Close</button>';
+      document.body.appendChild(dialog);
+      dialog.querySelector("#legalCloseBtn").addEventListener("click", function () { dialog.close(); });
+      dialog.addEventListener("click", function (e) { if (e.target === dialog) dialog.close(); });
+    }
+    function open() {
+      ensureDialog();
+      document.getElementById("legalDialog").showModal();
+    }
+    function init() {
+      const btn = document.getElementById("privacyLinkBtn");
+      if (btn) btn.addEventListener("click", open);
+    }
+    return { init: init };
+  })();
+
+  /* ---------- Post-sign-in welcome banner ---------- */
+  const Welcome = (function () {
+    let pendingGreeting = false;
+    let shownThisSession = false;
+
+    function timeGreeting() {
+      const h = new Date().getHours();
+      if (h < 5) return "Good night";
+      if (h < 12) return "Good morning";
+      if (h < 17) return "Good afternoon";
+      if (h < 21) return "Good evening";
+      return "Good night";
+    }
+
+    function firstName(fullName) {
+      return (fullName || "").trim().split(/\s+/)[0] || "";
+    }
+
+    function dismiss(banner) {
+      banner.classList.remove("is-visible");
+      setTimeout(function () { banner.remove(); }, 350);
+    }
+
+    function show(profile) {
+      if (shownThisSession) return;
+      shownThisSession = true;
+      const name = firstName(profile && profile.name);
+      const greetingName = name ? ", " + name : "";
+      const banner = document.createElement("div");
+      banner.className = "welcome-banner";
+      banner.innerHTML =
+        '<button type="button" class="welcome-banner__close" aria-label="Dismiss">✕</button>' +
+        '<p class="welcome-banner__greeting">' + timeGreeting() + greetingName + '!</p>' +
+        '<p class="welcome-banner__prompt">What would you like to do today?</p>' +
+        '<div class="welcome-banner__actions">' +
+        '<button type="button" class="btn btn--primary" data-welcome-goto="explore">Explore & Learn</button>' +
+        '<button type="button" class="btn btn--ghost" data-welcome-goto="compare">Compare Planets</button>' +
+        '<button type="button" class="btn btn--ghost" data-welcome-goto="test">Take a Test</button>' +
+        '</div>';
+      document.body.appendChild(banner);
+      banner.querySelectorAll("[data-welcome-goto]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          Router.goTo(btn.getAttribute("data-welcome-goto"));
+          dismiss(banner);
+        });
+      });
+      banner.querySelector(".welcome-banner__close").addEventListener("click", function () { dismiss(banner); });
+      requestAnimationFrame(function () { banner.classList.add("is-visible"); });
+      setTimeout(function () { if (document.body.contains(banner)) dismiss(banner); }, 15000);
+    }
+
+    function init() {
+      document.addEventListener("cloud:auth", function (e) {
+        if (e.detail && e.detail.event === "SIGNED_IN") pendingGreeting = true;
+      });
+      document.addEventListener("cloud:synced", function (e) {
+        if (pendingGreeting) {
+          pendingGreeting = false;
+          show(e.detail && e.detail.profile);
+        }
+      });
+    }
+    return { init: init };
+  })();
+
+  /* ---------- Floating Mission Mentor (rule-based, not a live AI) ---------- */
+  const Mentor = (function () {
+    let panel, toggle, body, input, opened = false;
+
+    function scrollToEnd() { body.scrollTop = body.scrollHeight; }
+
+    function addMsg(text, who) {
+      const div = document.createElement("div");
+      div.className = "mentor-msg mentor-msg--" + who;
+      div.textContent = text;
+      body.appendChild(div);
+      scrollToEnd();
+    }
+
+    function findPlanet(t) {
+      return PLANETS.filter(function (p) {
+        return t.indexOf(p.id) !== -1 || t.indexOf(p.name.toLowerCase()) !== -1;
+      })[0] || null;
+    }
+
+    function testSummary() {
+      const s = Gamification.exportState();
+      if (!s.testsTaken.length) {
+        return "You have not taken a test yet. Head to the Test screen when you are ready - I will help you review afterward.";
+      }
+      const last = s.testsTaken[s.testsTaken.length - 1];
+      const pct = Math.round((last.correctCount / last.length) * 100);
+      let msg = "Your last test: " + last.correctCount + "/" + last.length + " correct (" + pct + "%).";
+      if (pct === 100) {
+        msg += " Perfect score - nicely done.";
+      } else if (pct >= 70) {
+        msg += " Solid work. Revisit Explore for whatever felt shakiest, then try again.";
+      } else {
+        msg += " That is a rough one - spend some time in Explore mode before your next attempt, and maybe try a shorter 10-question test to rebuild confidence.";
+      }
+      if (s.testsTaken.length > 1) {
+        const prev = s.testsTaken[s.testsTaken.length - 2];
+        const prevPct = Math.round((prev.correctCount / prev.length) * 100);
+        if (pct > prevPct) msg += " That is an improvement on your previous attempt (" + prevPct + "%).";
+        else if (pct < prevPct) msg += " Your previous attempt scored higher (" + prevPct + "%) - worth another go.";
+      }
+      return msg;
+    }
+
+    function badgeSummary() {
+      const s = Gamification.exportState();
+      const earned = BADGES.filter(function (b) { return s.badges.indexOf(b.id) !== -1; });
+      if (!earned.length) return "No badges yet - completing your first test unlocks \"First Contact.\"";
+      const names = earned.map(function (b) { return b.icon + " " + b.name; }).join(", ");
+      return "You have earned " + earned.length + " of " + BADGES.length + " badges: " + names + ".";
+    }
+
+    function rankSummary() {
+      const rank = Gamification.getRank();
+      let msg = "You are currently ranked " + rank.current.name + ".";
+      if (rank.next) msg += " " + (rank.next.threshold - Gamification.exportState().points) + " points to " + rank.next.name + ".";
+      return msg;
+    }
+
+    function nextStep() {
+      const s = Gamification.exportState();
+      if (!s.exploredPlanets.length) { Router.goTo("explore"); return "You have not explored any bodies yet - let us start with Explore mode."; }
+      if (!s.testsTaken.length) { Router.goTo("test"); return "You have done some exploring - try a quick test to see how much stuck."; }
+      if (!s.comparedAtLeastOnce) { Router.goTo("compare"); return "Try Compare next - seeing two bodies side by side really cements the differences."; }
+      return "You have tried all three modes - revisit Explore for anything you want to brush up on, or take a longer test to push your score higher.";
+    }
+
+    function respond(raw) {
+      const t = raw.trim().toLowerCase();
+      if (!t) return null;
+      const planet = findPlanet(t);
+      if (planet) return planet.name + " - " + planet.hook + " Open Explore for the full breakdown, or ask me to compare it with another body.";
+      if (/mistake|wrong|missed|how did i do|my score|my test|last test/.test(t)) return testSummary();
+      if (/badge/.test(t)) return badgeSummary();
+      if (/rank|points|scoreboard|score board/.test(t)) return rankSummary();
+      if (/what (should|to) .*next|what next|suggest/.test(t)) return nextStep();
+      if (/compare/.test(t)) { Router.goTo("compare"); return "Opening Compare - pick two bodies and I will help you make sense of the differences."; }
+      if (/explore|learn/.test(t)) { Router.goTo("explore"); return "Opening Explore - click any body on the left for the full field guide."; }
+      if (/test|quiz/.test(t)) { Router.goTo("test"); return "Opening the Test screen - good luck."; }
+      if (/^(hi|hello|hey)\b/.test(t)) return "Hello! Ask me about any planet, how your last test went, or what to try next.";
+      if (/what can you do|help/.test(t)) return "I can explain any body in the solar system, summarize your test results, tell you your badges and rank, and jump you to Explore, Compare, or Test.";
+      return "I am not sure about that one yet - I can talk about any planet, your test scores, badges, or rank. Try one of the suggestions below.";
+    }
+
+    function handleSend() {
+      const val = input.value;
+      if (!val.trim()) return;
+      addMsg(val, "user");
+      input.value = "";
+      const reply = respond(val);
+      setTimeout(function () { addMsg(reply, "bot"); }, 300);
+    }
+
+    function open() {
+      panel.classList.add("is-open");
+      toggle.setAttribute("aria-expanded", "true");
+      if (!opened) {
+        opened = true;
+        addMsg("Hi, I am your Mission Mentor. Ask me about any planet, how your last test went, or what to try next.", "bot");
+      }
+    }
+
+    function close() {
+      panel.classList.remove("is-open");
+      toggle.setAttribute("aria-expanded", "false");
+    }
+
+    function ensureUI() {
+      toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "mentor-toggle";
+      toggle.setAttribute("aria-label", "Open Mission Mentor");
+      toggle.setAttribute("aria-expanded", "false");
+      toggle.textContent = "✦";
+
+      panel = document.createElement("div");
+      panel.className = "mentor-panel";
+      panel.innerHTML =
+        '<div class="mentor-panel__header">' +
+        '<div><p class="mentor-panel__title">Mission Mentor</p><p class="mentor-panel__subtitle">Your solar system study buddy</p></div>' +
+        '<button type="button" class="mentor-panel__close" aria-label="Close">✕</button>' +
+        '</div>' +
+        '<div class="mentor-panel__body" id="mentorBody"></div>' +
+        '<div class="mentor-panel__quick" id="mentorQuick">' +
+        '<button type="button" class="mentor-chip" data-q="How did I do on my last test?">Last test?</button>' +
+        '<button type="button" class="mentor-chip" data-q="Tell me about Mars">About Mars</button>' +
+        '<button type="button" class="mentor-chip" data-q="What are my badges?">My badges</button>' +
+        '<button type="button" class="mentor-chip" data-q="What should I do next?">What next?</button>' +
+        '</div>' +
+        '<div class="mentor-panel__input">' +
+        '<input type="text" id="mentorInput" placeholder="Ask about a planet, your score...">' +
+        '<button type="button" id="mentorSend" aria-label="Send">→</button>' +
+        '</div>';
+
+      document.body.appendChild(toggle);
+      document.body.appendChild(panel);
+      body = document.getElementById("mentorBody");
+      input = document.getElementById("mentorInput");
+
+      toggle.addEventListener("click", function () {
+        if (panel.classList.contains("is-open")) close(); else open();
+      });
+      panel.querySelector(".mentor-panel__close").addEventListener("click", close);
+      document.getElementById("mentorSend").addEventListener("click", handleSend);
+      input.addEventListener("keydown", function (e) { if (e.key === "Enter") handleSend(); });
+      panel.querySelectorAll(".mentor-chip").forEach(function (chip) {
+        chip.addEventListener("click", function () {
+          input.value = chip.getAttribute("data-q");
+          handleSend();
+        });
+      });
+    }
+
+    function init() { ensureUI(); }
+    return { init: init };
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    Legal.init();
+    Welcome.init();
+    Mentor.init();
+  });
+
+})();
+</script>
+<script>
+/* =========================================================================
+   ECLIPTIC — ACCESSIBILITY: READ ALOUD
+   A screen-reader-style helper for people who find reading text difficult
+   and for blind users, using the browser's built-in Web Speech API (no
+   external service, nothing leaves the browser). Wraps the words of the
+   currently visible screen in spans, reads them aloud, and highlights the
+   word/paragraph in place as it is spoken. Works on every screen (Explore,
+   Compare, Test, Scoreboard, Landing) since it reads whatever is currently
+   un-hidden rather than screen-specific content.
+   Known limitation: if the page content changes while reading without a
+   URL/hash change (e.g. advancing a quiz question), toggle the reader off
+   and back on to re-sync - it does not watch for in-place content swaps.
+   ========================================================================= */
+(function () {
+  if (typeof window.speechSynthesis === "undefined") return;
+
+  const SKIP_TAGS = ["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "SELECT", "NOSCRIPT"];
+  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast"];
+  const BLOCK_SELECTOR = "p, h1, h2, h3, h4, h5, h6, li, td, th, button, a, label, dt, dd";
+
+  const Reader = (function () {
+    let toggle, bar, playBtn, rateInput, rateOut, volInput, volOut;
+    let utterances = [];
+    let wordSpans = [];
+    let currentIndex = -1;
+    let isOpen = false;
+    let isPlaying = false;
+    let rate = 1;
+    let volume = 1;
+
+    function shouldSkip(el) {
+      let node = el;
+      while (node && node !== document.body) {
+        if (SKIP_TAGS.indexOf(node.tagName) !== -1) return true;
+        const cls = (node.getAttribute && node.getAttribute("class")) || "";
+        for (let i = 0; i < SKIP_CLASS_MARKERS.length; i++) {
+          if (cls.indexOf(SKIP_CLASS_MARKERS[i]) !== -1) return true;
+        }
+        node = node.parentElement;
+      }
+      return false;
+    }
+
+    function activeScreen() {
+      return document.querySelector(".screen:not([hidden])") || document.body;
+    }
+
+    function wrapWords(root) {
+      const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+      const textNodes = [];
+      let n;
+      while ((n = walker.nextNode())) {
+        if (!n.nodeValue || !n.nodeValue.trim()) continue;
+        if (shouldSkip(n.parentElement)) continue;
+        textNodes.push(n);
+      }
+
+      const groups = [];
+      let currentGroup = null;
+      let lastBlock = null;
+
+      textNodes.forEach(function (textNode) {
+        const block = (textNode.parentElement.closest && textNode.parentElement.closest(BLOCK_SELECTOR)) || textNode.parentElement;
+        const frag = document.createDocumentFragment();
+        const tokens = textNode.nodeValue.split(/(\s+)/);
+        const spansHere = [];
+        tokens.forEach(function (tok) {
+          if (!tok) return;
+          if (/^\s+$/.test(tok)) {
+            frag.appendChild(document.createTextNode(tok));
+          } else {
+            const span = document.createElement("span");
+            span.className = "reader-word";
+            span.textContent = tok;
+            frag.appendChild(span);
+            spansHere.push(span);
+            wordSpans.push(span);
+          }
+        });
+        textNode.parentNode.replaceChild(frag, textNode);
+
+        if (block !== lastBlock || !currentGroup) {
+          currentGroup = { spans: [] };
+          groups.push(currentGroup);
+          lastBlock = block;
+        }
+        currentGroup.spans = currentGroup.spans.concat(spansHere);
+      });
+
+      utterances = groups
+        .map(function (g) {
+          const words = g.spans.map(function (s) { return s.textContent; });
+          const text = words.join(" ");
+          const offsets = [];
+          let pos = 0;
+          words.forEach(function (w) {
+            offsets.push({ start: pos, end: pos + w.length });
+            pos += w.length + 1;
+          });
+          return { text: text, spans: g.spans, offsets: offsets };
+        })
+        .filter(function (u) { return u.text.trim().length > 0; });
+    }
+
+    function unwrap() {
+      wordSpans.forEach(function (span) {
+        if (span.parentNode) span.parentNode.replaceChild(document.createTextNode(span.textContent), span);
+      });
+      wordSpans = [];
+      utterances = [];
+    }
+
+    function clearHighlight() {
+      wordSpans.forEach(function (s) { s.classList.remove("reader-word--active"); });
+    }
+
+    function highlightWord(utteranceIdx, wordIdx) {
+      clearHighlight();
+      const u = utterances[utteranceIdx];
+      if (!u || !u.spans[wordIdx]) return;
+      const span = u.spans[wordIdx];
+      span.classList.add("reader-word--active");
+      span.scrollIntoView({ block: "center", behavior: "smooth" });
+    }
+
+    function setPlayIcon() {
+      if (playBtn) playBtn.textContent = isPlaying ? "⏸" : "▶";
+    }
+
+    function stopPlayback() {
+      speechSynthesis.cancel();
+      isPlaying = false;
+      currentIndex = -1;
+      clearHighlight();
+      setPlayIcon();
+    }
+
+    function speak(idx) {
+      if (!utterances[idx]) { stopPlayback(); return; }
+      currentIndex = idx;
+      const u = utterances[idx];
+      const utter = new SpeechSynthesisUtterance(u.text);
+      utter.rate = Math.max(rate, 0.1);
+      utter.volume = volume;
+      utter.onboundary = function (e) {
+        if (e.name && e.name !== "word") return;
+        let wIdx = 0;
+        for (let i = 0; i < u.offsets.length; i++) {
+          if (e.charIndex >= u.offsets[i].start && e.charIndex < u.offsets[i].end + 1) { wIdx = i; break; }
+        }
+        highlightWord(idx, wIdx);
+      };
+      utter.onend = function () {
+        if (isPlaying) speak(idx + 1);
+      };
+      speechSynthesis.speak(utter);
+    }
+
+    function startFrom(idx) {
+      speechSynthesis.cancel();
+      isPlaying = true;
+      setPlayIcon();
+      speak(idx);
+    }
+
+    function togglePlay() {
+      if (!utterances.length) { wrapWords(activeScreen()); wireWordClicks(); }
+      if (!utterances.length) return;
+      if (isPlaying && speechSynthesis.speaking && !speechSynthesis.paused) {
+        speechSynthesis.pause();
+        isPlaying = false;
+        setPlayIcon();
+      } else if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+        isPlaying = true;
+        setPlayIcon();
+      } else {
+        startFrom(currentIndex >= 0 ? currentIndex : 0);
+      }
+    }
+
+    function rewind() {
+      if (currentIndex < 0) return;
+      startFrom(currentIndex);
+    }
+
+    function step(delta) {
+      const next = (currentIndex < 0 ? 0 : currentIndex) + delta;
+      if (next < 0 || next >= utterances.length) return;
+      startFrom(next);
+    }
+
+    function wireWordClicks() {
+      utterances.forEach(function (u, uIdx) {
+        u.spans.forEach(function (span) {
+          span.addEventListener("click", function () { startFrom(uIdx); });
+        });
+      });
+    }
+
+    function applySettingsLive() {
+      if (isPlaying && currentIndex >= 0) startFrom(currentIndex);
+    }
+
+    function open() {
+      isOpen = true;
+      document.body.classList.add("reader-open");
+      bar.classList.add("is-open");
+      toggle.classList.add("is-active");
+      wrapWords(activeScreen());
+      wireWordClicks();
+    }
+
+    function close() {
+      isOpen = false;
+      document.body.classList.remove("reader-open");
+      bar.classList.remove("is-open");
+      toggle.classList.remove("is-active");
+      stopPlayback();
+      unwrap();
+    }
+
+    function ensureUI() {
+      toggle = document.createElement("button");
+      toggle.type = "button";
+      toggle.className = "reader-toggle";
+      toggle.setAttribute("aria-label", "Read this page aloud");
+      toggle.textContent = "🔊";
+
+      bar = document.createElement("div");
+      bar.className = "reader-bar";
+      bar.innerHTML =
+        '<div class="reader-bar__transport">' +
+        '<button type="button" class="reader-bar__btn" id="readerRewind" aria-label="Rewind">↺</button>' +
+        '<button type="button" class="reader-bar__btn" id="readerPrev" aria-label="Previous">⏮</button>' +
+        '<button type="button" class="reader-bar__btn reader-bar__btn--play" id="readerPlay" aria-label="Play">▶</button>' +
+        '<button type="button" class="reader-bar__btn" id="readerNext" aria-label="Next">⏭</button>' +
+        '</div>' +
+        '<div class="reader-bar__slider-group">' +
+        '<span>Speed</span>' +
+        '<input type="range" id="readerRate" min="0" max="4" step="0.25" value="1">' +
+        '<span class="reader-bar__readout" id="readerRateOut">1.00x</span>' +
+        '</div>' +
+        '<div class="reader-bar__slider-group">' +
+        '<span>Vol</span>' +
+        '<input type="range" id="readerVolume" min="0" max="100" step="5" value="100">' +
+        '<span class="reader-bar__readout" id="readerVolOut">100%</span>' +
+        '</div>' +
+        '<button type="button" class="reader-bar__close" id="readerClose" aria-label="Close reader">✕</button>';
+
+      document.body.appendChild(toggle);
+      document.body.appendChild(bar);
+
+      playBtn = bar.querySelector("#readerPlay");
+      rateInput = bar.querySelector("#readerRate");
+      rateOut = bar.querySelector("#readerRateOut");
+      volInput = bar.querySelector("#readerVolume");
+      volOut = bar.querySelector("#readerVolOut");
+
+      toggle.addEventListener("click", function () {
+        if (isOpen) close(); else open();
+      });
+      bar.querySelector("#readerClose").addEventListener("click", close);
+      playBtn.addEventListener("click", togglePlay);
+      bar.querySelector("#readerRewind").addEventListener("click", rewind);
+      bar.querySelector("#readerPrev").addEventListener("click", function () { step(-1); });
+      bar.querySelector("#readerNext").addEventListener("click", function () { step(1); });
+
+      rateInput.addEventListener("input", function () {
+        rate = parseFloat(rateInput.value);
+        rateOut.textContent = rate.toFixed(2) + "x";
+        applySettingsLive();
+      });
+      volInput.addEventListener("input", function () {
+        volume = parseInt(volInput.value, 10) / 100;
+        volOut.textContent = volInput.value + "%";
+        applySettingsLive();
+      });
+
+      window.addEventListener("hashchange", function () {
+        if (isOpen) close();
+      });
+    }
+
+    function init() { ensureUI(); }
+    return { init: init };
+  })();
+
+  document.addEventListener("DOMContentLoaded", function () { Reader.init(); });
+})();
 </script>
 </body>
 </html>
