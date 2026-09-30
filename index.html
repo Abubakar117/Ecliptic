@@ -219,6 +219,44 @@ a { color: inherit; }
 .orrery-canvas { width: 100%; height: 100%; }
 .orrery-canvas canvas { border-radius: var(--radius-lg); }
 .orrery__label { position: absolute; z-index: 5; pointer-events: none; font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; background: rgba(8,8,16,0.85); border: 1px solid var(--border-glass); padding: 0.3em 0.7em; border-radius: 999px; white-space: nowrap; }
+.orrery-focus-panel {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%) translateY(8px);
+  display: flex; align-items: center; gap: 0.6rem; z-index: 6;
+  background: rgba(8,8,16,0.88); border: 1px solid var(--border-glass); border-radius: 999px;
+  padding: 0.5em 0.6em 0.5em 1.1em; font-family: var(--font-display); font-size: 0.82rem; font-weight: 600;
+  opacity: 0; pointer-events: none; transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  white-space: nowrap; max-width: 92%;
+}
+.orrery-labels { position: absolute; inset: 0; pointer-events: none; overflow: hidden; border-radius: var(--radius-lg); z-index: 4; }
+.orrery-tag { position: absolute; left: 0; top: 0; white-space: nowrap; opacity: 0; transition: opacity 0.25s; will-change: transform; }
+.orrery-tag--planet { font-family: var(--font-display); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(239,236,227,0.88); text-shadow: 0 0 6px #000; }
+.orrery-tag--moon { font-family: var(--font-display); font-size: 0.6rem; color: rgba(222,228,236,0.9); text-shadow: 0 0 5px #000; }
+.orrery-tag--small { font-family: var(--font-display); font-size: 0.56rem; color: rgba(190,196,208,0.62); text-shadow: 0 0 5px #000; }
+.orrery-tag--craft { font-family: var(--font-mono); font-size: 0.56rem; color: #ffb454; text-shadow: 0 0 5px #000; }
+@media (max-width: 640px) { .orrery-tag--planet { font-size: 0.5rem; letter-spacing: 0.14em; } .orrery-tag--moon, .orrery-tag--craft { font-size: 0.5rem; } .orrery-tag--small { font-size: 0.46rem; } }
+.orrery-info { position: absolute; left: 12px; top: 12px; z-index: 6; width: min(260px, 60%); background: rgba(8,8,16,0.9); border: 1px solid var(--border-glass); border-radius: 14px; padding: 0.8rem 0.95rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+.orrery-info.is-visible { opacity: 1; }
+.orrery-info h4 { margin: 0 0 0.15rem; font-family: var(--font-display); font-size: 0.95rem; }
+.orrery-info__type { font-family: var(--font-mono); font-size: 0.62rem; color: var(--accent-primary); text-transform: uppercase; letter-spacing: 0.08em; }
+.orrery-info dl { display: grid; grid-template-columns: auto 1fr; gap: 0.15rem 0.6rem; margin: 0.5rem 0; font-family: var(--font-mono); font-size: 0.64rem; }
+.orrery-info dt { color: var(--ink-faint); } .orrery-info dd { margin: 0; color: var(--ink); }
+.orrery-info p { margin: 0; font-size: 0.72rem; line-height: 1.4; color: var(--ink-dim); }
+@media (max-width: 640px) { .orrery-info { width: 62%; padding: 0.6rem 0.7rem; } .orrery-info p { font-size: 0.64rem; } }
+.orrery-focus-panel__craft { font-family: var(--font-mono); font-size: 0.64rem; font-weight: 400; color: var(--ink-faint); }
+.orrery-zoom { position: absolute; right: 10px; top: 10px; z-index: 6; display: flex; flex-direction: column; gap: 6px; }
+.orrery-zoom button { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border-glass); background: rgba(8,8,16,0.85); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; }
+.orrery-zoom button:hover { background: rgba(255,255,255,0.16); }
+#orreryModeBtn { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; }
+.orrery-focus-panel.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
+.orrery-focus-panel__btn { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; color: var(--ink); background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.8em; cursor: pointer; }
+.orrery-focus-panel__btn:hover { background: rgba(255,255,255,0.18); }
+.orrery-focus-panel__btn--primary { background: var(--accent-primary); color: #1a1305; border-color: transparent; }
+.orrery-focus-panel__btn--primary:hover { background: var(--accent-primary); opacity: 0.9; }
+@media (max-width: 640px) {
+  .orrery-focus-panel { font-size: 0.72rem; padding: 0.45em 0.5em 0.45em 0.8em; gap: 0.4rem; }
+  .orrery-focus-panel__btn { font-size: 0.6rem; padding: 0.35em 0.6em; }
+  .orrery-focus-panel__craft { display: none; }
+}
 .orrery__hint { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); text-align: center; margin-top: 0.8rem; }
 
 .orrery-fallback { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -303,6 +341,19 @@ a { color: inherit; }
 @keyframes spherespin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes bandslide { from { background-position: 0 0; } to { background-position: 260px 0; } }
 @media (max-width: 640px) { .explore-visual--big { width: 150px; height: 150px; } }
+
+/* ---------- explore: "what orbits this body" diagram, inspired by
+   NASA's Eyes on the Solar System - a real body at the center, its real
+   named moons revolving around it, closer moons circling faster. Shown
+   inside each planet's own "Moons & Rings" tab. ---------- */
+.moon-orbit { position: relative; width: 260px; height: 260px; margin: 0.4rem auto 1.2rem; display: flex; align-items: center; justify-content: center; }
+.moon-orbit__center { position: absolute; top: 50%; left: 50%; width: 54px; height: 54px; margin: -27px 0 0 -27px; border-radius: 50%; background: radial-gradient(circle at 32% 32%, #fff, var(--section-accent, var(--accent-primary)) 60%, #000 130%); box-shadow: 0 0 22px 4px color-mix(in srgb, var(--section-accent, var(--accent-primary)) 45%, transparent); }
+.moon-orbit__ring { position: absolute; top: 50%; left: 50%; border: 1px dashed rgba(255, 255, 255, 0.16); border-radius: 50%; animation: spin linear infinite; }
+.moon-orbit__dot { position: absolute; top: -3px; left: 50%; width: 7px; height: 7px; margin-left: -3.5px; border-radius: 50%; background: #cfd6de; box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.55); }
+.moon-orbit__none { font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-faint); text-align: center; }
+.moon-legend { display: flex; flex-wrap: wrap; gap: 0.5rem; justify-content: center; margin-bottom: 0.6rem; }
+.moon-legend__chip { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-dim); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.3em 0.8em; }
+@media (max-width: 640px) { .moon-orbit { width: 210px; height: 210px; } }
 
 @media (max-width: 860px) {
   .explore-layout { flex-direction: column; padding: 2.5rem 1.25rem 3rem; gap: 1.1rem; }
@@ -524,7 +575,19 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     </div>
     <div class="orrery">
       <div class="orrery-canvas" id="orreryCanvas" role="img" aria-label="Interactive 3D model of the solar system. Drag to rotate, scroll to zoom, click a planet to explore it."></div>
+      <div class="orrery-labels" id="orreryLabels" aria-hidden="true"></div>
       <span class="orrery__label" id="orreryLabel" hidden></span>
+      <div class="orrery-zoom" aria-label="Zoom">
+        <button type="button" id="orreryZoomIn" aria-label="Zoom in">+</button>
+        <button type="button" id="orreryZoomOut" aria-label="Zoom out">&minus;</button>
+        <button type="button" id="orreryModeBtn" aria-label="Switch to 2D top-down view">3D</button>
+      </div>
+      <div class="orrery-info" id="orreryInfo"></div>
+      <div class="orrery-focus-panel" id="orreryFocusPanel">
+        <span id="orreryFocusName">Earth</span><span class="orrery-focus-panel__craft" id="orreryFocusCraft"></span>
+        <button type="button" class="orrery-focus-panel__btn" id="orreryFocusBack">&larr; Solar System</button>
+        <button type="button" class="orrery-focus-panel__btn orrery-focus-panel__btn--primary" id="orreryFocusProfile">Full Profile &rarr;</button>
+      </div>
       <div class="orrery-fallback" id="orreryFallback" hidden aria-hidden="true">
         <div class="orrery-fallback__sun"></div>
         <div class="orrery-fallback__ring orrery-fallback__ring--1"><span class="orrery-fallback__planet"></span></div>
@@ -532,7 +595,7 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
         <div class="orrery-fallback__ring orrery-fallback__ring--3"><span class="orrery-fallback__planet"></span></div>
         <div class="orrery-fallback__ring orrery-fallback__ring--4"><span class="orrery-fallback__planet"></span></div>
       </div>
-      <p class="orrery__hint">Drag to rotate · Scroll to zoom · Click a planet to explore</p>
+      <p class="orrery__hint">Drag to rotate · Scroll to zoom · Drag freely in any direction (even upside-down) · Click a body to fly in · Sizes and distances are not to scale</p>
     </div>
   </header>
 
@@ -825,10 +888,10 @@ const PLANETS = [
       { label: "Distance from Sun", value: "778.5M km (5.20 AU)" },
       { label: "Orbital Period", value: "11.9 years" },
       { label: "Day Length", value: "9.9 hours" },
-      { label: "Moons", value: "90+" },
+      { label: "Moons", value: "100+" },
       { label: "Avg Temp", value: "\u2248-110\u00b0C" }
     ],
-    compare: { diameter: "139,820 km", mass: "317.8\u00d7 Earth", gravity: "2.53g", distance: "5.20 AU", orbitalPeriod: "11.9 years", dayLength: "9.9 hours", tilt: "3.1\u00b0", moons: "90+", temp: "\u2248-110\u00b0C" },
+    compare: { diameter: "139,820 km", mass: "317.8\u00d7 Earth", gravity: "2.53g", distance: "5.20 AU", orbitalPeriod: "11.9 years", dayLength: "9.9 hours", tilt: "3.1\u00b0", moons: "100+", temp: "\u2248-110\u00b0C" },
     deepDive: {
       physical: "Jupiter likely has a dense, partially dissolved core of rock and ice, surrounded by a thick layer of metallic hydrogen, hydrogen compressed so intensely it behaves like a liquid metal, which is what generates Jupiter's enormous magnetic field, the strongest of any planet.",
       atmosphere: "Jupiter's atmosphere is mostly hydrogen and helium, with colorful bands of ammonia and other compound clouds driven by intense internal heat and the planet's rapid rotation. Winds in some jet streams exceed 600 km/h.",
@@ -857,10 +920,10 @@ const PLANETS = [
       { label: "Distance from Sun", value: "1.43B km (9.54 AU)" },
       { label: "Orbital Period", value: "29.5 years" },
       { label: "Day Length", value: "10.7 hours" },
-      { label: "Moons", value: "140+" },
+      { label: "Moons", value: "290+" },
       { label: "Avg Temp", value: "\u2248-140\u00b0C" }
     ],
-    compare: { diameter: "116,460 km", mass: "95.2\u00d7 Earth", gravity: "1.07g", distance: "9.54 AU", orbitalPeriod: "29.5 years", dayLength: "10.7 hours", tilt: "26.7\u00b0", moons: "140+", temp: "\u2248-140\u00b0C" },
+    compare: { diameter: "116,460 km", mass: "95.2\u00d7 Earth", gravity: "1.07g", distance: "9.54 AU", orbitalPeriod: "29.5 years", dayLength: "10.7 hours", tilt: "26.7\u00b0", moons: "290+", temp: "\u2248-140\u00b0C" },
     deepDive: {
       physical: "Like Jupiter, Saturn likely has a rock-and-ice core surrounded by metallic hydrogen and then molecular hydrogen. Its lower density than Jupiter's, despite similar composition, is part of why Saturn is the only planet less dense than water.",
       atmosphere: "Saturn's atmosphere is dominated by hydrogen and helium, with pale yellow bands less vivid than Jupiter's because a haze layer sits above the cloud tops. A hexagon-shaped jet stream around its north pole, thousands of kilometers across, is one of the more bizarre weather features found on any planet.",
@@ -889,15 +952,15 @@ const PLANETS = [
       { label: "Distance from Sun", value: "2.87B km (19.2 AU)" },
       { label: "Orbital Period", value: "84 years" },
       { label: "Day Length", value: "17.2 hours" },
-      { label: "Moons", value: "27" },
+      { label: "Moons", value: "29" },
       { label: "Avg Temp", value: "\u2248-195\u00b0C" }
     ],
-    compare: { diameter: "50,724 km", mass: "14.5\u00d7 Earth", gravity: "0.89g", distance: "19.2 AU", orbitalPeriod: "84 years", dayLength: "17.2 hours", tilt: "97.8\u00b0", moons: "27", temp: "\u2248-195\u00b0C" },
+    compare: { diameter: "50,724 km", mass: "14.5\u00d7 Earth", gravity: "0.89g", distance: "19.2 AU", orbitalPeriod: "84 years", dayLength: "17.2 hours", tilt: "97.8\u00b0", moons: "29", temp: "\u2248-195\u00b0C" },
     deepDive: {
       physical: "Uranus and Neptune are classified separately from Jupiter and Saturn as 'ice giants' because their interiors are dominated by dense, hot fluids of water, ammonia, and methane ices surrounding a small rocky core, rather than the mostly-hydrogen interiors of the larger gas giants.",
       atmosphere: "Uranus's atmosphere is hydrogen, helium, and methane; that methane absorbs red light, giving the planet its pale blue-green color. Its atmosphere is also the coldest in the solar system, with cloud-top temperatures dropping to around -224\u00b0C, despite not being the most distant planet.",
       orbit: "Uranus's defining feature is its roughly 98-degree axial tilt, meaning it essentially orbits the Sun on its side, likely the result of a massive collision early in its history. Each pole gets about 42 years of continuous daylight, then 42 years of darkness.",
-      moons: "Uranus has 27 known moons, mostly named after characters from the works of William Shakespeare and Alexander Pope rather than mythology. It also has a faint system of 13 known rings, discovered in 1977, decades before Voyager 2 photographed them directly.",
+      moons: "Uranus has 29 known moons, mostly named after characters from the works of William Shakespeare and Alexander Pope rather than mythology. It also has a faint system of 13 known rings, discovered in 1977, decades before Voyager 2 photographed them directly.",
       exploration: "Uranus has been visited by only one spacecraft: Voyager 2, which flew past in January 1986. No dedicated mission has ever orbited it, though a Uranus orbiter has been recommended as a priority for future NASA missions.",
       facts: "Uranus was the first planet discovered with a telescope rather than known since antiquity, found by William Herschel in 1781. He initially wanted to name it 'Georgium Sidus' after King George III.",
       vsEarth: "Uranus is about 4 times Earth's diameter and roughly 63 times its volume, but its low density means it has only about 14.5 times Earth's mass."
@@ -921,15 +984,15 @@ const PLANETS = [
       { label: "Distance from Sun", value: "4.50B km (30.1 AU)" },
       { label: "Orbital Period", value: "165 years" },
       { label: "Day Length", value: "16.1 hours" },
-      { label: "Moons", value: "14" },
+      { label: "Moons", value: "16+" },
       { label: "Avg Temp", value: "\u2248-200\u00b0C" }
     ],
-    compare: { diameter: "49,244 km", mass: "17.1\u00d7 Earth", gravity: "1.14g", distance: "30.1 AU", orbitalPeriod: "165 years", dayLength: "16.1 hours", tilt: "28.3\u00b0", moons: "14", temp: "\u2248-200\u00b0C" },
+    compare: { diameter: "49,244 km", mass: "17.1\u00d7 Earth", gravity: "1.14g", distance: "30.1 AU", orbitalPeriod: "165 years", dayLength: "16.1 hours", tilt: "28.3\u00b0", moons: "16+", temp: "\u2248-200\u00b0C" },
     deepDive: {
       physical: "Neptune shares Uranus's ice-giant structure: a small rocky core inside a deep mantle of hot, compressed water, ammonia, and methane, topped by a hydrogen-helium atmosphere. Neptune generates far more internal heat than Uranus does, which may explain why it has more active weather despite being farther from the Sun.",
       atmosphere: "Neptune's atmosphere holds the solar system's fastest recorded winds, gusting up to roughly 2,100 km/h, and features large, dark storm systems similar in concept to Jupiter's Great Red Spot, though they tend to appear and dissipate over just a few years rather than centuries.",
       orbit: "Neptune's axial tilt, about 28 degrees, is close to Earth's, giving it seasons too, though each one lasts over 40 Earth years given its 165-year orbit. It's also in a stable resonance with the dwarf planet Pluto, completing 3 orbits for every 2 of Pluto's.",
-      moons: "Neptune has 14 known moons and a faint system of rings and partial ring arcs. Its largest moon, Triton, is geologically active with nitrogen-ice geysers and orbits backwards, strong evidence it's a captured Kuiper Belt object rather than a moon that formed with the planet.",
+      moons: "Neptune has at least 16 known moons and a faint system of rings and partial ring arcs. Its largest moon, Triton, is geologically active with nitrogen-ice geysers and orbits backwards, strong evidence it's a captured Kuiper Belt object rather than a moon that formed with the planet.",
       exploration: "Neptune has been visited by only one spacecraft, Voyager 2, which flew past in August 1989 on its way out of the solar system. It remains the most distant planet ever visited by a spacecraft.",
       facts: "Neptune was the first planet found through mathematical prediction rather than direct observation, when its gravitational pull on Uranus revealed its existence before anyone had seen it through a telescope.",
       vsEarth: "Neptune is about 3.9 times Earth's diameter and 58 times its volume, with roughly 17 times Earth's mass, making it slightly smaller but denser than Uranus."
@@ -968,6 +1031,41 @@ const PLANETS = [
     }
   }
 ];
+
+/* Real, named moons for each body - not live-tracked like NASA's tool,
+   but factually grounded, used to draw "what orbits this body" below.
+   Order matters: index 0 is the innermost/fastest-orbiting moon. Counts
+   match the "moons" figures already quoted in each planet's own copy
+   above (e.g. Jupiter shows its 4 Galilean moons out of 100+ known). */
+const MOONS = {
+  sun: [], mercury: [], venus: [],
+  earth: ["Moon"],
+  mars: ["Phobos", "Deimos"],
+  jupiter: ["Io", "Europa", "Ganymede", "Callisto"],
+  saturn: ["Mimas", "Enceladus", "Tethys", "Dione", "Rhea", "Titan", "Iapetus"],
+  uranus: ["Miranda", "Ariel", "Umbriel", "Titania", "Oberon"],
+  neptune: ["Proteus", "Triton", "Nereid"],
+  kuiper: ["Charon", "Styx", "Nix", "Kerberos", "Hydra"]
+};
+
+/* Notable spacecraft that really orbit these bodies. Shown as small
+   markers, like NASA's Eyes does - illustrative positions, not live
+   tracking. Only missions I could confirm as orbiting are listed. */
+const SMALL_INFO = {
+  vesta: { type: "Asteroid", size: "~525 km wide", orbit: "3.6 years", found: "1807, Heinrich Olbers", fact: "NASA's Dawn spacecraft orbited Vesta in 2011\u201312 before moving on to Ceres, the first spacecraft to orbit two different worlds." },
+  ceres: { type: "Dwarf planet", size: "~940 km wide", orbit: "4.6 years", found: "1801, Giuseppe Piazzi", fact: "The only dwarf planet in the inner solar system. Bright salt deposits in Occator Crater show it once had briny water." },
+  pallas: { type: "Asteroid", size: "~510 km wide", orbit: "4.6 years", found: "1802, Heinrich Olbers", fact: "One of the largest asteroids, with an unusually tilted orbit of about 35\u00b0 that carries it far above and below the main belt." },
+  hygiea: { type: "Asteroid", size: "~430 km wide", orbit: "5.6 years", found: "1849, Annibale de Gasparis", fact: "Nearly round in 2019 images, which makes it a candidate for reclassification as a dwarf planet." },
+  pluto: { type: "Dwarf planet", size: "2,377 km wide", orbit: "248 years", found: "1930, Clyde Tombaugh", fact: "Reclassified as a dwarf planet in 2006. NASA's New Horizons flew past it in July 2015 and it has five known moons.", profile: "kuiper" },
+  haumea: { type: "Dwarf planet", size: "~1,600 km long", orbit: "~284 years", found: "2004, announced 2005", fact: "Spins once in under 4 hours, stretching it into an egg shape. It has two moons and a thin ring." },
+  makemake: { type: "Dwarf planet", size: "~1,430 km wide", orbit: "~305 years", found: "2005, Brown, Trujillo and Rabinowitz", fact: "Named for the creator god of the Rapa Nui people of Easter Island. It has one known moon." },
+  eris: { type: "Dwarf planet", size: "~2,330 km wide", orbit: "~559 years", found: "Announced 2005, Mike Brown's team", fact: "Slightly more massive than Pluto. Its discovery helped trigger the 2006 decision that redefined \"planet\"." }
+};
+
+const CRAFT = {
+  earth: ["ISS", "Hubble"],
+  mars: ["Mars Reconnaissance Orbiter", "Mars Odyssey"]
+};
 
 /* ---------------------------------------------------------------------
    QUESTION BANK — 66 questions covering every body plus general
@@ -1081,10 +1179,10 @@ const ORRERY_BODIES = [
   { id: "venus", color: "#e8c987", size: 0.55, orbitRadius: 5.6, speed: 0.62, tilt: 3, spin: -0.4, textureMode: "banded" },
   { id: "earth", color: "#4f9dc7", size: 0.58, orbitRadius: 7.2, speed: 0.50, tilt: 23, spin: 1.6, textureMode: "earth" },
   { id: "mars", color: "#c1633f", size: 0.44, orbitRadius: 8.8, speed: 0.38, tilt: 25, spin: 1.5, textureMode: "rocky" },
-  { id: "jupiter", color: "#d99a5b", size: 1.35, orbitRadius: 11.6, speed: 0.22, tilt: 3, spin: 2.2, textureMode: "banded" },
+  { id: "jupiter", color: "#d99a5b", size: 1.35, orbitRadius: 11.6, speed: 0.22, tilt: 3, spin: 2.2, faintRing: "flat", textureMode: "banded" },
   { id: "saturn", color: "#e3cd8f", size: 1.15, orbitRadius: 14.4, speed: 0.16, tilt: 27, spin: 2.0, hasRing: true, textureMode: "banded" },
-  { id: "uranus", color: "#7fd4d1", size: 0.85, orbitRadius: 16.8, speed: 0.11, tilt: 98, spin: 1.2, textureMode: "banded" },
-  { id: "neptune", color: "#4d6fd6", size: 0.82, orbitRadius: 19.0, speed: 0.08, tilt: 28, spin: 1.3, textureMode: "banded" }
+  { id: "uranus", color: "#7fd4d1", size: 0.85, orbitRadius: 16.8, speed: 0.11, tilt: 98, spin: 1.2, faintRing: "upright", textureMode: "banded" },
+  { id: "neptune", color: "#4d6fd6", size: 0.82, orbitRadius: 19.0, speed: 0.08, tilt: 28, spin: 1.3, faintRing: "flat", textureMode: "banded" }
 ];
 
 /* =========================================================================
@@ -1571,6 +1669,34 @@ const Explore = (function () {
     });
   }
 
+  // Draws the "what orbits this body" diagram for the Moons & Rings tab -
+  // the real named moons of whichever planet is selected, closest/fastest
+  // one first. Every planet uses this same function; most just happen to
+  // have zero moons to draw (Mercury, Venus) or none at all (the Sun).
+  function renderMoonOrbit(planet) {
+    const moons = MOONS[planet.id] || [];
+    if (!moons.length) {
+      const note = planet.id === "sun"
+        ? "Nothing orbits the Sun - it's what everything else orbits."
+        : "No known natural moons.";
+      return '<div class="moon-orbit"><div class="moon-orbit__center"></div></div>' +
+        '<p class="moon-orbit__none">' + note + '</p>';
+    }
+    const baseSize = 90, step = 26;
+    const rings = moons.map(function (name, i) {
+      const size = baseSize + i * step;
+      const duration = (5 + i * 3.2).toFixed(1);
+      return '<div class="moon-orbit__ring" style="width:' + size + 'px;height:' + size + 'px;margin:-' + (size / 2) + 'px 0 0 -' + (size / 2) + 'px;animation-duration:' + duration + 's">' +
+        '<span class="moon-orbit__dot" title="' + name + '"></span>' +
+      '</div>';
+    }).join("");
+    const legend = moons.map(function (name) {
+      return '<span class="moon-legend__chip">' + name + '</span>';
+    }).join("");
+    return '<div class="moon-orbit">' + rings + '<div class="moon-orbit__center"></div></div>' +
+      '<div class="moon-legend">' + legend + '</div>';
+  }
+
   function renderTabs(planet) {
     const tabHost = document.getElementById("exploreTabs");
     const contentHost = document.getElementById("exploreTabContent");
@@ -1585,9 +1711,14 @@ const Explore = (function () {
     // read every section's text, not just whichever tab happens to be
     // showing when playback starts.
     contentHost.innerHTML = TABS.map(function (t) {
-      const body = t.key === "overview"
-        ? planet.paragraphs.map(function (p) { return '<p class="section__copy">' + p + '</p>'; }).join("")
-        : '<p class="section__copy">' + (planet.deepDive[t.key] || "") + '</p>';
+      let body;
+      if (t.key === "overview") {
+        body = planet.paragraphs.map(function (p) { return '<p class="section__copy">' + p + '</p>'; }).join("");
+      } else if (t.key === "moons") {
+        body = renderMoonOrbit(planet) + '<p class="section__copy">' + (planet.deepDive.moons || "") + '</p>';
+      } else {
+        body = '<p class="section__copy">' + (planet.deepDive[t.key] || "") + '</p>';
+      }
       return '<div class="explore-tab-panel" data-tab="' + t.key + '" role="tabpanel"' + (t.key === "overview" ? "" : " hidden") + '>' +
         '<span class="explore-tab-panel__label">' + t.label + '</span>' + body +
       '</div>';
@@ -1790,7 +1921,15 @@ const TestEngine = (function () {
   function start(length) {
     currentLength = length;
     const pool = shuffle(QUESTION_BANK);
-    activeQuestions = pool.slice(0, Math.min(length, pool.length));
+    // Shuffle each question's options too - the bank has the right answer in
+    // slot B far too often (37 of 66), which made guessing "B" a strategy.
+    activeQuestions = pool.slice(0, Math.min(length, pool.length)).map(function (q) {
+      const order = shuffle(q.options.map(function (_, i) { return i; }));
+      return Object.assign({}, q, {
+        options: order.map(function (i) { return q.options[i]; }),
+        correctIndex: order.indexOf(q.correctIndex)
+      });
+    });
     answers = new Array(activeQuestions.length).fill(null);
 
     document.getElementById("testSetup").hidden = true;
@@ -2069,6 +2208,88 @@ const Orrery = (function () {
     const clickable = [sun];
     const pivots = [];
     const spinners = [];
+    const moonPivotsAll = [];
+    const focusRadiusByBody = {};
+    const focusMeshById = { sun: sun };
+
+    // Name tags that follow every object around the scene, like NASA's Eyes:
+    // planets and small bodies always, moons and spacecraft once you fly in.
+    const labelHost = document.getElementById("orreryLabels");
+    const labels = [];
+    function nameOf(id) {
+      const p = PLANETS.filter(function (x) { return x.id === id; })[0];
+      return p ? p.name : id;
+    }
+    function addLabel(obj, text, kind, owner) {
+      if (!labelHost) return;
+      const el = document.createElement("span");
+      el.className = "orrery-tag orrery-tag--" + kind;
+      el.textContent = text;
+      labelHost.appendChild(el);
+      labels.push({ el: el, obj: obj, kind: kind, owner: owner });
+    }
+    const smallMeta = {};
+
+    // Every clickable body gets its own real moons (see the MOONS table)
+    // orbiting it - siblings of the planet's own mesh, so they travel
+    // around the Sun together with the planet but spin around it
+    // independently of the planet's own day/night rotation. This is what
+    // shows up when a body is clicked and the camera flies in close.
+    function addMoons(parent, bodySize, bodyId) {
+      const names = MOONS[bodyId] || [];
+      let outerRadius = bodySize * 1.1;
+      names.forEach(function (name, i) {
+        const orbitR = bodySize * (1.55 + i * 0.42);
+        outerRadius = orbitR;
+        const moonSize = Math.max(0.026, bodySize * 0.12);
+        const moonPivot = new THREE.Object3D();
+        moonPivot.rotation.y = Math.random() * Math.PI * 2;
+        parent.add(moonPivot);
+
+        const moonMesh = new THREE.Mesh(
+          new THREE.SphereGeometry(moonSize, 10, 10),
+          new THREE.MeshStandardMaterial({ color: 0xbfc4cc, roughness: 0.95 })
+        );
+        moonMesh.position.x = orbitR;
+        moonPivot.add(moonMesh);
+        addLabel(moonMesh, name, "moon", bodyId);
+
+        const ringPts = [];
+        for (let a = 0; a <= 56; a++) {
+          const t = (a / 56) * Math.PI * 2;
+          ringPts.push(new THREE.Vector3(Math.cos(t) * orbitR, 0, Math.sin(t) * orbitR));
+        }
+        parent.add(new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(ringPts),
+          new THREE.LineBasicMaterial({ color: 0x8a8f9c, transparent: true, opacity: 0.4 })
+        ));
+
+        moonPivotsAll.push({ pivot: moonPivot, speed: 1.5 - i * 0.14 });
+      });
+      (CRAFT[bodyId] || []).forEach(function (name, i) {
+        const r = bodySize * (1.12 + i * 0.16);
+        const craftPivot = new THREE.Object3D();
+        craftPivot.rotation.y = Math.random() * Math.PI * 2;
+        craftPivot.rotation.z = 0.5 + i * 0.6;
+        parent.add(craftPivot);
+        const c = Math.max(0.03, bodySize * 0.09);
+        const box = new THREE.Mesh(
+          new THREE.BoxGeometry(c, c, c),
+          new THREE.MeshBasicMaterial({ color: 0xffb454 })
+        );
+        box.position.x = r;
+        craftPivot.add(box);
+        addLabel(box, name, "craft", bodyId);
+        moonPivotsAll.push({ pivot: craftPivot, speed: 2.4 - i * 0.5 });
+      });
+      return outerRadius;
+    }
+
+    const sunMoonSystem = new THREE.Object3D();
+    scene.add(sunMoonSystem);
+    addMoons(sunMoonSystem, 1.7, "sun");
+    addLabel(sun, "Sun", "planet", "sun");
+    focusRadiusByBody.sun = 1.7 * 4.5;
 
     ORRERY_BODIES.forEach(function (body) {
       const pivot = new THREE.Object3D();
@@ -2086,6 +2307,8 @@ const Orrery = (function () {
       pivot.add(mesh);
       clickable.push(mesh);
       spinners.push({ mesh: mesh, spin: body.spin || 1 });
+      focusMeshById[body.id] = mesh;
+      addLabel(mesh, nameOf(body.id), "planet", body.id);
 
       if (body.hasRing) {
         const ring = new THREE.Mesh(
@@ -2095,6 +2318,17 @@ const Orrery = (function () {
         ring.rotation.x = Math.PI / 2.3;
         ring.position.x = body.orbitRadius;
         pivot.add(ring);
+      }
+
+      if (body.faintRing) {
+        // NASA: all four giant planets have rings - much fainter than Saturn's.
+        const faint = new THREE.Mesh(
+          new THREE.RingGeometry(body.size * 1.5, body.size * 1.75, 48),
+          new THREE.MeshBasicMaterial({ color: 0xb9c3cc, side: THREE.DoubleSide, transparent: true, opacity: 0.22 })
+        );
+        faint.rotation.x = body.faintRing === "upright" ? 0.2 : Math.PI / 2.1;
+        faint.position.x = body.orbitRadius;
+        pivot.add(faint);
       }
 
       const orbitPoints = [];
@@ -2108,20 +2342,178 @@ const Orrery = (function () {
       ));
 
       pivots.push({ pivot: pivot, speed: body.speed });
+
+      const moonSystem = new THREE.Object3D();
+      moonSystem.position.x = body.orbitRadius;
+      pivot.add(moonSystem);
+      const outer = addMoons(moonSystem, body.size, body.id);
+      focusRadiusByBody[body.id] = Math.max(outer * 2.6, body.size * 4.5);
     });
 
-    /* ---------- camera controls: drag to rotate, wheel to zoom ---------- */
-    let radius = 26, theta = Math.PI / 3.4, phi = Math.PI / 2.6;
-    const minRadius = 10, maxRadius = 42;
+    // Named asteroids and dwarf planets (real bodies, stylised distances),
+    // plus faint belt particles - the "small things" that fill NASA's view.
+    const SMALL_BODIES = [
+      { name: "Vesta", r: 9.5, size: 0.1, speed: 0.34, color: 0xb9b2a6 },
+      { name: "Ceres", r: 10.0, size: 0.13, speed: 0.31, color: 0xc4bdb2 },
+      { name: "Pallas", r: 10.4, size: 0.1, speed: 0.29, color: 0xa9a9a4 },
+      { name: "Hygiea", r: 10.85, size: 0.09, speed: 0.27, color: 0x9d9a94 },
+      { name: "Pluto", r: 21.4, size: 0.2, speed: 0.06, color: 0xcdb8a2, ring: true },
+      { name: "Haumea", r: 22.8, size: 0.15, speed: 0.055, color: 0xd9d6d0, ring: true },
+      { name: "Makemake", r: 24.1, size: 0.15, speed: 0.05, color: 0xc98f6b, ring: true },
+      { name: "Eris", r: 25.8, size: 0.18, speed: 0.045, color: 0xe4e2dc, ring: true }
+    ];
+    SMALL_BODIES.forEach(function (sb) {
+      const id = "small-" + sb.name.toLowerCase();
+      const piv = new THREE.Object3D();
+      piv.rotation.y = Math.random() * Math.PI * 2;
+      scene.add(piv);
+      const m = new THREE.Mesh(
+        new THREE.SphereGeometry(sb.size, 14, 14),
+        new THREE.MeshStandardMaterial({ color: sb.color, roughness: 0.95 })
+      );
+      m.position.x = sb.r;
+      m.userData.sectionId = id;
+      piv.add(m);
+      clickable.push(m);
+      focusMeshById[id] = m;
+      focusRadiusByBody[id] = Math.max(sb.size * 10, 1.6);
+      smallMeta[id] = sb;
+      pivots.push({ pivot: piv, speed: sb.speed });
+      addLabel(m, sb.name, "small", id);
+      if (sb.ring) {
+        const pts = [];
+        for (let i = 0; i <= 80; i++) {
+          const a = (i / 80) * Math.PI * 2;
+          pts.push(new THREE.Vector3(Math.cos(a) * sb.r, 0, Math.sin(a) * sb.r));
+        }
+        scene.add(new THREE.LineLoop(
+          new THREE.BufferGeometry().setFromPoints(pts),
+          new THREE.LineBasicMaterial({ color: 0x5a5f72, transparent: true, opacity: 0.2 })
+        ));
+      }
+    });
+    function addBelt(count, rMin, rMax, thick, speed, opacity) {
+      const pts = [];
+      for (let i = 0; i < count; i++) {
+        const a = Math.random() * Math.PI * 2;
+        const r = rMin + Math.random() * (rMax - rMin);
+        pts.push(new THREE.Vector3(Math.cos(a) * r, (Math.random() - 0.5) * thick, Math.sin(a) * r));
+      }
+      const belt = new THREE.Points(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.PointsMaterial({ color: 0x9aa0aa, size: 0.05, transparent: true, opacity: opacity })
+      );
+      scene.add(belt);
+      pivots.push({ pivot: belt, speed: speed });
+    }
+    addBelt(420, 9.2, 11.1, 0.35, 0.28, 0.75);
+    addBelt(320, 21, 28, 0.9, 0.05, 0.4);
+
+    function bodyInfo(id) {
+      if (smallMeta[id]) return { name: smallMeta[id].name, small: true };
+      return PLANETS.filter(function (p) { return p.id === id; })[0];
+    }
+
+    /* ---------- camera: drag to rotate, wheel to zoom, click a body to
+       fly in close and see its own moons, the way NASA's Eyes on the
+       Solar System behaves - rather than immediately leaving the page. ---------- */
+    let radius = 26, desiredRadius = 26;
+    let followObject = null, followId = null, followProfile = null;
+    const currentTarget = new THREE.Vector3(0, 0, 0);
+    const desiredTargetVec = new THREE.Vector3();
     let dragging = false, lastX = 0, lastY = 0, moved = 0;
 
-    function updateCamera() {
-      camera.position.x = radius * Math.sin(phi) * Math.sin(theta);
-      camera.position.y = radius * Math.cos(phi);
-      camera.position.z = radius * Math.sin(phi) * Math.cos(theta);
-      camera.lookAt(0, 0, 0);
+    // Free camera: instead of the old rotate-with-a-clamped-tilt controls,
+    // the camera's orientation is a quaternion applied to a fixed "behind
+    // the target" offset and a fixed "up" vector, rotated together. That
+    // keeps them perpendicular no matter what, so you can drag past the
+    // poles, look at the system upside-down, or spin all the way round,
+    // the way a free-look camera works in NASA's own tool.
+    const worldUp = new THREE.Vector3(0, 1, 0);
+    const baseOffset = new THREE.Vector3(0, 0, 1);
+    const orient = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.5);
+    let orientTarget = null;
+    let mode2D = false;
+
+    function boundsFor() {
+      return followObject ? { min: 1.2, max: 16 } : { min: 10, max: 42 };
     }
-    updateCamera();
+
+    function applyCamera() {
+      const offset = baseOffset.clone().applyQuaternion(orient).multiplyScalar(radius);
+      camera.position.set(currentTarget.x + offset.x, currentTarget.y + offset.y, currentTarget.z + offset.z);
+      camera.up.copy(worldUp.clone().applyQuaternion(orient));
+      camera.lookAt(currentTarget);
+    }
+    applyCamera();
+
+    function setMode2D(flag) {
+      mode2D = flag;
+      orientTarget = flag
+        ? new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -Math.PI / 2)
+        : new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.5);
+      const modeBtn = document.getElementById("orreryModeBtn");
+      if (modeBtn) {
+        modeBtn.textContent = flag ? "2D" : "3D";
+        modeBtn.setAttribute("aria-label", flag ? "Switch to 3D view" : "Switch to 2D top-down view");
+      }
+    }
+    const modeBtn = document.getElementById("orreryModeBtn");
+    if (modeBtn) modeBtn.addEventListener("click", function () { setMode2D(!mode2D); });
+
+    const focusPanel = document.getElementById("orreryFocusPanel");
+    const focusName = document.getElementById("orreryFocusName");
+    const focusBackBtn = document.getElementById("orreryFocusBack");
+    const focusProfileBtn = document.getElementById("orreryFocusProfile");
+
+    function focusOnPlanet(id) {
+      const mesh = focusMeshById[id];
+      if (!mesh) return;
+      const planet = bodyInfo(id);
+      followObject = mesh;
+      followId = id;
+      desiredRadius = focusRadiusByBody[id] || 6;
+      if (focusPanel && planet) {
+        focusName.textContent = planet.name;
+        const craftEl = document.getElementById("orreryFocusCraft");
+        if (craftEl) craftEl.textContent = CRAFT[id] ? "\u00b7 " + CRAFT[id].join(" \u00b7 ") : "";
+        const info = planet.small ? SMALL_INFO[id.replace("small-", "")] : null;
+        const infoEl = document.getElementById("orreryInfo");
+        if (infoEl) {
+          infoEl.innerHTML = info
+            ? "<h4>" + planet.name + '</h4><span class="orrery-info__type">' + info.type + "</span>" +
+              "<dl><dt>Size</dt><dd>" + info.size + "</dd><dt>Year</dt><dd>" + info.orbit + "</dd><dt>Found</dt><dd>" + info.found + "</dd></dl>" +
+              "<p>" + info.fact + "</p>"
+            : "";
+          infoEl.classList.toggle("is-visible", !!info);
+        }
+        followProfile = planet.small ? (info && info.profile) || null : id;
+        if (focusProfileBtn) focusProfileBtn.style.display = followProfile ? "" : "none";
+        focusPanel.classList.add("is-visible");
+      }
+    }
+
+    function unfocus() {
+      followObject = null;
+      followId = null;
+      desiredRadius = 26;
+      if (focusPanel) focusPanel.classList.remove("is-visible");
+      const infoEl = document.getElementById("orreryInfo");
+      if (infoEl) { infoEl.classList.remove("is-visible"); infoEl.innerHTML = ""; }
+    }
+
+    function zoomBy(factor) {
+      const b = boundsFor();
+      desiredRadius = Math.max(b.min, Math.min(b.max, desiredRadius * factor));
+    }
+    const zin = document.getElementById("orreryZoomIn"), zout = document.getElementById("orreryZoomOut");
+    if (zin) zin.addEventListener("click", function () { zoomBy(0.75); });
+    if (zout) zout.addEventListener("click", function () { zoomBy(1.33); });
+
+    if (focusBackBtn) focusBackBtn.addEventListener("click", unfocus);
+    if (focusProfileBtn) focusProfileBtn.addEventListener("click", function () {
+      if (followProfile) openPlanet(followProfile);
+    });
 
     const dom = renderer.domElement;
     dom.style.touchAction = "none";
@@ -2147,7 +2539,7 @@ const Orrery = (function () {
       raycaster.setFromCamera(pointer, camera);
       const hits = raycaster.intersectObjects(clickable);
       if (hits.length && label) {
-        const planet = PLANETS.filter(function (p) { return p.id === hits[0].object.userData.sectionId; })[0];
+        const planet = bodyInfo(hits[0].object.userData.sectionId);
         if (planet) {
           label.textContent = planet.name;
           label.style.left = (e.clientX - rect.left + 16) + "px";
@@ -2165,11 +2557,19 @@ const Orrery = (function () {
       const dy = e.clientY - lastY;
       moved += Math.abs(dx) + Math.abs(dy);
       if (moved > 4 && label && !label.hidden) label.hidden = true;
-      theta -= dx * 0.006;
-      phi = Math.max(0.35, Math.min(Math.PI - 0.35, phi - dy * 0.006));
+      orientTarget = null; // a manual drag cancels any in-progress mode snap
+      if (mode2D) {
+        // Flattened view only spins around the vertical axis, like turning
+        // a paper map, rather than tipping it up onto its edge.
+        orient.premultiply(new THREE.Quaternion().setFromAxisAngle(worldUp, -dx * 0.006));
+      } else {
+        const camUp = worldUp.clone().applyQuaternion(orient);
+        const camRight = new THREE.Vector3(1, 0, 0).applyQuaternion(orient);
+        orient.premultiply(new THREE.Quaternion().setFromAxisAngle(camUp, -dx * 0.006));
+        orient.premultiply(new THREE.Quaternion().setFromAxisAngle(camRight, -dy * 0.006));
+      }
       lastX = e.clientX;
       lastY = e.clientY;
-      updateCamera();
     });
 
     dom.addEventListener("pointermove", function (e) {
@@ -2181,7 +2581,7 @@ const Orrery = (function () {
       const hits = raycaster.intersectObjects(clickable);
       if (hits.length) {
         dom.style.cursor = "pointer";
-        const planet = PLANETS.filter(function (p) { return p.id === hits[0].object.userData.sectionId; })[0];
+        const planet = bodyInfo(hits[0].object.userData.sectionId);
         if (planet && label) {
           label.textContent = planet.name;
           label.style.left = (e.clientX - rect.left + 16) + "px";
@@ -2206,14 +2606,18 @@ const Orrery = (function () {
         pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
         raycaster.setFromCamera(pointer, camera);
         const hits = raycaster.intersectObjects(clickable);
-        if (hits.length) openPlanet(hits[0].object.userData.sectionId);
+        // Clicking a body now flies the camera in close to show its own
+        // moons orbiting it, instead of immediately leaving for the info
+        // page - the full text profile is still one tap away via the
+        // panel that appears once focused.
+        if (hits.length) focusOnPlanet(hits[0].object.userData.sectionId);
       }
     });
 
     dom.addEventListener("wheel", function (e) {
       e.preventDefault();
-      radius = Math.max(minRadius, Math.min(maxRadius, radius + e.deltaY * 0.02));
-      updateCamera();
+      const b = boundsFor();
+      desiredRadius = Math.max(b.min, Math.min(b.max, desiredRadius + e.deltaY * (followObject ? 0.006 : 0.02)));
     }, { passive: false });
 
     /* ---------- resize ---------- */
@@ -2230,15 +2634,54 @@ const Orrery = (function () {
     const reduceMotion = ParallaxEngine.prefersReducedMotion();
     const landingEl = document.getElementById("screen-landing");
 
+    const labelPos = new THREE.Vector3();
+    function updateLabels() {
+      const w = host.clientWidth || width, h = host.clientHeight || height;
+      labels.forEach(function (l) {
+        let show = true;
+        if (l.kind === "moon" || l.kind === "craft") show = followId === l.owner;
+        else if (l.kind === "small") show = !followObject || followId === l.owner;
+        if (show) {
+          l.obj.getWorldPosition(labelPos);
+          labelPos.project(camera);
+          if (labelPos.z > 1 || Math.abs(labelPos.x) > 1.05 || Math.abs(labelPos.y) > 1.05) show = false;
+        }
+        if (!show) { l.el.style.opacity = "0"; return; }
+        const x = (labelPos.x * 0.5 + 0.5) * w, y = (-labelPos.y * 0.5 + 0.5) * h;
+        l.el.style.transform = "translate(" + (x + 9).toFixed(1) + "px," + y.toFixed(1) + "px) translateY(-50%)";
+        l.el.style.opacity = "1";
+      });
+    }
+
     function animate() {
       requestAnimationFrame(animate);
       const dt = clock.getDelta();
       if (!reduceMotion) {
         pivots.forEach(function (p) { p.pivot.rotation.y += dt * 0.18 * p.speed; });
         spinners.forEach(function (s) { s.mesh.rotation.y += dt * 0.6 * s.spin; });
+        moonPivotsAll.forEach(function (m) { m.pivot.rotation.y += dt * 1.3 * m.speed; });
         sun.rotation.y += dt * 0.05;
       }
-      if (!landingEl || !landingEl.hidden) renderer.render(scene, camera);
+
+      // Smoothly fly the camera's look-at point and distance toward
+      // whatever is currently focused (a clicked body, or back out to the
+      // Sun at the center once "Back to Solar System" is pressed).
+      if (followObject) {
+        followObject.getWorldPosition(desiredTargetVec);
+      } else {
+        desiredTargetVec.set(0, 0, 0);
+      }
+      const followSpeed = reduceMotion ? 1 : Math.min(1, dt * 3.2);
+      currentTarget.lerp(desiredTargetVec, followSpeed);
+      radius += (desiredRadius - radius) * followSpeed;
+      if (orientTarget) orient.slerp(orientTarget, reduceMotion ? 1 : Math.min(1, dt * 3.5));
+      applyCamera();
+      camera.updateMatrixWorld();
+
+      if (!landingEl || !landingEl.hidden) {
+        updateLabels();
+        renderer.render(scene, camera);
+      }
     }
     animate();
   }
@@ -2896,7 +3339,7 @@ const EXTERNAL_LINKS = {
       dialog.innerHTML =
         '<h2>Privacy & Copyright</h2>' +
         '<h3>What we collect</h3>' +
-        '<p>If you sign in, we store your name, email, and location, plus your quiz history, explored planets, and badges, in a Supabase database so your progress follows you between devices. A small cookie remembers your cookie-consent choice.</p>' +
+        '<p>If you sign in, we store your name, email, phone number, country and (if you give it) address, plus your quiz history, explored planets, and badges, in a Supabase database so your progress follows you between devices. A small cookie remembers your cookie-consent choice.</p>' +
         '<h3>What we do not do</h3>' +
         '<p>We do not sell your data, run third-party ad trackers, or share your information with anyone outside this project. If you never sign in, your progress stays only in this browser.</p>' +
         '<h3>Your choices</h3>' +
@@ -3167,7 +3610,7 @@ const EXTERNAL_LINKS = {
   if (typeof window.speechSynthesis === "undefined") return;
 
   const SKIP_TAGS = ["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "SELECT", "NOSCRIPT"];
-  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast"];
+  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast", "orrery-labels", "orrery-focus", "orrery-zoom", "orrery-info", "moon-orbit"];
   const BLOCK_SELECTOR = "p, h1, h2, h3, h4, h5, h6, li, td, th, button, a, label, dt, dd";
 
   const Reader = (function () {
@@ -3198,7 +3641,10 @@ const EXTERNAL_LINKS = {
     function populateVoices() {
       if (!voiceSelect) return;
       voices = speechSynthesis.getVoices() || [];
-      if (!voices.length) return;
+      if (!voices.length) {
+        voiceSelect.innerHTML = '<option value="" disabled selected>No voices available</option>';
+        return;
+      }
 
       const order = ["British", "American", "Australian", "Other English", "Other languages"];
       const groups = {};
@@ -3208,7 +3654,7 @@ const EXTERNAL_LINKS = {
       });
 
       const previous = selectedVoiceURI;
-      voiceSelect.innerHTML = '<option value="">System default</option>';
+      voiceSelect.innerHTML = "";
       order.forEach(function (groupName) {
         const list = groups[groupName];
         if (!list || !list.length) return;
@@ -3226,12 +3672,19 @@ const EXTERNAL_LINKS = {
       // Re-select whatever was chosen before this (async) refresh, if it's
       // still in the list; otherwise fall back to system default rather
       // than silently jumping to an unrelated voice.
-      if (previous && voices.some(function (v) { return v.voiceURI === previous; })) {
-        voiceSelect.value = previous;
-      } else {
-        voiceSelect.value = "";
-        selectedVoiceURI = "";
+      // There is no "system default" entry any more: keep the earlier
+      // choice if it's still available, otherwise pick the first British,
+      // American or Australian voice (in that order), else the first voice.
+      let pick = voices.filter(function (v) { return v.voiceURI === previous; })[0];
+      if (!pick) {
+        ["British", "American", "Australian", "Other English"].some(function (g) {
+          pick = (groups[g] || [])[0];
+          return !!pick;
+        });
       }
+      if (!pick) pick = voices[0];
+      voiceSelect.value = pick.voiceURI;
+      selectedVoiceURI = pick.voiceURI;
     }
 
     function shouldSkip(el) {
@@ -3483,7 +3936,7 @@ const EXTERNAL_LINKS = {
         '</div>' +
         '<div class="reader-bar__voice-group">' +
         '<span>Voice</span>' +
-        '<select id="readerVoice" class="reader-bar__voice-select" aria-label="Reading voice and accent"><option value="">System default</option></select>' +
+        '<select id="readerVoice" class="reader-bar__voice-select" aria-label="Reading voice and accent"><option value="" disabled selected>Loading voices\u2026</option></select>' +
         '</div>' +
         '<button type="button" class="reader-bar__close" id="readerClose" aria-label="Close reader">✕</button>';
 
