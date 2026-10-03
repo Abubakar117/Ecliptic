@@ -6,6 +6,14 @@
 <title>Ecliptic — A Field Guide to the Solar System</title>
 <meta name="description" content="An interactive field guide to the Sun, the eight planets, and the Kuiper Belt — a 3D orrery, an Explore mode, side-by-side comparisons, and knowledge tests of 10, 25, or 50 questions.">
 <meta name="theme-color" content="#07070f">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070f'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23ffb454'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23555' stroke-width='2'/%3E%3Ccircle cx='84' cy='50' r='4' fill='%23dfe3e8'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Ecliptic — A Field Guide to the Solar System">
+<meta property="og:description" content="Explore the Sun, eight planets, and the Kuiper Belt in an interactive 3D orrery, then put your knowledge to the test.">
+<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%2307070f'/%3E%3Ccircle cx='600' cy='315' r='70' fill='%23ffb454'/%3E%3Ccircle cx='600' cy='315' r='160' fill='none' stroke='%23444' stroke-width='2'/%3E%3Ccircle cx='600' cy='315' r='240' fill='none' stroke='%23333' stroke-width='2'/%3E%3Ctext x='600' y='560' font-family='Georgia,serif' font-size='56' fill='%23efece3' text-anchor='middle'%3EECLIPTIC%3C/text%3E%3C/svg%3E">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ecliptic — A Field Guide to the Solar System">
+<meta name="twitter:description" content="An interactive 3D field guide to the solar system, with tests and a scoreboard.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -173,6 +181,7 @@ a { color: inherit; }
 }
 .cookie-banner p { margin: 0; font-size: 0.85rem; color: var(--ink-dim); flex: 1 1 260px; }
 .cookie-banner__actions { display: flex; gap: 0.6rem; flex-shrink: 0; }
+.cookie-banner__link { background: none; border: none; padding: 0; color: inherit; text-decoration: underline; font: inherit; cursor: pointer; }
 
 /* ---------- shared layout helpers ---------- */
 
@@ -247,6 +256,18 @@ a { color: inherit; }
 .orrery-zoom button { width: 34px; height: 34px; border-radius: 10px; border: 1px solid var(--border-glass); background: rgba(8,8,16,0.85); color: var(--ink); font-size: 1.2rem; line-height: 1; cursor: pointer; }
 .orrery-zoom button:hover { background: rgba(255,255,255,0.16); }
 #orreryModeBtn { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; }
+#orreryLayersBtn { font-size: 1rem; }
+.orrery-layers {
+  position: absolute; right: 10px; top: 158px; z-index: 7; width: 220px;
+  background: rgba(8,8,16,0.94); border: 1px solid var(--border-glass); border-radius: 12px;
+  padding: 0.7rem 0.8rem; font-family: var(--font-mono);
+}
+.orrery-layers__cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 0.6rem; }
+.orrery-layers fieldset { border: none; padding: 0; margin: 0 0 0.6rem; }
+.orrery-layers legend { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-primary); padding: 0 0 0.3rem; }
+.orrery-layers label { display: flex; align-items: center; gap: 0.4rem; font-size: 0.68rem; color: var(--ink-dim); padding: 0.15rem 0; cursor: pointer; }
+.orrery-layers input[type="checkbox"] { accent-color: var(--accent-primary); width: 13px; height: 13px; flex-shrink: 0; }
+@media (max-width: 640px) { .orrery-layers { width: 190px; top: 140px; right: 6px; } .orrery-layers label { font-size: 0.62rem; } }
 .orrery-focus-panel.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 .orrery-focus-panel__btn { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; color: var(--ink); background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.8em; cursor: pointer; }
 .orrery-focus-panel__btn:hover { background: rgba(255,255,255,0.18); }
@@ -538,7 +559,7 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
 <div class="stars-wanderer" id="starsWanderer" aria-hidden="true"></div>
 
 <div class="cookie-banner" id="cookieBanner" hidden>
-  <p>Ecliptic uses a small cookie to remember your cookie choice. No third-party tracking.</p>
+  <p>Ecliptic uses a small cookie to remember your cookie choice. No ad trackers - though fonts and 3D libraries do load from other servers. <button type="button" class="cookie-banner__link" id="cookieBannerPrivacyBtn">Details</button></p>
   <div class="cookie-banner__actions">
     <button type="button" class="btn btn--ghost" id="cookieDecline">Decline</button>
     <button type="button" class="btn btn--primary" id="cookieAccept">Accept</button>
@@ -581,6 +602,30 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
         <button type="button" id="orreryZoomIn" aria-label="Zoom in">+</button>
         <button type="button" id="orreryZoomOut" aria-label="Zoom out">&minus;</button>
         <button type="button" id="orreryModeBtn" aria-label="Switch to 2D top-down view">3D</button>
+        <button type="button" id="orreryLayersBtn" aria-haspopup="true" aria-expanded="false" aria-controls="orreryLayersPanel">&#9776;</button>
+      </div>
+      <div class="orrery-layers" id="orreryLayersPanel" hidden>
+        <fieldset>
+          <legend>User Interface</legend>
+          <label><input type="checkbox" data-layer="ui" checked> Show controls &amp; labels</label>
+        </fieldset>
+        <div class="orrery-layers__cols">
+          <fieldset>
+            <legend>Show</legend>
+            <label><input type="checkbox" data-layer="planets" checked> Planets</label>
+            <label><input type="checkbox" data-layer="asteroids" checked> Asteroids</label>
+            <label><input type="checkbox" data-layer="comets" checked> Comets</label>
+            <label><input type="checkbox" data-layer="dwarfPlanets" checked> Dwarf Planets</label>
+            <label><input type="checkbox" data-layer="constellations"> Constellations</label>
+          </fieldset>
+          <fieldset>
+            <legend>Spacecraft</legend>
+            <label><input type="checkbox" data-layer="trails"> Trails</label>
+            <label><input type="checkbox" data-layer="orbits" checked> Orbits</label>
+            <label><input type="checkbox" data-layer="labels" checked> Labels</label>
+            <label><input type="checkbox" data-layer="icons" checked> Icons</label>
+          </fieldset>
+        </div>
       </div>
       <div class="orrery-info" id="orreryInfo"></div>
       <div class="orrery-focus-panel" id="orreryFocusPanel">
@@ -620,8 +665,8 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     <div class="section__inner footer__inner">
       <p class="footer__brand">ECLIPTIC</p>
       <p class="footer__note">A field guide to the Sun, eight planets, and the Kuiper Belt. Figures are approximate and rounded for readability.</p>
-      <p class="footer__version">Build 5 — cookie-banner fix, 8-tab planet deep dives, 10-row compare, bigger nav</p>
-      <p class="footer__legal">Learn more at <a href="https://solarsystem.nasa.gov" target="_blank" rel="noopener noreferrer">NASA Solar System Exploration</a> and <a href="https://en.wikipedia.org/wiki/Solar_System" target="_blank" rel="noopener noreferrer">Wikipedia</a>.</p>
+      <!-- internal build note intentionally not shown to visitors -->
+      <p class="footer__legal">Learn more at <a href="https://science.nasa.gov/solar-system/" target="_blank" rel="noopener noreferrer">NASA Solar System Exploration</a> and <a href="https://en.wikipedia.org/wiki/Solar_System" target="_blank" rel="noopener noreferrer">Wikipedia</a>.</p>
       <p class="footer__legal">© 2026 Ecliptic — an independent educational project, not affiliated with NASA. <button type="button" class="footer__legal-link" id="privacyLinkBtn">Privacy & Copyright</button></p>
     </div>
   </footer>
@@ -1059,7 +1104,9 @@ const SMALL_INFO = {
   pluto: { type: "Dwarf planet", size: "2,377 km wide", orbit: "248 years", found: "1930, Clyde Tombaugh", fact: "Reclassified as a dwarf planet in 2006. NASA's New Horizons flew past it in July 2015 and it has five known moons.", profile: "kuiper" },
   haumea: { type: "Dwarf planet", size: "~1,600 km long", orbit: "~284 years", found: "2004, announced 2005", fact: "Spins once in under 4 hours, stretching it into an egg shape. It has two moons and a thin ring." },
   makemake: { type: "Dwarf planet", size: "~1,430 km wide", orbit: "~305 years", found: "2005, Brown, Trujillo and Rabinowitz", fact: "Named for the creator god of the Rapa Nui people of Easter Island. It has one known moon." },
-  eris: { type: "Dwarf planet", size: "~2,330 km wide", orbit: "~559 years", found: "Announced 2005, Mike Brown's team", fact: "Slightly more massive than Pluto. Its discovery helped trigger the 2006 decision that redefined \"planet\"." }
+  eris: { type: "Dwarf planet", size: "~2,330 km wide", orbit: "~559 years", found: "Announced 2005, Mike Brown's team", fact: "Slightly more massive than Pluto. Its discovery helped trigger the 2006 decision that redefined \"planet\"." },
+  "halley-s-comet": { type: "Comet", size: "~11 km wide nucleus", orbit: "~76 years", found: "Recorded since antiquity; orbit computed by Edmond Halley, 1705", fact: "The most famous short-period comet. Last seen from Earth in 1986, it returns around 2061." },
+  "hale-bopp": { type: "Comet", size: "~60 km wide nucleus", orbit: "~2,533 years", found: "1995, Alan Hale and Thomas Bopp", fact: "One of the brightest comets of the 20th century, visible to the naked eye for a record 18 months." }
 };
 
 const CRAFT = {
@@ -1702,7 +1749,10 @@ const Explore = (function () {
     const contentHost = document.getElementById("exploreTabContent");
 
     tabHost.innerHTML = TABS.map(function (t, i) {
-      return '<button type="button" class="explore-tab' + (i === 0 ? ' is-active' : '') + '" data-tab="' + t.key + '" role="tab">' + t.label + '</button>';
+      const active = i === 0;
+      return '<button type="button" class="explore-tab' + (active ? ' is-active' : '') + '" data-tab="' + t.key + '"' +
+        ' id="tab-' + t.key + '" role="tab" aria-selected="' + active + '" aria-controls="panel-' + t.key + '" tabindex="' + (active ? "0" : "-1") + '">' +
+        t.label + '</button>';
     }).join("");
 
     // All eight panels are rendered up front (only the active one visible)
@@ -1719,22 +1769,41 @@ const Explore = (function () {
       } else {
         body = '<p class="section__copy">' + (planet.deepDive[t.key] || "") + '</p>';
       }
-      return '<div class="explore-tab-panel" data-tab="' + t.key + '" role="tabpanel"' + (t.key === "overview" ? "" : " hidden") + '>' +
+      return '<div class="explore-tab-panel" data-tab="' + t.key + '" id="panel-' + t.key + '" role="tabpanel" aria-labelledby="tab-' + t.key + '"' + (t.key === "overview" ? "" : " hidden") + '>' +
         '<span class="explore-tab-panel__label">' + t.label + '</span>' + body +
       '</div>';
     }).join("");
 
     function showTab(key) {
       tabHost.querySelectorAll(".explore-tab").forEach(function (b) {
-        b.classList.toggle("is-active", b.dataset.tab === key);
+        const active = b.dataset.tab === key;
+        b.classList.toggle("is-active", active);
+        b.setAttribute("aria-selected", String(active));
+        b.tabIndex = active ? 0 : -1;
       });
       contentHost.querySelectorAll(".explore-tab-panel").forEach(function (panel) {
         panel.hidden = panel.dataset.tab !== key;
       });
     }
 
-    tabHost.querySelectorAll(".explore-tab").forEach(function (btn) {
-      btn.addEventListener("click", function () { showTab(btn.dataset.tab); });
+    const tabButtons = Array.prototype.slice.call(tabHost.querySelectorAll(".explore-tab"));
+    tabButtons.forEach(function (btn, i) {
+      btn.addEventListener("click", function () { showTab(btn.dataset.tab); btn.focus(); });
+      // Standard ARIA tabs keyboard pattern: arrow keys move focus (and
+      // selection) between tabs instead of Tab having to step through all
+      // eight of them one at a time.
+      btn.addEventListener("keydown", function (e) {
+        let target = null;
+        if (e.key === "ArrowRight") target = tabButtons[(i + 1) % tabButtons.length];
+        else if (e.key === "ArrowLeft") target = tabButtons[(i - 1 + tabButtons.length) % tabButtons.length];
+        else if (e.key === "Home") target = tabButtons[0];
+        else if (e.key === "End") target = tabButtons[tabButtons.length - 1];
+        if (target) {
+          e.preventDefault();
+          showTab(target.dataset.tab);
+          target.focus();
+        }
+      });
     });
 
     showTab("overview");
@@ -2209,8 +2278,26 @@ const Orrery = (function () {
     const pivots = [];
     const spinners = [];
     const moonPivotsAll = [];
+    // Anything big enough to be worth not flying straight through - the
+    // free-fly camera below gets nudged back out if it ends up closer to
+    // one of these than its listed safe radius (this is what stops you
+    // from flying inside the Sun if you approach too fast).
+    const collidables = [{ mesh: sun, radius: 1.7 * 1.3 }];
     const focusRadiusByBody = {};
     const focusMeshById = { sun: sun };
+
+    // Every toggleable thing in the Layers panel gets its matching
+    // objects pushed into one of these as they're built below, so a
+    // checkbox can just walk its list and flip .visible.
+    const layerGroups = {
+      planets: [sun, glow], asteroids: [], dwarfPlanets: [], comets: [],
+      constellations: [], craftIcons: [], orbitLines: [], craftTrails: []
+    };
+    const trailTracked = []; // { mesh, points: Vector3[] } - comets + spacecraft only
+    const layers = {
+      ui: true, planets: true, asteroids: true, comets: true, dwarfPlanets: true,
+      constellations: false, trails: false, orbits: true, labels: true, icons: true
+    };
 
     // Name tags that follow every object around the scene, like NASA's Eyes:
     // planets and small bodies always, moons and spacecraft once you fly in.
@@ -2235,6 +2322,8 @@ const Orrery = (function () {
     // around the Sun together with the planet but spin around it
     // independently of the planet's own day/night rotation. This is what
     // shows up when a body is clicked and the camera flies in close.
+    const RETROGRADE_MOONS = { neptune: ["Triton"] }; // Triton is the one large moon that orbits backwards
+
     function addMoons(parent, bodySize, bodyId) {
       const names = MOONS[bodyId] || [];
       let outerRadius = bodySize * 1.1;
@@ -2259,12 +2348,22 @@ const Orrery = (function () {
           const t = (a / 56) * Math.PI * 2;
           ringPts.push(new THREE.Vector3(Math.cos(t) * orbitR, 0, Math.sin(t) * orbitR));
         }
-        parent.add(new THREE.LineLoop(
+        const moonOrbitLine = new THREE.LineLoop(
           new THREE.BufferGeometry().setFromPoints(ringPts),
           new THREE.LineBasicMaterial({ color: 0x8a8f9c, transparent: true, opacity: 0.4 })
-        ));
+        );
+        parent.add(moonOrbitLine);
+        layerGroups.orbitLines.push(moonOrbitLine);
 
-        moonPivotsAll.push({ pivot: moonPivot, speed: 1.5 - i * 0.14 });
+        // Most real moons orbit close to their planet's own equatorial
+        // plane, not the flat plane every planet orbits the Sun in - so a
+        // moon system is tilted by that planet's axial tilt rather than
+        // left flat. Uranus is the extreme case: tipped near 98 degrees,
+        // its moons circle it almost top-to-bottom rather than side-to-
+        // side. Triton is the one large moon that genuinely orbits its
+        // planet backwards, so its direction is flipped too.
+        const retro = (RETROGRADE_MOONS[bodyId] || []).indexOf(name) !== -1;
+        moonPivotsAll.push({ pivot: moonPivot, speed: (1.5 - i * 0.14) * (retro ? -1 : 1) });
       });
       (CRAFT[bodyId] || []).forEach(function (name, i) {
         const r = bodySize * (1.12 + i * 0.16);
@@ -2280,7 +2379,9 @@ const Orrery = (function () {
         box.position.x = r;
         craftPivot.add(box);
         addLabel(box, name, "craft", bodyId);
+        layerGroups.craftIcons.push(box);
         moonPivotsAll.push({ pivot: craftPivot, speed: 2.4 - i * 0.5 });
+        trailTracked.push({ mesh: box, points: [], color: 0xffb454 });
       });
       return outerRadius;
     }
@@ -2308,6 +2409,7 @@ const Orrery = (function () {
       clickable.push(mesh);
       spinners.push({ mesh: mesh, spin: body.spin || 1 });
       focusMeshById[body.id] = mesh;
+      collidables.push({ mesh: mesh, radius: body.size * 1.5 });
       addLabel(mesh, nameOf(body.id), "planet", body.id);
 
       if (body.hasRing) {
@@ -2336,15 +2438,23 @@ const Orrery = (function () {
         const a = (i / 96) * Math.PI * 2;
         orbitPoints.push(new THREE.Vector3(Math.cos(a) * body.orbitRadius, 0, Math.sin(a) * body.orbitRadius));
       }
-      scene.add(new THREE.LineLoop(
+      const planetOrbitLine = new THREE.LineLoop(
         new THREE.BufferGeometry().setFromPoints(orbitPoints),
         new THREE.LineBasicMaterial({ color: 0x6a6f82, transparent: true, opacity: 0.35 })
-      ));
+      );
+      scene.add(planetOrbitLine);
+      layerGroups.orbitLines.push(planetOrbitLine);
 
       pivots.push({ pivot: pivot, speed: body.speed });
 
       const moonSystem = new THREE.Object3D();
       moonSystem.position.x = body.orbitRadius;
+      // Moons orbit close to their own planet's equatorial plane, not the
+      // flat plane every planet orbits the Sun in, so the whole moon
+      // system is tipped by that planet's own axial tilt. Uranus (tilt:
+      // 98) is the dramatic case - its moons end up circling it almost
+      // top-to-bottom instead of side-to-side.
+      if (body.tilt) moonSystem.rotation.x = body.tilt * (Math.PI / 180);
       pivot.add(moonSystem);
       const outer = addMoons(moonSystem, body.size, body.id);
       focusRadiusByBody[body.id] = Math.max(outer * 2.6, body.size * 4.5);
@@ -2352,15 +2462,18 @@ const Orrery = (function () {
 
     // Named asteroids and dwarf planets (real bodies, stylised distances),
     // plus faint belt particles - the "small things" that fill NASA's view.
+    // Ceres is deliberately grouped with the dwarf planets, not the
+    // asteroids - it's the odd one out, officially reclassified as a dwarf
+    // planet in 2006 even though it sits in the asteroid belt.
     const SMALL_BODIES = [
-      { name: "Vesta", r: 9.5, size: 0.1, speed: 0.34, color: 0xb9b2a6 },
-      { name: "Ceres", r: 10.0, size: 0.13, speed: 0.31, color: 0xc4bdb2 },
-      { name: "Pallas", r: 10.4, size: 0.1, speed: 0.29, color: 0xa9a9a4 },
-      { name: "Hygiea", r: 10.85, size: 0.09, speed: 0.27, color: 0x9d9a94 },
-      { name: "Pluto", r: 21.4, size: 0.2, speed: 0.06, color: 0xcdb8a2, ring: true },
-      { name: "Haumea", r: 22.8, size: 0.15, speed: 0.055, color: 0xd9d6d0, ring: true },
-      { name: "Makemake", r: 24.1, size: 0.15, speed: 0.05, color: 0xc98f6b, ring: true },
-      { name: "Eris", r: 25.8, size: 0.18, speed: 0.045, color: 0xe4e2dc, ring: true }
+      { name: "Vesta", r: 9.5, size: 0.1, speed: 0.34, color: 0xb9b2a6, group: "asteroids" },
+      { name: "Pallas", r: 10.4, size: 0.1, speed: 0.29, color: 0xa9a9a4, group: "asteroids" },
+      { name: "Hygiea", r: 10.85, size: 0.09, speed: 0.27, color: 0x9d9a94, group: "asteroids" },
+      { name: "Ceres", r: 10.0, size: 0.13, speed: 0.31, color: 0xc4bdb2, group: "dwarfPlanets", ring: true },
+      { name: "Pluto", r: 21.4, size: 0.2, speed: 0.06, color: 0xcdb8a2, group: "dwarfPlanets", ring: true },
+      { name: "Haumea", r: 22.8, size: 0.15, speed: 0.055, color: 0xd9d6d0, group: "dwarfPlanets", ring: true },
+      { name: "Makemake", r: 24.1, size: 0.15, speed: 0.05, color: 0xc98f6b, group: "dwarfPlanets", ring: true },
+      { name: "Eris", r: 25.8, size: 0.18, speed: 0.045, color: 0xe4e2dc, group: "dwarfPlanets", ring: true }
     ];
     SMALL_BODIES.forEach(function (sb) {
       const id = "small-" + sb.name.toLowerCase();
@@ -2376,21 +2489,98 @@ const Orrery = (function () {
       piv.add(m);
       clickable.push(m);
       focusMeshById[id] = m;
+      collidables.push({ mesh: m, radius: sb.size * 2 });
       focusRadiusByBody[id] = Math.max(sb.size * 10, 1.6);
       smallMeta[id] = sb;
       pivots.push({ pivot: piv, speed: sb.speed });
       addLabel(m, sb.name, "small", id);
+      layerGroups[sb.group].push(m);
       if (sb.ring) {
         const pts = [];
         for (let i = 0; i <= 80; i++) {
           const a = (i / 80) * Math.PI * 2;
           pts.push(new THREE.Vector3(Math.cos(a) * sb.r, 0, Math.sin(a) * sb.r));
         }
-        scene.add(new THREE.LineLoop(
+        const ringLine = new THREE.LineLoop(
           new THREE.BufferGeometry().setFromPoints(pts),
           new THREE.LineBasicMaterial({ color: 0x5a5f72, transparent: true, opacity: 0.2 })
-        ));
+        );
+        scene.add(ringLine);
+        layerGroups.orbitLines.push(ringLine);
+        layerGroups[sb.group].push(ringLine);
       }
+    });
+
+    // Comets: two real, famous ones, drawn with a genuinely eccentric
+    // (stretched) orbit rather than a circle, with the Sun offset toward
+    // one end - a rough stand-in for "the Sun sits at one focus of the
+    // ellipse", which is the real reason comet orbits look like this.
+    const COMETS = [
+      { name: "Halley's Comet", rx: 15, rz: 4.2, speed: 0.05, color: 0xbfe6ff },
+      { name: "Hale-Bopp", rx: 21, rz: 3, speed: 0.03, color: 0x9fd6ff }
+    ];
+    COMETS.forEach(function (cm) {
+      const id = "small-" + cm.name.toLowerCase().replace(/[^a-z]+/g, "-");
+      const focusOffset = Math.sqrt(Math.max(cm.rx * cm.rx - cm.rz * cm.rz, 0));
+      const piv = new THREE.Object3D();
+      piv.rotation.y = Math.random() * Math.PI * 2;
+      scene.add(piv);
+      const head = new THREE.Mesh(
+        new THREE.SphereGeometry(0.09, 10, 10),
+        new THREE.MeshBasicMaterial({ color: cm.color })
+      );
+      head.position.x = cm.rx - focusOffset;
+      head.userData.sectionId = id;
+      piv.add(head);
+      const haze = new THREE.Mesh(
+        new THREE.SphereGeometry(0.22, 10, 10),
+        new THREE.MeshBasicMaterial({ color: cm.color, transparent: true, opacity: 0.22 })
+      );
+      haze.position.copy(head.position);
+      piv.add(haze);
+      clickable.push(head);
+      focusMeshById[id] = head;
+      collidables.push({ mesh: head, radius: 0.3 });
+      focusRadiusByBody[id] = 1.1;
+      smallMeta[id] = { name: cm.name, group: "comets" };
+      pivots.push({ pivot: piv, speed: cm.speed });
+      addLabel(head, cm.name, "small", id);
+      layerGroups.comets.push(head, haze);
+      trailTracked.push({ mesh: head, points: [], color: cm.color });
+
+      const pts = [];
+      for (let i = 0; i <= 120; i++) {
+        const a = (i / 120) * Math.PI * 2;
+        pts.push(new THREE.Vector3(Math.cos(a) * cm.rx - focusOffset, 0, Math.sin(a) * cm.rz));
+      }
+      const path = new THREE.LineLoop(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: cm.color, transparent: true, opacity: 0.25 })
+      );
+      scene.add(path);
+      layerGroups.orbitLines.push(path);
+      layerGroups.comets.push(path);
+    });
+
+    // Constellations: a couple of recognizable outlines sketched far in
+    // the background, like NASA's star-chart layer - decorative, not
+    // astronomically precise star positions, and off by default the way
+    // NASA's own tool starts with this layer off too.
+    const CONSTELLATIONS = [
+      { name: "Big Dipper", center: [-55, 18, -40], scale: 9, points: [[0,0],[1.1,0.3],[2.1,0.1],[3,0.6],[3,1.6],[2.2,2.3],[1.1,2.0],[2.1,0.1]] },
+      { name: "Orion", center: [60, -10, -50], scale: 8, points: [[0,4],[1.6,4.2],[0.5,2.6],[0.8,2.5],[1.1,2.4],[-0.3,0],[2,-0.2]] }
+    ];
+    CONSTELLATIONS.forEach(function (c) {
+      const pts = c.points.map(function (p) {
+        return new THREE.Vector3(c.center[0] + p[0] * c.scale, c.center[1] + p[1] * c.scale, c.center[2]);
+      });
+      const line = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(pts),
+        new THREE.LineBasicMaterial({ color: 0x8fb3d9, transparent: true, opacity: 0.5 })
+      );
+      line.visible = layers.constellations;
+      scene.add(line);
+      layerGroups.constellations.push(line);
     });
     function addBelt(count, rMin, rMax, thick, speed, opacity) {
       const pts = [];
@@ -2409,43 +2599,83 @@ const Orrery = (function () {
     addBelt(420, 9.2, 11.1, 0.35, 0.28, 0.75);
     addBelt(320, 21, 28, 0.9, 0.05, 0.4);
 
+    // Fading trail lines behind comets and spacecraft (the Trails layer).
+    // Only built once here; animate() below just keeps feeding them fresh
+    // points and rebuilding the line while the layer is switched on.
+    const TRAIL_LENGTH = 36;
+    trailTracked.forEach(function (t) {
+      t.line = new THREE.Line(
+        new THREE.BufferGeometry(),
+        new THREE.LineBasicMaterial({ color: t.color, transparent: true, opacity: 0.45 })
+      );
+      t.line.visible = layers.trails;
+      scene.add(t.line);
+      layerGroups.craftTrails.push(t.line);
+    });
+
     function bodyInfo(id) {
       if (smallMeta[id]) return { name: smallMeta[id].name, small: true };
       return PLANETS.filter(function (p) { return p.id === id; })[0];
     }
 
-    /* ---------- camera: drag to rotate, wheel to zoom, click a body to
-       fly in close and see its own moons, the way NASA's Eyes on the
-       Solar System behaves - rather than immediately leaving the page. ---------- */
-    let radius = 26, desiredRadius = 26;
-    let followObject = null, followId = null, followProfile = null;
-    const currentTarget = new THREE.Vector3(0, 0, 0);
-    const desiredTargetVec = new THREE.Vector3();
+    /* ---------- camera: a true free-flight camera, not an orbit locked to
+       a center point. Drag looks around (any direction, including upside
+       down); scroll/pinch/the +/- buttons fly forward or backward through
+       space along wherever you're currently facing. Clicking a body is a
+       one-time flight toward it, not a permanent lock - the moment you
+       drag or scroll, you're back in full manual control and can fly off
+       in any direction, the same as approaching it in the first place.
+       A small collision check (collidables, above) keeps a fast approach
+       from flying straight into a body, the Sun included. ---------- */
+    const worldUp = new THREE.Vector3(0, 1, 0);
+    const forwardAxis = new THREE.Vector3(0, 0, -1); // "forward" in camera-local space
+    const orient = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.4);
+    const DEFAULT_CAM_POS = new THREE.Vector3(0, 0, 1).applyQuaternion(orient).multiplyScalar(26);
+    const camPos = DEFAULT_CAM_POS.clone();
+    let orientTarget = null;
+    let flyTarget = null;  // Vector3 | null - camPos eases toward this while auto-piloting
+    let lookTarget = null; // Vector3 | null - point to face while auto-piloting
+    let mode2D = false;
+    let followId = null, followProfile = null;
     let dragging = false, lastX = 0, lastY = 0, moved = 0;
 
-    // Free camera: instead of the old rotate-with-a-clamped-tilt controls,
-    // the camera's orientation is a quaternion applied to a fixed "behind
-    // the target" offset and a fixed "up" vector, rotated together. That
-    // keeps them perpendicular no matter what, so you can drag past the
-    // poles, look at the system upside-down, or spin all the way round,
-    // the way a free-look camera works in NASA's own tool.
-    const worldUp = new THREE.Vector3(0, 1, 0);
-    const baseOffset = new THREE.Vector3(0, 0, 1);
-    const orient = new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(1, 0, 0), -0.5);
-    let orientTarget = null;
-    let mode2D = false;
-
-    function boundsFor() {
-      return followObject ? { min: 1.2, max: 16 } : { min: 10, max: 42 };
+    function clampFromCollisions() {
+      const p = new THREE.Vector3();
+      for (let i = 0; i < collidables.length; i++) {
+        const c = collidables[i];
+        c.mesh.getWorldPosition(p);
+        const d = camPos.distanceTo(p);
+        if (d < c.radius) {
+          const push = camPos.clone().sub(p);
+          if (push.lengthSq() < 0.0001) push.set(0, 0.2, 1);
+          push.normalize().multiplyScalar(c.radius);
+          camPos.copy(p).add(push);
+        }
+      }
     }
 
     function applyCamera() {
-      const offset = baseOffset.clone().applyQuaternion(orient).multiplyScalar(radius);
-      camera.position.set(currentTarget.x + offset.x, currentTarget.y + offset.y, currentTarget.z + offset.z);
+      camera.position.copy(camPos);
       camera.up.copy(worldUp.clone().applyQuaternion(orient));
-      camera.lookAt(currentTarget);
+      camera.lookAt(camPos.clone().add(forwardAxis.clone().applyQuaternion(orient)));
     }
     applyCamera();
+
+    function flyToward(worldPos, viewDistance) {
+      // Approach from roughly the direction we're already near, rather
+      // than snapping to some fixed angle every time.
+      const away = camPos.clone().sub(worldPos);
+      if (away.lengthSq() < 0.0001) away.set(0, 0.3, 1);
+      away.normalize().multiplyScalar(viewDistance);
+      flyTarget = worldPos.clone().add(away);
+      lookTarget = worldPos.clone();
+    }
+
+    function moveForward(amount) {
+      flyTarget = null; // manual movement cancels any auto-pilot flight
+      camPos.addScaledVector(forwardAxis.clone().applyQuaternion(orient), amount);
+      clampFromCollisions();
+    }
 
     function setMode2D(flag) {
       mode2D = flag;
@@ -2461,6 +2691,49 @@ const Orrery = (function () {
     const modeBtn = document.getElementById("orreryModeBtn");
     if (modeBtn) modeBtn.addEventListener("click", function () { setMode2D(!mode2D); });
 
+    // The Layers panel: each checkbox just flips .visible on whichever
+    // group of real THREE.js objects it was tagged into as they were
+    // built above. "User Interface" is the odd one out - it hides the
+    // on-screen controls/labels themselves (for an unobstructed look),
+    // not anything in the 3D scene, so the Layers button and panel stay
+    // visible regardless, or there'd be no way to turn it back on.
+    function applyLayers() {
+      ["planets", "asteroids", "dwarfPlanets", "comets", "constellations"].forEach(function (key) {
+        layerGroups[key].forEach(function (obj) { obj.visible = layers[key]; });
+      });
+      layerGroups.craftIcons.forEach(function (obj) { obj.visible = layers.icons; });
+      layerGroups.orbitLines.forEach(function (obj) { obj.visible = layers.orbits; });
+      layerGroups.craftTrails.forEach(function (obj) { obj.visible = layers.trails; });
+
+      const uiBits = [
+        document.querySelector(".orrery-zoom"), document.getElementById("orreryLabels"),
+        document.getElementById("orreryFocusPanel"), document.getElementById("orreryInfo"),
+        document.querySelector(".orrery__hint")
+      ];
+      uiBits.forEach(function (el) { if (el) el.style.visibility = layers.ui ? "" : "hidden"; });
+      const layersBtn = document.getElementById("orreryLayersBtn");
+      if (layersBtn) layersBtn.style.visibility = ""; // always reachable, even with UI off
+    }
+    applyLayers();
+
+    const layersBtn = document.getElementById("orreryLayersBtn");
+    const layersPanel = document.getElementById("orreryLayersPanel");
+    if (layersBtn && layersPanel) {
+      layersBtn.addEventListener("click", function () {
+        const open = layersPanel.hidden;
+        layersPanel.hidden = !open;
+        layersBtn.setAttribute("aria-expanded", String(open));
+      });
+      layersPanel.querySelectorAll("input[type=checkbox]").forEach(function (box) {
+        const key = box.dataset.layer;
+        box.checked = !!layers[key];
+        box.addEventListener("change", function () {
+          layers[key] = box.checked;
+          applyLayers();
+        });
+      });
+    }
+
     const focusPanel = document.getElementById("orreryFocusPanel");
     const focusName = document.getElementById("orreryFocusName");
     const focusBackBtn = document.getElementById("orreryFocusBack");
@@ -2470,9 +2743,10 @@ const Orrery = (function () {
       const mesh = focusMeshById[id];
       if (!mesh) return;
       const planet = bodyInfo(id);
-      followObject = mesh;
+      const worldPos = new THREE.Vector3();
+      mesh.getWorldPosition(worldPos);
+      flyToward(worldPos, focusRadiusByBody[id] || 6);
       followId = id;
-      desiredRadius = focusRadiusByBody[id] || 6;
       if (focusPanel && planet) {
         focusName.textContent = planet.name;
         const craftEl = document.getElementById("orreryFocusCraft");
@@ -2494,21 +2768,17 @@ const Orrery = (function () {
     }
 
     function unfocus() {
-      followObject = null;
       followId = null;
-      desiredRadius = 26;
+      flyTarget = DEFAULT_CAM_POS.clone();
+      lookTarget = new THREE.Vector3(0, 0, 0);
       if (focusPanel) focusPanel.classList.remove("is-visible");
       const infoEl = document.getElementById("orreryInfo");
       if (infoEl) { infoEl.classList.remove("is-visible"); infoEl.innerHTML = ""; }
     }
 
-    function zoomBy(factor) {
-      const b = boundsFor();
-      desiredRadius = Math.max(b.min, Math.min(b.max, desiredRadius * factor));
-    }
     const zin = document.getElementById("orreryZoomIn"), zout = document.getElementById("orreryZoomOut");
-    if (zin) zin.addEventListener("click", function () { zoomBy(0.75); });
-    if (zout) zout.addEventListener("click", function () { zoomBy(1.33); });
+    if (zin) zin.addEventListener("click", function () { moveForward(2.4); });
+    if (zout) zout.addEventListener("click", function () { moveForward(-2.4); });
 
     if (focusBackBtn) focusBackBtn.addEventListener("click", unfocus);
     if (focusProfileBtn) focusProfileBtn.addEventListener("click", function () {
@@ -2558,6 +2828,7 @@ const Orrery = (function () {
       moved += Math.abs(dx) + Math.abs(dy);
       if (moved > 4 && label && !label.hidden) label.hidden = true;
       orientTarget = null; // a manual drag cancels any in-progress mode snap
+      flyTarget = null;    // ...and any in-progress "flying toward a body"
       if (mode2D) {
         // Flattened view only spins around the vertical axis, like turning
         // a paper map, rather than tipping it up onto its edge.
@@ -2616,8 +2887,7 @@ const Orrery = (function () {
 
     dom.addEventListener("wheel", function (e) {
       e.preventDefault();
-      const b = boundsFor();
-      desiredRadius = Math.max(b.min, Math.min(b.max, desiredRadius + e.deltaY * (followObject ? 0.006 : 0.02)));
+      moveForward(-e.deltaY * 0.018);
     }, { passive: false });
 
     /* ---------- resize ---------- */
@@ -2638,9 +2908,10 @@ const Orrery = (function () {
     function updateLabels() {
       const w = host.clientWidth || width, h = host.clientHeight || height;
       labels.forEach(function (l) {
-        let show = true;
+        let show = layers.labels;
+        if (!show) { l.el.style.opacity = "0"; return; }
         if (l.kind === "moon" || l.kind === "craft") show = followId === l.owner;
-        else if (l.kind === "small") show = !followObject || followId === l.owner;
+        else if (l.kind === "small") show = !followId || followId === l.owner;
         if (show) {
           l.obj.getWorldPosition(labelPos);
           labelPos.project(camera);
@@ -2663,20 +2934,38 @@ const Orrery = (function () {
         sun.rotation.y += dt * 0.05;
       }
 
-      // Smoothly fly the camera's look-at point and distance toward
-      // whatever is currently focused (a clicked body, or back out to the
-      // Sun at the center once "Back to Solar System" is pressed).
-      if (followObject) {
-        followObject.getWorldPosition(desiredTargetVec);
-      } else {
-        desiredTargetVec.set(0, 0, 0);
+      // Auto-pilot: only active right after clicking a body or pressing
+      // "Back to Solar System" - it eases camPos and orient toward the
+      // target, then clears itself once close, handing full manual
+      // control straight back. The rest of the time (which is most of
+      // the time) this does nothing and the camera only moves because
+      // you dragged or scrolled it yourself.
+      if (flyTarget) {
+        const followSpeed = reduceMotion ? 1 : Math.min(1, dt * 2.6);
+        camPos.lerp(flyTarget, followSpeed);
+        if (lookTarget) {
+          const dir = lookTarget.clone().sub(camPos);
+          if (dir.lengthSq() > 0.0001) {
+            dir.normalize();
+            orient.slerp(new THREE.Quaternion().setFromUnitVectors(forwardAxis, dir), followSpeed);
+          }
+        }
+        if (camPos.distanceTo(flyTarget) < 0.08) flyTarget = null;
       }
-      const followSpeed = reduceMotion ? 1 : Math.min(1, dt * 3.2);
-      currentTarget.lerp(desiredTargetVec, followSpeed);
-      radius += (desiredRadius - radius) * followSpeed;
       if (orientTarget) orient.slerp(orientTarget, reduceMotion ? 1 : Math.min(1, dt * 3.5));
+      clampFromCollisions();
       applyCamera();
       camera.updateMatrixWorld();
+
+      if (layers.trails && !reduceMotion) {
+        trailTracked.forEach(function (t) {
+          const p = new THREE.Vector3();
+          t.mesh.getWorldPosition(p);
+          t.points.push(p);
+          if (t.points.length > TRAIL_LENGTH) t.points.shift();
+          t.line.geometry.setFromPoints(t.points);
+        });
+      }
 
       if (!landingEl || !landingEl.hidden) {
         updateLabels();
@@ -2863,7 +3152,26 @@ const Router = (function () {
 const SUPABASE_URL = "https://dawn-sea-6ce9.abubakarsk2007.workers.dev";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVpa3VxeWl5dWFlbWRuc3N1Y3NiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwODA1NzgsImV4cCI6MjEwNTY1NjU3OH0.ZedJ8AuzLuqZeAK3vFGhSYGxFeQBwQ1Qldj71tVwjC4";
 
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+// If the Supabase library failed to load (flaky connection, an ad
+// blocker, offline use), the line below used to throw here and take the
+// whole script block down with it - which is why Sign In could look like
+// it silently did nothing. Falling back to a stub client means every
+// cloud call still runs, just returns a clear error instead of vanishing.
+const sb = (window.supabase && typeof window.supabase.createClient === "function")
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : (function () {
+      const offline = function () { return Promise.resolve({ data: null, error: { message: "cloud-unavailable" } }); };
+      return {
+        auth: {
+          signUp: offline, signInWithPassword: offline, signOut: offline, resetPasswordForEmail: offline,
+          onAuthStateChange: function () { return { data: { subscription: { unsubscribe: function () {} } } }; }
+        },
+        from: function () {
+          return { select: function () { return { eq: function () { return { maybeSingle: offline }; } }; }, upsert: offline };
+        },
+        rpc: offline
+      };
+    })();
 
 // Standard country list for the sign-up "Country" field's dropdown/autocomplete.
 const COUNTRIES = [
@@ -3053,26 +3361,30 @@ const Cloud = (function () {
     }
 
     const s = Gamification.exportState();
+    // "points" is deliberately NOT sent as a raw number here. A browser can
+    // always be tampered with (anyone can open devtools and call this
+    // function with points: 999999), so the server has to be the one that
+    // decides the score. tests_taken is sent instead - the underlying
+    // record of what was actually answered - and a Postgres function
+    // (submit_progress, see supabase-scoring.sql) recomputes points from
+    // that on the server and ignores whatever the client thinks its score
+    // is. If that function hasn't been installed yet, this call fails and
+    // the person keeps their locally-tracked score, they just won't appear
+    // correctly on any shared leaderboard until it's set up.
     const payload = {
-      id: currentUser.id,
-      points: s.points,
       tests_taken: s.testsTaken,
       explored_planets: s.exploredPlanets,
       compared_at_least_once: s.comparedAtLeastOnce,
-      badges: s.badges,
-      updated_at: new Date().toISOString()
+      badges: s.badges
     };
-    // Only include profile fields once they're actually known (set in
-    // syncAfterLogin) - otherwise a progress-only save could blank them out.
     if (currentProfile) {
       payload.name = currentProfile.name;
       payload.location = currentProfile.location;
-      payload.email = currentProfile.email;
       payload.phone = currentProfile.phone;
       payload.address = currentProfile.address;
     }
 
-    return sb.from("profiles").upsert(payload).then(function (result) {
+    return sb.rpc("submit_progress", payload).then(function (result) {
       if (result.error) {
         log("push failed", result.error);
         notify("Your progress is still saved on this device.");
@@ -3094,12 +3406,14 @@ const Cloud = (function () {
 
     const raw = (e && e.message) || "Something went wrong. Try again.";
     const m = raw.toLowerCase();
+    if (m === "cloud-unavailable")
+      return "Sign in isn't available right now (the login service failed to load). Check your connection and try again.";
     if (m.indexOf("already registered") !== -1 || m.indexOf("already been registered") !== -1)
       return "That email already has an account. Try signing in instead.";
     if (m.indexOf("invalid login") !== -1 || m.indexOf("invalid credentials") !== -1)
       return "Email or password is incorrect.";
-    if (m.indexOf("password") !== -1 && (m.indexOf("6") !== -1 || m.indexOf("least") !== -1))
-      return "Password must be at least 6 characters.";
+    if (m.indexOf("password") !== -1 && (m.indexOf("6") !== -1 || m.indexOf("8") !== -1 || m.indexOf("least") !== -1))
+      return "Password must be at least 8 characters.";
     if (m.indexOf("email") !== -1 && (m.indexOf("invalid") !== -1 || m.indexOf("valid") !== -1))
       return "That does not look like a valid email address.";
     if (m.indexOf("rate limit") !== -1 || m.indexOf("too many") !== -1)
@@ -3109,29 +3423,59 @@ const Cloud = (function () {
     return raw;
   }
 
-  // Wires the dialog's buttons. Runs every time, whether the markup
+  function isValidPhone(v) {
+    const digits = v.replace(/\D/g, "");
+    return digits.length >= 7 && digits.length <= 15 && /^[+\d][\d\s().-]*$/.test(v.trim());
+  }
+
+  function isKnownCountry(v) {
+    if (!v) return true; // optional field - blank is fine
+    return COUNTRIES.some(function (c) { return c.toLowerCase() === v.trim().toLowerCase(); });
+  }
+
+  // Wires the dialog's controls. Runs every time, whether the markup
   // already existed on the page or was just injected below - keeping
   // this separate from the injection step is what avoids the "buttons
   // silently do nothing" bug.
   function wireDialog() {
     let authMode = "signin";
     const dialog = document.getElementById("authDialog");
+    const form = document.getElementById("authForm");
     const title = document.getElementById("authTitle");
     const submitBtn = document.getElementById("authSubmit");
     const toggleBtn = document.getElementById("authToggle");
     const msg = document.getElementById("authMsg");
     const profileFields = document.getElementById("authProfileFields");
     const nameInput = document.getElementById("authName");
+    const locationInput = document.getElementById("authLocation");
+    const phoneInput = document.getElementById("authPhone");
+    const passInput = document.getElementById("authPass");
+    const confirmWrap = document.getElementById("authConfirmWrap");
+    const confirmInput = document.getElementById("authPassConfirm");
     const resetBtn = document.getElementById("authReset");
     const cancelBtn = document.getElementById("authCancel");
+    const forgotBtn = document.getElementById("authForgot");
+    const fieldErrors = {
+      location: document.getElementById("authLocationError"),
+      phone: document.getElementById("authPhoneError")
+    };
+
+    function setFieldError(key, text) {
+      const el = fieldErrors[key];
+      if (!el) return;
+      el.textContent = text || "";
+      el.hidden = !text;
+    }
 
     // Clears every field in both Sign In and Sign Up mode, plus any
     // message, without changing which mode is currently showing.
     function clearFields() {
-      ["authEmail", "authPass", "authName", "authLocation", "authPhone", "authAddress"].forEach(function (id) {
+      ["authEmail", "authPass", "authPassConfirm", "authName", "authLocation", "authPhone", "authAddress"].forEach(function (id) {
         const el = document.getElementById(id);
         if (el) el.value = "";
       });
+      setFieldError("location", "");
+      setFieldError("phone", "");
       msg.textContent = "";
       msg.style.color = "";
     }
@@ -3155,31 +3499,69 @@ const Cloud = (function () {
         title.textContent = "Sign In";
         submitBtn.textContent = "Sign In";
         toggleBtn.textContent = "Need an account?";
-        profileFields.style.display = "none";
+        profileFields.hidden = true;
+        confirmWrap.hidden = true;
+        passInput.setAttribute("autocomplete", "current-password");
       }
     });
 
     toggleBtn.onclick = function () {
       authMode = authMode === "signin" ? "signup" : "signin";
-      title.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
-      submitBtn.textContent = authMode === "signin" ? "Sign In" : "Sign Up";
+      const isSignup = authMode === "signup";
+      title.textContent = isSignup ? "Sign Up" : "Sign In";
+      submitBtn.textContent = isSignup ? "Sign Up" : "Sign In";
       // The toggle itself now names the mode you'd switch TO, not the one
       // you're already looking at - so it reads "Need an account?" while
       // signing in, and "Already have an account? Sign In" while signing up.
-      toggleBtn.textContent = authMode === "signin" ? "Need an account?" : "Already have an account? Sign In";
-      profileFields.style.display = authMode === "signup" ? "block" : "none";
+      toggleBtn.textContent = isSignup ? "Already have an account? Sign In" : "Need an account?";
+      profileFields.hidden = !isSignup;
+      confirmWrap.hidden = !isSignup;
+      // A browser's saved-password offer and a password manager's
+      // generated-password offer both key off this attribute.
+      passInput.setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
+      setFieldError("location", "");
+      setFieldError("phone", "");
       msg.textContent = "";
       msg.style.color = "";
     };
 
-    submitBtn.onclick = function () {
+    forgotBtn.onclick = function () {
       const email = document.getElementById("authEmail").value.trim();
-      const pass = document.getElementById("authPass").value;
+      msg.style.color = "";
+      if (!email) {
+        msg.textContent = "Enter your email above first, then tap \u201cForgot password?\u201d again.";
+        return;
+      }
+      forgotBtn.disabled = true;
+      sb.auth.resetPasswordForEmail(email).then(function (result) {
+        forgotBtn.disabled = false;
+        if (result && result.error) {
+          msg.textContent = friendlyAuthError(result.error);
+          return;
+        }
+        msg.style.color = "var(--accent-good)";
+        msg.textContent = "If that email has an account, a reset link is on its way.";
+      }).catch(function (e) {
+        forgotBtn.disabled = false;
+        msg.textContent = friendlyAuthError(e);
+      });
+    };
+
+    // A real <form> means Enter submits it like any normal login box - the
+    // old markup was bare inputs with no <form>, so Enter did nothing.
+    form.addEventListener("submit", function (evt) {
+      evt.preventDefault();
+      const email = document.getElementById("authEmail").value.trim();
+      const pass = passInput.value;
       msg.textContent = "";
       msg.style.color = "";
 
       if (!email || !pass) {
         msg.textContent = "Enter an email and password.";
+        return;
+      }
+      if (pass.length < 8) {
+        msg.textContent = "Password must be at least 8 characters.";
         return;
       }
 
@@ -3188,18 +3570,31 @@ const Cloud = (function () {
         action = signIn(email, pass);
       } else {
         const name = nameInput.value.trim();
-        const phone = document.getElementById("authPhone").value.trim();
-        if (!name) {
-          msg.textContent = "Enter your name.";
+        const phone = phoneInput.value.trim();
+        const location = locationInput.value.trim();
+        const confirmPass = confirmInput.value;
+
+        setFieldError("location", "");
+        setFieldError("phone", "");
+
+        if (!name) { msg.textContent = "Enter your name."; return; }
+        if (!phone) { msg.textContent = "Enter your phone number."; return; }
+        if (!isValidPhone(phone)) {
+          setFieldError("phone", "That doesn't look like a valid phone number.");
           return;
         }
-        if (!phone) {
-          msg.textContent = "Enter your phone number.";
+        if (!isKnownCountry(location)) {
+          setFieldError("location", "Pick a country from the list, or leave this blank.");
           return;
         }
+        if (pass !== confirmPass) {
+          msg.textContent = "Passwords don't match.";
+          return;
+        }
+
         action = signUp(email, pass, {
           name: name,
-          location: document.getElementById("authLocation").value.trim(),
+          location: location,
           phone: phone,
           address: document.getElementById("authAddress").value.trim()
         });
@@ -3217,36 +3612,53 @@ const Cloud = (function () {
       }).catch(function (e) {
         msg.textContent = friendlyAuthError(e);
       });
-    };
+    });
   }
 
   function ensureDialog() {
     if (!document.getElementById("authDialog")) {
-      const inputStyle = "width:100%;margin-bottom:.5rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px";
+      const inputStyle = "width:100%;margin-bottom:.35rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px;font:inherit";
+      const labelStyle = "display:block;font-size:.72rem;color:var(--ink-faint);margin-bottom:.25rem";
+      const errorStyle = "font-size:.68rem;color:#e58a7a;margin:-0.2rem 0 .5rem";
       const COUNTRY_OPTIONS = COUNTRIES.map(function (c) { return '<option value="' + c + '">'; }).join("");
 
       document.body.insertAdjacentHTML(
         "beforeend",
         '<dialog id="authDialog" style="background:#0c0c16;color:#efece3;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;max-width:360px;max-height:85vh;overflow:auto">' +
+          '<form id="authForm" novalidate>' +
           '<h3 id="authTitle" style="font-family:var(--font-display);margin:0 0 1rem">Sign In</h3>' +
-          '<div id="authProfileFields" style="display:none">' +
-            '<input id="authName" type="text" placeholder="Full name *" required style="' + inputStyle + '">' +
-            '<input id="authLocation" type="text" list="authCountryList" autocomplete="off" placeholder="Country (optional)" style="' + inputStyle + '">' +
+          '<div id="authProfileFields" hidden>' +
+            '<label for="authName" style="' + labelStyle + '">Full name *</label>' +
+            '<input id="authName" name="name" type="text" autocomplete="name" placeholder="Ada Lovelace" required style="' + inputStyle + '">' +
+            '<label for="authLocation" style="' + labelStyle + '">Country (optional)</label>' +
+            '<input id="authLocation" name="country" type="text" list="authCountryList" autocomplete="country-name" placeholder="Start typing a country" style="' + inputStyle + '">' +
+            '<p id="authLocationError" style="' + errorStyle + '" hidden></p>' +
             '<datalist id="authCountryList">' + COUNTRY_OPTIONS + '</datalist>' +
-            '<input id="authPhone" type="tel" placeholder="Phone *" required style="' + inputStyle + '">' +
-            '<input id="authAddress" type="text" placeholder="Address (optional)" style="' + inputStyle + '">' +
+            '<label for="authPhone" style="' + labelStyle + '">Phone *</label>' +
+            '<input id="authPhone" name="tel" type="tel" autocomplete="tel" placeholder="+1 555 010 0100" required style="' + inputStyle + '">' +
+            '<p id="authPhoneError" style="' + errorStyle + '" hidden></p>' +
+            '<label for="authAddress" style="' + labelStyle + '">Address (optional)</label>' +
+            '<input id="authAddress" name="street-address" type="text" autocomplete="street-address" style="' + inputStyle + '">' +
           '</div>' +
-          '<input id="authEmail" type="email" placeholder="Email *" required style="' + inputStyle + '">' +
-          '<input id="authPass" type="password" placeholder="Password" style="width:100%;margin-bottom:1rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px">' +
+          '<label for="authEmail" style="' + labelStyle + '">Email *</label>' +
+          '<input id="authEmail" name="email" type="email" autocomplete="email" required style="' + inputStyle + '">' +
+          '<label for="authPass" style="' + labelStyle + '">Password *</label>' +
+          '<input id="authPass" name="password" type="password" autocomplete="current-password" minlength="8" required style="' + inputStyle + '">' +
+          '<div id="authConfirmWrap" hidden>' +
+            '<label for="authPassConfirm" style="' + labelStyle + '">Confirm password *</label>' +
+            '<input id="authPassConfirm" name="confirm-password" type="password" autocomplete="new-password" style="' + inputStyle + '">' +
+          '</div>' +
+          '<button id="authForgot" type="button" style="background:none;border:none;color:var(--ink-faint);font-size:.72rem;text-decoration:underline;cursor:pointer;padding:0;margin:.2rem 0 .9rem">Forgot password?</button>' +
           '<div style="display:flex;gap:.5rem;flex-wrap:wrap">' +
-            '<button id="authSubmit" class="btn btn--primary">Sign In</button>' +
-            '<button id="authToggle" class="btn btn--ghost">Need an account?</button>' +
+            '<button id="authSubmit" type="submit" class="btn btn--primary">Sign In</button>' +
+            '<button id="authToggle" type="button" class="btn btn--ghost">Need an account?</button>' +
           '</div>' +
           '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.5rem">' +
             '<button id="authReset" type="button" class="btn btn--ghost">Reset</button>' +
             '<button id="authCancel" type="button" class="btn btn--ghost">Cancel</button>' +
           '</div>' +
-          '<p id="authMsg" style="font-family:var(--font-mono);font-size:.75rem;color:#e58a7a;margin:.8rem 0 0"></p>' +
+          '<p id="authMsg" role="alert" style="font-family:var(--font-mono);font-size:.75rem;color:#e58a7a;margin:.8rem 0 0"></p>' +
+          '</form>' +
         '</dialog>'
       );
     }
@@ -3315,16 +3727,16 @@ document.addEventListener("DOMContentLoaded", function () {
    already syncs to Supabase, and this bot is scripted, not a live AI.
    ========================================================================= */
 const EXTERNAL_LINKS = {
-  sun: { nasa: "https://solarsystem.nasa.gov/solar-system/sun/overview/", wiki: "https://en.wikipedia.org/wiki/Sun" },
-  mercury: { nasa: "https://solarsystem.nasa.gov/planets/mercury/overview/", wiki: "https://en.wikipedia.org/wiki/Mercury_(planet)" },
-  venus: { nasa: "https://solarsystem.nasa.gov/planets/venus/overview/", wiki: "https://en.wikipedia.org/wiki/Venus" },
-  earth: { nasa: "https://solarsystem.nasa.gov/planets/earth/overview/", wiki: "https://en.wikipedia.org/wiki/Earth" },
-  mars: { nasa: "https://solarsystem.nasa.gov/planets/mars/overview/", wiki: "https://en.wikipedia.org/wiki/Mars" },
-  jupiter: { nasa: "https://solarsystem.nasa.gov/planets/jupiter/overview/", wiki: "https://en.wikipedia.org/wiki/Jupiter" },
-  saturn: { nasa: "https://solarsystem.nasa.gov/planets/saturn/overview/", wiki: "https://en.wikipedia.org/wiki/Saturn" },
-  uranus: { nasa: "https://solarsystem.nasa.gov/planets/uranus/overview/", wiki: "https://en.wikipedia.org/wiki/Uranus" },
-  neptune: { nasa: "https://solarsystem.nasa.gov/planets/neptune/overview/", wiki: "https://en.wikipedia.org/wiki/Neptune" },
-  kuiper: { nasa: "https://solarsystem.nasa.gov/solar-system/kuiper-belt/overview/", wiki: "https://en.wikipedia.org/wiki/Kuiper_belt" }
+  sun: { nasa: "https://science.nasa.gov/sun/", wiki: "https://en.wikipedia.org/wiki/Sun" },
+  mercury: { nasa: "https://science.nasa.gov/mercury/", wiki: "https://en.wikipedia.org/wiki/Mercury_(planet)" },
+  venus: { nasa: "https://science.nasa.gov/venus/", wiki: "https://en.wikipedia.org/wiki/Venus" },
+  earth: { nasa: "https://science.nasa.gov/earth/", wiki: "https://en.wikipedia.org/wiki/Earth" },
+  mars: { nasa: "https://science.nasa.gov/mars/", wiki: "https://en.wikipedia.org/wiki/Mars" },
+  jupiter: { nasa: "https://science.nasa.gov/jupiter/", wiki: "https://en.wikipedia.org/wiki/Jupiter" },
+  saturn: { nasa: "https://science.nasa.gov/saturn/", wiki: "https://en.wikipedia.org/wiki/Saturn" },
+  uranus: { nasa: "https://science.nasa.gov/uranus/", wiki: "https://en.wikipedia.org/wiki/Uranus" },
+  neptune: { nasa: "https://science.nasa.gov/neptune/", wiki: "https://en.wikipedia.org/wiki/Neptune" },
+  kuiper: { nasa: "https://science.nasa.gov/solar-system/kuiper-belt/", wiki: "https://en.wikipedia.org/wiki/Kuiper_belt" }
 };
 
 (function () {
@@ -3342,6 +3754,8 @@ const EXTERNAL_LINKS = {
         '<p>If you sign in, we store your name, email, phone number, country and (if you give it) address, plus your quiz history, explored planets, and badges, in a Supabase database so your progress follows you between devices. A small cookie remembers your cookie-consent choice.</p>' +
         '<h3>What we do not do</h3>' +
         '<p>We do not sell your data, run third-party ad trackers, or share your information with anyone outside this project. If you never sign in, your progress stays only in this browser.</p>' +
+        '<h3>Third-party fonts and libraries</h3>' +
+        '<p>This page loads its typefaces from Google Fonts and its 3D/interactive code from jsDelivr, unpkg and cdnjs. Loading anything from another server means that server sees your IP address and browser details, the way any website you visit can - that is not the same as ad tracking, but it is worth being upfront about rather than claiming "no third parties" outright.</p>' +
         '<h3>Your choices</h3>' +
         '<p>You can sign out at any time, use Reset Mission Progress to clear local data, or contact the site owner to request deletion of your account.</p>' +
         '<h3>Copyright</h3>' +
@@ -3358,8 +3772,10 @@ const EXTERNAL_LINKS = {
     function init() {
       const btn = document.getElementById("privacyLinkBtn");
       if (btn) btn.addEventListener("click", open);
+      const cookieBtn = document.getElementById("cookieBannerPrivacyBtn");
+      if (cookieBtn) cookieBtn.addEventListener("click", open);
     }
-    return { init: init };
+    return { init: init, open: open };
   })();
 
   /* ---------- Post-sign-in welcome banner ---------- */
@@ -3385,10 +3801,21 @@ const EXTERNAL_LINKS = {
       setTimeout(function () { banner.remove(); }, 350);
     }
 
+    // Sign-up's "name" field is free text the person chose themselves - it
+    // has to be escaped before going into innerHTML, or someone could put
+    // actual HTML/script in their name and have it run in their own
+    // session. Low severity here since nobody else's browser ever renders
+    // another user's name, but cheap and correct to close anyway.
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+
     function show(profile) {
       if (shownThisSession) return;
       shownThisSession = true;
-      const name = firstName(profile && profile.name);
+      const name = escapeHtml(firstName(profile && profile.name));
       const greetingName = name ? ", " + name : "";
       const banner = document.createElement("div");
       banner.className = "welcome-banner";
@@ -3610,7 +4037,7 @@ const EXTERNAL_LINKS = {
   if (typeof window.speechSynthesis === "undefined") return;
 
   const SKIP_TAGS = ["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "SELECT", "NOSCRIPT"];
-  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast", "orrery-labels", "orrery-focus", "orrery-zoom", "orrery-info", "moon-orbit"];
+  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast", "orrery-labels", "orrery-focus", "orrery-zoom", "orrery-info", "moon-orbit", "orrery-layers"];
   const BLOCK_SELECTOR = "p, h1, h2, h3, h4, h5, h6, li, td, th, button, a, label, dt, dd";
 
   const Reader = (function () {
@@ -3810,7 +4237,10 @@ const EXTERNAL_LINKS = {
       const tabHost = document.getElementById("exploreTabs");
       if (tabHost) {
         tabHost.querySelectorAll(".explore-tab").forEach(function (b) {
-          b.classList.toggle("is-active", b.dataset.tab === key);
+          const active = b.dataset.tab === key;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-selected", String(active));
+          b.tabIndex = active ? 0 : -1;
         });
       }
     }
