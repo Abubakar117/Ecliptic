@@ -4,13 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ecliptic — A Field Guide to the Solar System</title>
-<meta name="description" content="An interactive field guide to the Sun, the eight planets, and the Kuiper Belt — a 3D orrery, an Explore mode, side-by-side comparisons, and knowledge tests of 10, 25, or 50 questions.">
+<meta name="description" content="An interactive field guide to the Sun, the eight planets, and the Kuiper Belt — a 3D orrery, an Explore mode, side-by-side comparisons, and knowledge tests of any length from 10 to 200 questions, with chemistry, physics, biology and maths mixed in.">
 <meta name="theme-color" content="#07070f">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070f'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23ffb454'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23555' stroke-width='2'/%3E%3Ccircle cx='84' cy='50' r='4' fill='%23dfe3e8'/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%2307070f'/%3E%3Ccircle cx='50' cy='50' r='16' fill='%23b983ff'/%3E%3Ccircle cx='50' cy='50' r='34' fill='none' stroke='%23555' stroke-width='2'/%3E%3Ccircle cx='84' cy='50' r='4' fill='%23dfe3e8'/%3E%3C/svg%3E">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Ecliptic — A Field Guide to the Solar System">
 <meta property="og:description" content="Explore the Sun, eight planets, and the Kuiper Belt in an interactive 3D orrery, then put your knowledge to the test.">
-<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%2307070f'/%3E%3Ccircle cx='600' cy='315' r='70' fill='%23ffb454'/%3E%3Ccircle cx='600' cy='315' r='160' fill='none' stroke='%23444' stroke-width='2'/%3E%3Ccircle cx='600' cy='315' r='240' fill='none' stroke='%23333' stroke-width='2'/%3E%3Ctext x='600' y='560' font-family='Georgia,serif' font-size='56' fill='%23efece3' text-anchor='middle'%3EECLIPTIC%3C/text%3E%3C/svg%3E">
+<meta property="og:image" content="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 630'%3E%3Crect width='1200' height='630' fill='%2307070f'/%3E%3Ccircle cx='600' cy='315' r='70' fill='%23b983ff'/%3E%3Ccircle cx='600' cy='315' r='160' fill='none' stroke='%23444' stroke-width='2'/%3E%3Ccircle cx='600' cy='315' r='240' fill='none' stroke='%23333' stroke-width='2'/%3E%3Ctext x='600' y='560' font-family='Georgia,serif' font-size='56' fill='%23efece3' text-anchor='middle'%3EECLIPTIC%3C/text%3E%3C/svg%3E">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ecliptic — A Field Guide to the Solar System">
 <meta name="twitter:description" content="An interactive 3D field guide to the solar system, with tests and a scoreboard.">
@@ -32,7 +32,7 @@
   --ink: #efece3;
   --ink-dim: #a7a49b;
   --ink-faint: #7a776f;
-  --accent-primary: #ffb454;
+  --accent-primary: #b983ff; /* was orange; now a vivid violet so it reads as the site's own color, distinct from the Sun's real orange */
   --accent-good: #7fd4a0;
   --accent-bad: #e58a7a;
 
@@ -93,7 +93,7 @@ a { color: inherit; }
 
 .skip-link {
   position: fixed; top: -60px; left: 1rem; z-index: 500;
-  background: var(--accent-primary); color: #1a1305;
+  background: var(--accent-primary); color: #1d0f33;
   padding: 0.6em 1em; border-radius: var(--radius-sm);
   font-family: var(--font-mono); font-size: 0.85rem;
   text-decoration: none; transition: top 0.2s var(--ease);
@@ -127,7 +127,7 @@ a { color: inherit; }
   width: 5px; height: 5px; z-index: 0; pointer-events: none;
   border-radius: 50%;
   background: #fff8ec;
-  box-shadow: 0 0 6px 1px rgba(255, 248, 236, 0.9), 0 0 18px 4px rgba(255, 180, 84, 0.5);
+  box-shadow: 0 0 6px 1px rgba(255, 248, 236, 0.9), 0 0 18px 4px rgba(185, 131, 255, 0.5);
   will-change: transform;
 }
 .stars-wanderer::before {
@@ -197,7 +197,7 @@ a { color: inherit; }
 .section__copy { color: var(--ink-dim); font-size: 1.02rem; }
 
 .btn { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; padding: 0.85em 1.6em; border-radius: 999px; border: 1px solid transparent; cursor: pointer; transition: transform 0.2s var(--ease), background 0.2s; }
-.btn--primary { background: var(--accent-primary); color: #1a1305; }
+.btn--primary { background: var(--accent-primary); color: #1d0f33; }
 .btn--primary:hover { transform: translateY(-2px); }
 .btn--ghost { background: transparent; border-color: var(--border-glass); color: var(--ink); }
 .btn--ghost:hover { background: var(--bg-panel); }
@@ -224,7 +224,14 @@ a { color: inherit; }
 .mission-clock { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.04em; color: var(--ink-faint); margin: 0.9rem 0 0; }
 .hero__actions { display: flex; gap: 0.9rem; justify-content: center; margin-top: 1.8rem; flex-wrap: wrap; }
 
-.orrery { position: relative; width: min(94vw, 780px); aspect-ratio: 16 / 11; margin: 1.2rem auto 0; }
+.orrery { position: relative; width: min(94vw, 780px); aspect-ratio: 16 / 11; margin: 1.2rem auto 0; animation: orreryGrow 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+/* The whole solar-system view opens from a tiny circle to its real size on load. */
+@keyframes orreryGrow {
+  from { clip-path: circle(2% at 50% 50%); scale: 0.5; opacity: 0; }
+  60% { opacity: 1; }
+  to { clip-path: circle(100% at 50% 50%); scale: 1; opacity: 1; }
+}
+.iris-reveal { will-change: clip-path, transform, opacity; }
 .orrery-canvas { width: 100%; height: 100%; }
 .orrery-canvas canvas { border-radius: var(--radius-lg); }
 .orrery__label { position: absolute; z-index: 5; pointer-events: none; font-family: var(--font-display); font-size: 0.78rem; font-weight: 600; background: rgba(8,8,16,0.85); border: 1px solid var(--border-glass); padding: 0.3em 0.7em; border-radius: 999px; white-space: nowrap; }
@@ -241,7 +248,7 @@ a { color: inherit; }
 .orrery-tag--planet { font-family: var(--font-display); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(239,236,227,0.88); text-shadow: 0 0 6px #000; }
 .orrery-tag--moon { font-family: var(--font-display); font-size: 0.6rem; color: rgba(222,228,236,0.9); text-shadow: 0 0 5px #000; }
 .orrery-tag--small { font-family: var(--font-display); font-size: 0.56rem; color: rgba(190,196,208,0.62); text-shadow: 0 0 5px #000; }
-.orrery-tag--craft { font-family: var(--font-mono); font-size: 0.56rem; color: #ffb454; text-shadow: 0 0 5px #000; }
+.orrery-tag--craft { font-family: var(--font-mono); font-size: 0.56rem; color: #b983ff; text-shadow: 0 0 5px #000; }
 @media (max-width: 640px) { .orrery-tag--planet { font-size: 0.5rem; letter-spacing: 0.14em; } .orrery-tag--moon, .orrery-tag--craft { font-size: 0.5rem; } .orrery-tag--small { font-size: 0.46rem; } }
 .orrery-info { position: absolute; left: 12px; top: 12px; z-index: 6; width: min(260px, 60%); background: rgba(8,8,16,0.9); border: 1px solid var(--border-glass); border-radius: 14px; padding: 0.8rem 0.95rem; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
 .orrery-info.is-visible { opacity: 1; }
@@ -257,6 +264,18 @@ a { color: inherit; }
 .orrery-zoom button:hover { background: rgba(255,255,255,0.16); }
 #orreryModeBtn { font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; }
 #orreryLayersBtn { font-size: 1rem; }
+.orrery-compass {
+  position: absolute; left: 10px; top: 10px; z-index: 6;
+  display: flex; align-items: center; gap: 0.5rem;
+  background: rgba(8,8,16,0.85); border: 1px solid var(--border-glass); border-radius: 999px;
+  padding: 0.3rem 0.8rem 0.3rem 0.3rem;
+}
+.orrery-compass.is-far #orreryCompassArrow { color: var(--accent-primary); animation: compassPulse 1.4s ease-in-out infinite; }
+@keyframes compassPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+#orreryCompassArrow { width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(255,255,255,0.08); color: var(--ink); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.15s linear; flex-shrink: 0; }
+#orreryCompassArrow:hover { background: rgba(255,255,255,0.18); }
+#orreryCompassDist { font-family: var(--font-mono); font-size: 0.64rem; color: var(--ink-dim); white-space: nowrap; }
+@media (max-width: 640px) { #orreryCompassDist { font-size: 0.56rem; } }
 .orrery-layers {
   position: absolute; right: 10px; top: 158px; z-index: 7; width: 220px;
   background: rgba(8,8,16,0.94); border: 1px solid var(--border-glass); border-radius: 12px;
@@ -271,7 +290,7 @@ a { color: inherit; }
 .orrery-focus-panel.is-visible { opacity: 1; transform: translateX(-50%) translateY(0); pointer-events: auto; }
 .orrery-focus-panel__btn { font-family: var(--font-mono); font-size: 0.7rem; font-weight: 500; color: var(--ink); background: rgba(255,255,255,0.08); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.8em; cursor: pointer; }
 .orrery-focus-panel__btn:hover { background: rgba(255,255,255,0.18); }
-.orrery-focus-panel__btn--primary { background: var(--accent-primary); color: #1a1305; border-color: transparent; }
+.orrery-focus-panel__btn--primary { background: var(--accent-primary); color: #1d0f33; border-color: transparent; }
 .orrery-focus-panel__btn--primary:hover { background: var(--accent-primary); opacity: 0.9; }
 @media (max-width: 640px) {
   .orrery-focus-panel { font-size: 0.72rem; padding: 0.45em 0.5em 0.45em 0.8em; gap: 0.4rem; }
@@ -281,7 +300,7 @@ a { color: inherit; }
 .orrery__hint { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); text-align: center; margin-top: 0.8rem; }
 
 .orrery-fallback { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-.orrery-fallback__sun { width: 34px; height: 34px; border-radius: 50%; background: var(--accent-primary); box-shadow: 0 0 40px 10px rgba(255, 180, 84, 0.5); }
+.orrery-fallback__sun { width: 34px; height: 34px; border-radius: 50%; background: #ffb454; box-shadow: 0 0 40px 10px rgba(255, 180, 84, 0.5); } /* the Sun stays its real orange - only the site's UI accent changed */
 .orrery-fallback__ring { position: absolute; border: 1px dashed rgba(255, 255, 255, 0.18); border-radius: 50%; animation: spin linear infinite; }
 .orrery-fallback__ring--1 { width: 130px; height: 130px; animation-duration: 8s; }
 .orrery-fallback__ring--2 { width: 200px; height: 200px; animation-duration: 14s; }
@@ -344,13 +363,16 @@ a { color: inherit; }
 .explore-detail-wrap { flex: 1; min-width: 0; }
 .explore-detail { padding: 0; max-width: none; }
 .explore-detail__name { font-size: clamp(2.6rem, 7vw, 4.4rem); line-height: 1; margin-bottom: 0.3rem; }
+.explore-speaker { display: inline-flex; align-items: center; gap: 0.45rem; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.4em 0.95em 0.4em 0.7em; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim); cursor: pointer; margin-bottom: 0.9rem; }
+.explore-speaker:hover { border-color: var(--accent-primary); color: var(--ink); }
+.explore-speaker svg { color: var(--accent-primary); flex-shrink: 0; }
 .explore-compare-btn { margin-top: 0.6rem; background: transparent; border: 1px solid var(--border-glass); color: var(--ink-dim); font-family: var(--font-mono); font-size: 0.78rem; padding: 0.7em 1.1em; border-radius: var(--radius-sm); cursor: pointer; }
 .explore-compare-btn:hover { border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
 
 .explore-tabs { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.4rem 0 1.6rem; padding-bottom: 1.4rem; border-bottom: 1px solid var(--border-glass); }
 .explore-tab { background: transparent; border: 1px solid var(--border-glass); color: var(--ink-dim); font-family: var(--font-mono); font-size: 0.76rem; padding: 0.5em 1em; border-radius: 999px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
 .explore-tab:hover { border-color: var(--section-accent, var(--accent-primary)); color: var(--ink); }
-.explore-tab.is-active { background: var(--section-accent, var(--accent-primary)); border-color: var(--section-accent, var(--accent-primary)); color: #1a1305; }
+.explore-tab.is-active { background: var(--section-accent, var(--accent-primary)); border-color: var(--section-accent, var(--accent-primary)); color: #1d0f33; }
 .explore-tab-content { min-height: 90px; margin-bottom: 1rem; }
 .explore-tab-panel { animation: tabFadeIn 0.3s var(--ease); }
 .explore-tab-panel__label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin-bottom: 0.6rem; }
@@ -362,6 +384,11 @@ a { color: inherit; }
 @keyframes spherespin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes bandslide { from { background-position: 0 0; } to { background-position: 260px 0; } }
 @media (max-width: 640px) { .explore-visual--big { width: 150px; height: 150px; } }
+/* A planet's sphere grows in from a small circle each time one is opened. Uses the
+   individual `scale` property so it composes with the spin's `transform`. */
+@keyframes visualGrow { from { scale: 0.12; opacity: 0; } to { scale: 1; opacity: 1; } }
+.explore-visual--big { animation: spherespin 18s linear infinite, visualGrow 1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.explore-visual--big[data-mode="banded"] { animation: bandslide 8s linear infinite, visualGrow 1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
 
 /* ---------- explore: "what orbits this body" diagram, inspired by
    NASA's Eyes on the Solar System - a real body at the center, its real
@@ -404,6 +431,14 @@ a { color: inherit; }
 .test-length-btn { flex: 1 1 180px; text-align: left; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem 1.3rem; color: var(--ink); font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; cursor: pointer; display: flex; flex-direction: column; gap: 0.35rem; transition: border-color 0.2s, transform 0.2s; }
 .test-length-btn span { font-family: var(--font-mono); font-weight: 400; font-size: 0.75rem; color: var(--ink-faint); }
 .test-length-btn:hover { border-color: var(--accent-primary); transform: translateY(-2px); }
+.test-length-grid { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1rem; }
+.test-length-grid .test-length-btn { flex: 0 1 calc(33.333% - 0.4rem); min-width: 150px; }
+.test-length-custom { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--border-glass); }
+.test-length-custom label { display: block; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-faint); margin-bottom: 0.5rem; }
+.test-length-custom__row { display: flex; gap: 0.6rem; max-width: 280px; }
+.test-length-custom__row input { flex: 1; min-width: 0; padding: 0.6em 0.8em; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); color: inherit; font: inherit; }
+.test-length-custom__row input:focus-visible { outline: 2px solid var(--accent-primary); outline-offset: 1px; }
+.test-length-custom__note { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); margin: 0.6rem 0 0; min-height: 1.2em; }
 
 .quiz__options { display: flex; flex-direction: column; gap: 0.55rem; margin-bottom: 1.1rem; }
 .quiz__option { text-align: left; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); color: var(--ink); padding: 0.75em 1em; border-radius: var(--radius-sm); cursor: pointer; font-size: 0.92rem; font-family: var(--font-serif); transition: border-color 0.15s, background 0.15s; }
@@ -420,7 +455,7 @@ a { color: inherit; }
 .cert-actions { text-align: center; margin-top: 2.2rem; }
 .cert-hint { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-faint); margin-bottom: 1rem; }
 .cert-hint.is-warning { color: var(--accent-bad); }
-.cert-submit, .cert-retake { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; background: var(--accent-primary); color: #1a1305; border: none; padding: 0.7em 1.4em; border-radius: 999px; cursor: pointer; }
+.cert-submit, .cert-retake { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; background: var(--accent-primary); color: #1d0f33; border: none; padding: 0.7em 1.4em; border-radius: 999px; cursor: pointer; }
 .cert-results__card { text-align: center; padding: 2.2rem; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); margin-top: 1.5rem; }
 .cert-results__score { font-family: var(--font-display); font-size: 1.7rem; margin-bottom: 0.5rem; }
 .cert-results__best, .cert-results__rank { font-family: var(--font-mono); font-size: 0.85rem; color: var(--ink-dim); margin-bottom: 0.4rem; }
@@ -441,12 +476,39 @@ a { color: inherit; }
 .rank-ladder { display: grid; gap: 0.65rem; margin-bottom: 2.6rem; }
 .rank-rung { display: grid; grid-template-columns: 70px 1fr; gap: 0 1rem; align-items: baseline; padding: 0.85rem 1.1rem; border: 1px solid var(--border-glass); border-radius: var(--radius-sm); opacity: 0.45; transition: opacity 0.2s, border-color 0.2s; }
 .rank-rung.is-reached { opacity: 1; }
-.rank-rung.is-current { border-color: var(--accent-primary); background: rgba(255, 180, 84, 0.06); }
+.rank-rung.is-current { border-color: var(--accent-primary); background: rgba(185, 131, 255, 0.06); }
 .rank-rung__min { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
 .rank-rung__name { font-family: var(--font-display); font-weight: 600; grid-row: 1; }
 .rank-rung__blurb { grid-column: 2; font-size: 0.84rem; color: var(--ink-dim); }
 
 .badges-title { font-size: 1.25rem; margin-bottom: 1.1rem; }
+
+/* ---------- scoreboard: progress analytics ---------- */
+.progress-chart { margin-bottom: 2.4rem; }
+.progress-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.7rem; margin-bottom: 1.2rem; }
+.progress-stat { background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 0.8rem 0.95rem; }
+.progress-stat__label { display: block; font-family: var(--font-mono); font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin-bottom: 0.25rem; }
+.progress-stat__value { font-family: var(--font-display); font-size: 1.5rem; font-weight: 700; }
+.progress-stat__value.is-up { color: var(--accent-good); }
+.progress-stat__value.is-down { color: var(--accent-bad); }
+.progress-svg-wrap { background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 0.8rem; margin-bottom: 1.2rem; overflow-x: auto; }
+.progress-svg { width: 100%; height: auto; min-width: 360px; display: block; }
+.progress-svg .grid { stroke: rgba(255,255,255,0.08); stroke-width: 1; }
+.progress-svg .axis-label { fill: var(--ink-faint); font-family: var(--font-mono); font-size: 10px; }
+.progress-svg .line { fill: none; stroke: var(--accent-primary); stroke-width: 2.5; stroke-linejoin: round; stroke-linecap: round; }
+.progress-svg .area { fill: var(--accent-primary); opacity: 0.12; }
+.progress-svg .dot { fill: var(--bg-void, #07070f); stroke: var(--accent-primary); stroke-width: 2; }
+.progress-svg .dot:hover { fill: var(--accent-primary); }
+.progress-svg .trend { stroke: var(--ink-faint); stroke-width: 1.5; stroke-dasharray: 5 5; fill: none; }
+.progress-sub { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-faint); margin: 0 0 0.6rem; }
+.topic-bars { display: grid; gap: 0.5rem; }
+.topic-bar { display: grid; grid-template-columns: 6.2rem 1fr 3rem; align-items: center; gap: 0.7rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-dim); }
+.topic-bar__track { height: 10px; background: rgba(255,255,255,0.07); border-radius: 999px; overflow: hidden; }
+.topic-bar__fill { height: 100%; border-radius: 999px; background: var(--accent-primary); transition: width 0.7s var(--ease); }
+.topic-bar__fill.is-weak { background: var(--accent-bad); }
+.topic-bar__fill.is-strong { background: var(--accent-good); }
+.progress-empty { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-faint); padding: 1.2rem; border: 1px dashed var(--border-glass); border-radius: var(--radius-md); text-align: center; }
+.progress-insight { font-size: 0.95rem; color: var(--ink-dim); margin: 0.9rem 0 0; font-family: var(--font-serif); font-style: italic; }
 .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.9rem; margin-bottom: 2.2rem; }
 .badge-card { border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1.2rem 1rem; text-align: center; opacity: 0.4; filter: grayscale(1); transition: opacity 0.3s, filter 0.3s, transform 0.3s; }
 .badge-card.is-unlocked { opacity: 1; filter: none; background: var(--bg-panel); }
@@ -505,7 +567,7 @@ a { color: inherit; }
 .welcome-banner__close { position: absolute; top: 0.7rem; right: 0.8rem; background: none; border: none; color: var(--ink-faint); font-size: 1.1rem; cursor: pointer; line-height: 1; }
 .welcome-banner__close:hover { color: var(--ink); }
 /* ---------- floating mission mentor ---------- */
-.mentor-toggle { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 500; width: 56px; height: 56px; border-radius: 50%; background: var(--accent-primary); color: #1a1305; border: none; font-size: 1.4rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease); }
+.mentor-toggle { position: fixed; right: 1.2rem; bottom: 1.2rem; z-index: 500; width: 56px; height: 56px; border-radius: 50%; background: var(--accent-primary); color: #1d0f33; border: none; font-size: 1.4rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease); }
 .mentor-toggle:hover { transform: scale(1.06); }
 .mentor-panel { position: fixed; right: 1.2rem; bottom: 5.2rem; z-index: 500; width: min(360px, calc(100vw - 2.4rem)); height: min(520px, calc(100vh - 8rem)); background: var(--bg-void); border: 1px solid var(--border-glass); border-radius: var(--radius-md); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(12px) scale(0.97); pointer-events: none; transition: opacity 0.2s var(--ease), transform 0.2s var(--ease); }
 .mentor-panel.is-open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
@@ -516,28 +578,28 @@ a { color: inherit; }
 .mentor-panel__body { flex: 1; overflow-y: auto; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.7rem; }
 .mentor-msg { max-width: 85%; padding: 0.6em 0.9em; border-radius: 14px; font-size: 0.85rem; line-height: 1.45; }
 .mentor-msg--bot { align-self: flex-start; background: var(--bg-panel); border: 1px solid var(--border-glass); border-bottom-left-radius: 4px; }
-.mentor-msg--user { align-self: flex-end; background: var(--accent-primary); color: #1a1305; border-bottom-right-radius: 4px; }
+.mentor-msg--user { align-self: flex-end; background: var(--accent-primary); color: #1d0f33; border-bottom-right-radius: 4px; }
 .mentor-panel__quick { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0 1.2rem 0.8rem; flex-shrink: 0; }
 .mentor-chip { font-family: var(--font-mono); font-size: 0.72rem; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink-dim); border-radius: 999px; padding: 0.4em 0.8em; cursor: pointer; }
 .mentor-chip:hover { border-color: var(--accent-primary); color: var(--ink); }
 .mentor-panel__input { display: flex; gap: 0.5rem; padding: 0.9rem 1.2rem; border-top: 1px solid var(--border-glass); flex-shrink: 0; }
 .mentor-panel__input input { flex: 1; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.6em 1em; color: var(--ink); font-family: inherit; font-size: 0.85rem; }
 .mentor-panel__input input:focus { outline: 1px solid var(--accent-primary); }
-.mentor-panel__input button { background: var(--accent-primary); color: #1a1305; border: none; border-radius: 999px; width: 38px; height: 38px; flex-shrink: 0; cursor: pointer; font-size: 1rem; }
+.mentor-panel__input button { background: var(--accent-primary); color: #1d0f33; border: none; border-radius: 999px; width: 38px; height: 38px; flex-shrink: 0; cursor: pointer; font-size: 1rem; }
 @media (max-width: 480px) { .mentor-panel { right: 0.6rem; left: 0.6rem; width: auto; bottom: 4.6rem; } .mentor-toggle { right: 1rem; bottom: 1rem; } }
 /* ---------- accessibility: read aloud ---------- */
 .reader-toggle { position: fixed; left: 1.2rem; bottom: 1.2rem; z-index: 500; width: 56px; height: 56px; border-radius: 50%; background: var(--bg-panel-strong); border: 1px solid var(--border-glass); color: var(--ink); font-size: 1.3rem; cursor: pointer; box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; transition: transform 0.2s var(--ease), background 0.2s var(--ease); }
 .reader-toggle:hover { transform: scale(1.06); }
-.reader-toggle.is-active { background: var(--accent-primary); color: #1a1305; }
+.reader-toggle.is-active { background: var(--accent-primary); color: #1d0f33; }
 body.reader-open .mentor-toggle { bottom: 5.7rem; }
 .reader-word { border-radius: 3px; transition: background 0.15s var(--ease), color 0.15s var(--ease); cursor: pointer; }
-.reader-word--active { background: var(--accent-primary); color: #1a1305; }
+.reader-word--active { background: var(--accent-primary); color: #1d0f33; }
 .reader-bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 600; background: var(--bg-panel-strong); border-top: 1px solid var(--border-glass); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 0.8rem 1rem; display: flex; flex-wrap: wrap; align-items: center; gap: 0.9rem; transform: translateY(100%); transition: transform 0.3s var(--ease); }
 .reader-bar.is-open { transform: translateY(0); }
 .reader-bar__transport { display: flex; align-items: center; gap: 0.4rem; }
 .reader-bar__btn { width: 38px; height: 38px; border-radius: 50%; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink); font-size: 0.95rem; cursor: pointer; display: flex; align-items: center; justify-content: center; }
 .reader-bar__btn:hover { border-color: var(--accent-primary); }
-.reader-bar__btn--play { background: var(--accent-primary); color: #1a1305; border: none; }
+.reader-bar__btn--play { background: var(--accent-primary); color: #1d0f33; border: none; }
 .reader-bar__slider-group { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
 .reader-bar__slider-group input[type="range"] { width: 100px; accent-color: var(--accent-primary); }
 .reader-bar__readout { min-width: 3.4em; text-align: right; }
@@ -628,6 +690,12 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
         </div>
       </div>
       <div class="orrery-info" id="orreryInfo"></div>
+      <div class="orrery-compass" id="orreryCompass">
+        <button type="button" id="orreryCompassArrow" aria-label="Fly back to the Sun">
+          <svg viewBox="0 0 24 24" width="22" height="22"><path d="M12 2 L19 20 L12 16 L5 20 Z" fill="currentColor"></path></svg>
+        </button>
+        <span id="orreryCompassDist"></span>
+      </div>
       <div class="orrery-focus-panel" id="orreryFocusPanel">
         <span id="orreryFocusName">Earth</span><span class="orrery-focus-panel__craft" id="orreryFocusCraft"></span>
         <button type="button" class="orrery-focus-panel__btn" id="orreryFocusBack">&larr; Solar System</button>
@@ -644,16 +712,16 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     </div>
   </header>
 
-  <section class="landing-about">
+  <section class="landing-about iris-reveal">
     <div class="section__inner">
       <span class="section__eyebrow reveal">About Ecliptic</span>
       <h2 class="section__title reveal">A hands-on field guide</h2>
       <p class="section__copy reveal">Ecliptic is an interactive guide to our solar system, built for anyone curious about the Sun, the eight planets, and the icy frontier beyond Neptune. Drag the orrery above, or head straight into Explore or Test mode.</p>
-      <p class="section__copy reveal">Explore covers all ten bodies in depth: real astronomical data and what makes each one distinct, with nothing else mixed in. Test pulls from a bank of solar-system and general astronomy questions, in a length you choose: 10, 25, or 50 questions. Compare puts any set of bodies side by side. Your points, rank, and badges are saved on this device as you go.</p>
+      <p class="section__copy reveal">Explore covers all ten bodies in depth: real astronomical data and what makes each one distinct, with nothing else mixed in. Test pulls from a bank of solar-system questions plus chemistry, physics, biology and maths questions about the planets, in a length you choose: anywhere from 10 to 200 questions, or any number you type in. Compare puts any set of bodies side by side. Your points, rank, and badges are saved on this device as you go.</p>
     </div>
   </section>
 
-  <section class="landing-bodies">
+  <section class="landing-bodies iris-reveal">
     <div class="section__inner wide">
       <span class="section__eyebrow reveal">The Ten Bodies</span>
       <h2 class="section__title reveal">Sun to Kuiper Belt</h2>
@@ -702,13 +770,17 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
   <div class="section__inner">
     <span class="section__eyebrow">Knowledge Test</span>
     <h2 class="section__title">Test Your Knowledge</h2>
-    <p class="section__hook">Questions are pulled at random from a bank covering the whole solar system, general astronomy included.</p>
+    <p class="section__hook">Questions are pulled at random from a bank covering the whole solar system, plus the chemistry, physics, biology and maths behind it.</p>
     <div class="test-setup" id="testSetup">
       <p class="section__copy">How many questions?</p>
-      <div class="test-length-options">
-        <button type="button" class="test-length-btn" data-length="10">10 Questions<span>Quick check, ~3 min</span></button>
-        <button type="button" class="test-length-btn" data-length="25">25 Questions<span>Standard test, ~8 min</span></button>
-        <button type="button" class="test-length-btn" data-length="50">50 Questions<span>Full exam, ~15 min</span></button>
+      <div class="test-length-grid" id="testLengthGrid"></div>
+      <div class="test-length-custom">
+        <label for="testLengthCustom">Or pick any number of your own</label>
+        <div class="test-length-custom__row">
+          <input type="number" id="testLengthCustom" min="1" max="500" step="1" placeholder="e.g. 37">
+          <button type="button" id="testLengthCustomBtn" class="btn btn--primary">Start</button>
+        </div>
+        <p class="test-length-custom__note" id="testLengthNote"></p>
       </div>
     </div>
     <div class="cert-quiz" id="testRun" hidden></div>
@@ -738,6 +810,9 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     </div>
 
     <div class="rank-ladder" id="rankLadder"></div>
+
+    <h3 class="badges-title">Your Progress</h3>
+    <div class="progress-chart" id="progressChart"></div>
 
     <h3 class="badges-title">Badges</h3>
     <div class="badge-grid" id="badgeGrid"></div>
@@ -1106,7 +1181,15 @@ const SMALL_INFO = {
   makemake: { type: "Dwarf planet", size: "~1,430 km wide", orbit: "~305 years", found: "2005, Brown, Trujillo and Rabinowitz", fact: "Named for the creator god of the Rapa Nui people of Easter Island. It has one known moon." },
   eris: { type: "Dwarf planet", size: "~2,330 km wide", orbit: "~559 years", found: "Announced 2005, Mike Brown's team", fact: "Slightly more massive than Pluto. Its discovery helped trigger the 2006 decision that redefined \"planet\"." },
   "halley-s-comet": { type: "Comet", size: "~11 km wide nucleus", orbit: "~76 years", found: "Recorded since antiquity; orbit computed by Edmond Halley, 1705", fact: "The most famous short-period comet. Last seen from Earth in 1986, it returns around 2061." },
-  "hale-bopp": { type: "Comet", size: "~60 km wide nucleus", orbit: "~2,533 years", found: "1995, Alan Hale and Thomas Bopp", fact: "One of the brightest comets of the 20th century, visible to the naked eye for a record 18 months." }
+  "hale-bopp": { type: "Comet", size: "~60 km wide nucleus", orbit: "~2,533 years", found: "1995, Alan Hale and Thomas Bopp", fact: "One of the brightest comets of the 20th century, visible to the naked eye for a record 18 months." },
+  "voyager-1": { type: "Interstellar probe", size: "~825 kg, 3.7 m boom-to-boom", orbit: "~170 AU from the Sun (2026) and climbing by ~3.6 AU every year", found: "Launched September 1977", fact: "The most distant human-made object. It crossed into interstellar space in August 2012 and is now well beyond every planet - these figures move fast, so treat them as a snapshot, not a live reading." },
+  "voyager-2": { type: "Interstellar probe", size: "~825 kg, 3.7 m boom-to-boom", orbit: "~143 AU from the Sun (2026) and climbing", found: "Launched August 1977", fact: "The only spacecraft to have visited all four giant planets. It followed Voyager 1 into interstellar space in November 2018, taking a different direction out of the Sun's bubble." },
+  "new-horizons": { type: "Kuiper Belt probe", size: "~478 kg, piano-sized body", orbit: "~64 AU from the Sun (2026), still inside the Kuiper Belt", found: "Launched January 2006", fact: "Gave humanity its first close-up images of Pluto in July 2015, then flew past the Kuiper Belt object Arrokoth in 2019 - the most distant flyby ever attempted. Still active, still transmitting." },
+  "pioneer-10": { type: "Retired probe", size: "~258 kg", orbit: "Last confirmed at ~82 AU from the Sun (2003); position now only estimated", found: "Launched March 1972", fact: "The first spacecraft to cross the asteroid belt and fly past Jupiter. Contact was lost in 2003 as its power source faded; it's still coasting outward, silent, somewhere past where it was last heard from." },
+  "ISS": { type: "Space station", size: "~109 m across (the size of a football field)", orbit: "~400 km altitude \u00b7 orbits Earth every ~93 minutes", found: "First module launched 1998; continuously crewed since 2000", fact: "A shared research lab run by NASA, Roscosmos, ESA, JAXA and CSA. It's close enough that, under the right conditions, you can see it with the naked eye as a bright, fast-moving \u201cstar\u201d crossing the night sky." },
+  "Hubble": { type: "Space telescope", size: "~13.2 m long, ~2.4 m mirror", orbit: "~535 km altitude \u00b7 orbits Earth every ~95 minutes", found: "Launched 1990", fact: "Observes in visible, ultraviolet and near-infrared light, well above the atmospheric blur that limits ground telescopes. Its deep-field images remain some of the most important data in astronomy, over three decades after launch." },
+  "Mars Reconnaissance Orbiter": { type: "Orbiter", size: "~6.5 m long, ~2,180 kg", orbit: "~255\u2013320 km altitude above Mars \u00b7 about 225 million km from Earth on average", found: "Launched 2005, arrived at Mars 2006", fact: "Carries the HiRISE camera, sharp enough to photograph Mars rovers from orbit. It also relays data from surface missions back to Earth." },
+  "Mars Odyssey": { type: "Orbiter", size: "~2.2 m \u00d7 2.6 m \u00d7 2.6 m body", orbit: "~400 km altitude above Mars \u00b7 about 225 million km from Earth on average", found: "Launched 2001", fact: "The longest-serving spacecraft at Mars. It mapped water-ice and mineral deposits across the planet and has relayed data for nearly every NASA Mars rover since." }
 };
 
 const CRAFT = {
@@ -1116,7 +1199,7 @@ const CRAFT = {
 
 /* ---------------------------------------------------------------------
    QUESTION BANK — 66 questions covering every body plus general
-   astronomy. Test mode draws a random N (10 / 25 / 50) from this pool.
+   astronomy. Test mode draws a random N (10 to 200 in steps of 15, or any custom number) from this pool.
    --------------------------------------------------------------------- */
 const QUESTION_BANK = [
   { topic: "sun", question: "What type of star is the Sun?", options: ["A red giant", "A G-type main-sequence star", "A white dwarf", "A neutron star"], correctIndex: 1, explanation: "The Sun is a G2V main-sequence star, an average, middle-aged star currently fusing hydrogen into helium at its core." },
@@ -1194,16 +1277,65 @@ const QUESTION_BANK = [
   { topic: "general", question: "What is a comet primarily made of?", options: ["Solid iron and nickel", "Ice, dust, and rocky material", "Pure liquid water", "Compressed hydrogen gas"], correctIndex: 1, explanation: "Comets are often described as 'dirty snowballs,' made of ice, dust, and rocky material that vaporizes into a glowing tail as they near the Sun." },
   { topic: "general", question: "Where is the asteroid belt located?", options: ["A ring around Saturn", "Between Mars and Jupiter", "Another name for the Kuiper Belt", "Beyond Neptune"], correctIndex: 1, explanation: "The asteroid belt is a region of rocky debris orbiting the Sun between Mars and Jupiter." },
   { topic: "general", question: "Which planet spins fastest on its axis, completing a day in under 10 hours?", options: ["Earth", "Mars", "Jupiter", "Saturn"], correctIndex: 2, explanation: "Jupiter has the shortest day of any planet, rotating once in under 10 hours." },
-  { topic: "general", question: "According to the IAU's 2006 definition, what makes a body a 'dwarf planet' rather than a full planet?", options: ["It's smaller than Mercury", "It orbits the Sun and is round, but hasn't cleared its orbital neighborhood", "It has no moons", "It has no atmosphere"], correctIndex: 1, explanation: "The IAU defines a dwarf planet as a body that orbits the Sun and is roughly round, but has not cleared the neighborhood around its orbit of other debris." }
+  { topic: "general", question: "According to the IAU's 2006 definition, what makes a body a 'dwarf planet' rather than a full planet?", options: ["It's smaller than Mercury", "It orbits the Sun and is round, but hasn't cleared its orbital neighborhood", "It has no moons", "It has no atmosphere"], correctIndex: 1, explanation: "The IAU defines a dwarf planet as a body that orbits the Sun and is roughly round, but has not cleared the neighborhood around its orbit of other debris." },
+  // --- Added: chemistry, physics, biology and math questions ---
+  { topic: "chemistry", question: "What makes up roughly 95% of the Martian atmosphere?", options: ["Oxygen", "Nitrogen", "Methane", "Carbon dioxide"], correctIndex: 3, explanation: "Mars's thin atmosphere is about 95% carbon dioxide, with only traces of nitrogen and oxygen." },
+  { topic: "chemistry", question: "Venus's thick atmosphere is roughly 96% carbon dioxide with clouds made of what corrosive compound?", options: ["Ammonia", "Liquid methane", "Sulfuric acid", "Hydrochloric acid"], correctIndex: 2, explanation: "Venus's clouds are made of sulfuric acid droplets, on top of a crushing, CO2-rich atmosphere." },
+  { topic: "chemistry", question: "Earth's atmosphere is roughly what percentage nitrogen?", options: ["About 21%", "About 95%", "About 50%", "About 78%"], correctIndex: 3, explanation: "Earth's air is about 78% nitrogen and 21% oxygen, with the rest trace gases." },
+  { topic: "chemistry", question: "Jupiter and Saturn are made mostly of which two elements?", options: ["Carbon and oxygen", "Silicon and iron", "Hydrogen and helium", "Nitrogen and methane"], correctIndex: 2, explanation: "Like the Sun, the gas giants Jupiter and Saturn are overwhelmingly hydrogen and helium." },
+  { topic: "chemistry", question: "Which element gives Mars its reddish color?", options: ["Copper", "Sulfur", "Carbon", "Iron, oxidized into rust"], correctIndex: 3, explanation: "Iron oxide (essentially rust) dusted across the Martian surface gives the planet its red color." },
+  { topic: "chemistry", question: "Uranus and Neptune are called 'ice giants' mainly because of their higher proportion of which materials, compared to Jupiter and Saturn?", options: ["Solid rock", "Frozen nitrogen only", "Liquid metallic hydrogen", "Water, ammonia, and methane ices"], correctIndex: 3, explanation: "Uranus and Neptune contain more icy compounds, water, ammonia, and methane, than Jupiter and Saturn." },
+  { topic: "chemistry", question: "Saturn's moon Titan has an atmosphere that's mostly made of what gas, unusually for a moon?", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Helium"], correctIndex: 2, explanation: "Titan is the only moon with a substantial atmosphere, and like Earth's, it's mostly nitrogen." },
+  { topic: "chemistry", question: "Why does Mercury have essentially no atmosphere?", options: ["It has too much gravity", "It was never near the Sun", "It's too small and hot to hold onto gases against the Sun's pull and solar wind", "It's covered in ice"], correctIndex: 2, explanation: "Mercury's weak gravity and proximity to the Sun mean solar wind and heat strip away almost any gas before it can accumulate." },
+  { topic: "chemistry", question: "What is the dominant gas powering the Sun's energy output through fusion?", options: ["Hydrogen, fused into helium", "Carbon", "Oxygen", "Nitrogen"], correctIndex: 0, explanation: "The Sun fuses hydrogen nuclei into helium in its core, releasing the energy that lights and heats the solar system." },
+  { topic: "chemistry", question: "Jupiter's moon Io is the most volcanically active body in the solar system - what gives its surface a yellow-orange, 'pizza' coloring?", options: ["Frozen methane", "Carbon deposits", "Sulfur and sulfur compounds", "Iron oxide"], correctIndex: 2, explanation: "Io's volcanoes spew sulfur and sulfur dioxide, which paint its surface in yellows, oranges, and reds." },
+  { topic: "chemistry", question: "Which gas in Earth's upper atmosphere absorbs most incoming ultraviolet radiation?", options: ["Nitrogen", "Carbon dioxide", "Argon", "Ozone (O3)"], correctIndex: 3, explanation: "The ozone layer, made of O3 molecules in the stratosphere, shields the surface from most harmful UV light." },
+  { topic: "chemistry", question: "Europa and Enceladus are both covered in a crust of what material, hiding a liquid ocean underneath?", options: ["Silicate rock", "Frozen ammonia only", "Solid carbon", "Water ice"], correctIndex: 3, explanation: "Both moons have icy shells of water ice over subsurface oceans, which is exactly why they interest astrobiologists." },
+  { topic: "physics", question: "What mainly causes ocean tides on Earth?", options: ["Ocean currents from the equator", "Wind patterns alone", "The Moon's gravity (with a smaller pull from the Sun)", "Earth's rotation speed"], correctIndex: 2, explanation: "The Moon's gravity pulls on Earth's oceans, raising tidal bulges; the Sun adds a smaller secondary effect." },
+  { topic: "physics", question: "Why do astronauts aboard the ISS appear weightless?", options: ["The station spins to cancel gravity", "They're far enough that gravity has stopped acting", "There's no gravity in low Earth orbit", "They're in continuous free fall around Earth, not outside its gravity"], correctIndex: 3, explanation: "The ISS and everything in it are constantly falling around Earth; gravity is still acting, but falling together removes the sensation of weight." },
+  { topic: "physics", question: "According to Kepler's laws, how does a planet's orbital speed relate to its distance from the Sun?", options: ["Planets closer to the Sun orbit faster than those farther out", "All planets orbit at the same speed", "Orbital speed has nothing to do with distance", "Planets farther from the Sun orbit faster"], correctIndex: 0, explanation: "Closer planets like Mercury whip around the Sun quickly, while distant planets like Neptune creep along far more slowly." },
+  { topic: "physics", question: "Why does Mercury swing between roughly -180°C and 430°C?", options: ["Its orbit is a perfect circle", "It has essentially no atmosphere to trap or spread heat", "It rotates too fast to heat up", "It is covered in reflective ice"], correctIndex: 1, explanation: "Without an atmosphere to retain warmth or even it out, Mercury's sunlit side scorches while its night side freezes." },
+  { topic: "physics", question: "What is 'escape velocity'?", options: ["The top speed of a spacecraft's engines", "The speed of light", "The speed a planet orbits the Sun", "The speed needed to break free of a body's gravity without further propulsion"], correctIndex: 3, explanation: "Escape velocity is the minimum speed an object needs to escape a gravitational pull entirely, no extra thrust required." },
+  { topic: "physics", question: "Why do fast-spinning gas giants like Jupiter and Saturn bulge noticeably at their equators?", options: ["Their cores are shaped that way", "Solar wind pressure pushes them flat", "Rapid rotation flings their fluid mass outward at the equator", "Gravity is stronger at their poles"], correctIndex: 2, explanation: "Jupiter completes a day in under 10 hours; that fast spin makes its fluid, gaseous body bulge out at the equator." },
+  { topic: "physics", question: "Roughly how long does sunlight take to reach Earth?", options: ["Instantly", "About 8 hours", "About 8 seconds", "About 8 minutes"], correctIndex: 3, explanation: "Light travels the 1 AU between the Sun and Earth in a little over 8 minutes." },
+  { topic: "physics", question: "Why does the Moon always show the same face to Earth?", options: ["It's tidally locked, rotating once per orbit", "It doesn't rotate at all", "Earth's atmosphere hides the far side", "It's a coincidence that changes slowly"], correctIndex: 0, explanation: "The Moon's rotation period exactly matches its orbital period around Earth, a result of tidal locking, so we always see the same side." },
+  { topic: "physics", question: "Venus is unusual in that it rotates backward (retrograde) compared to most planets. Which other major property does this affect?", options: ["Its day is longer than its year", "Its size", "Its number of moons", "Its orbit around the Sun"], correctIndex: 0, explanation: "Venus's slow, backward spin means a single Venusian day (243 Earth days) is longer than its year (225 Earth days)." },
+  { topic: "physics", question: "What primarily causes Earth's seasons?", options: ["Earth's axial tilt relative to the Sun", "Solar flares", "The Moon's phases", "Earth's changing distance from the Sun"], correctIndex: 0, explanation: "Earth's 23.5-degree axial tilt means different hemispheres get more direct sunlight at different points in the orbit - that's seasons, not distance from the Sun." },
+  { topic: "physics", question: "What keeps Saturn's rings from clumping together into a single moon?", options: ["They're too cold to merge", "They're actually solid, not particles", "Saturn's magnetic field repels them", "They orbit within Saturn's Roche limit, where tidal forces prevent clumping"], correctIndex: 3, explanation: "Inside the Roche limit, a planet's tidal pull is stronger than the material's own gravity, so ring particles can't gather into a larger body." },
+  { topic: "physics", question: "Which law describes how the gravitational pull between two objects weakens with distance?", options: ["The ideal gas law", "The law of conservation of energy", "Newton's law of universal gravitation (inverse-square law)", "Kepler's third law"], correctIndex: 2, explanation: "Newton's law states gravity weakens with the square of the distance between two masses - double the distance, and the pull drops to a quarter." },
+  { topic: "biology", question: "What three ingredients do astrobiologists generally look for as signs a world could support life as we know it?", options: ["Ice caps, craters, and low temperature", "Liquid water, a carbon-based chemistry, and an energy source", "Thick clouds, strong winds, and high gravity", "Bright color, rings, and a thick crust"], correctIndex: 1, explanation: "Life as we understand it needs liquid water, carbon-based chemistry, and some energy source to drive reactions." },
+  { topic: "biology", question: "Why are Europa and Enceladus considered promising places to search for life?", options: ["Both have breathable atmospheres", "Both are warmer than Earth", "Both likely have liquid water oceans beneath their icy shells", "Both have detected plant life"], correctIndex: 2, explanation: "Subsurface liquid water oceans, kept liquid by tidal heating, make these icy moons genuine astrobiology targets." },
+  { topic: "biology", question: "What term describes organisms on Earth that thrive in extreme conditions, like deep-sea vents or Antarctic ice?", options: ["Autotrophs", "Invertebrates", "Photosynthesizers", "Extremophiles"], correctIndex: 3, explanation: "Extremophiles survive conditions once thought uninhabitable, which is exactly why they inform the search for life elsewhere." },
+  { topic: "biology", question: "Why is Mars a major target in the search for past life?", options: ["It currently has a thick, breathable atmosphere", "Its surface temperature matches Earth's", "Evidence shows it once had rivers, lakes, and maybe oceans of liquid water", "It has an active magnetic field like Earth's"], correctIndex: 2, explanation: "Dry riverbeds and mineral deposits show Mars once had abundant liquid water, raising the question of whether it ever hosted life." },
+  { topic: "biology", question: "What is the 'habitable zone' (sometimes called the Goldilocks zone)?", options: ["The region where asteroids are most common", "The part of a planet's surface that gets the most sunlight", "The range of distances from a star where temperatures could allow liquid water", "The zone where a planet has rings"], correctIndex: 2, explanation: "The habitable zone is the orbital distance range where a planet could be warm enough for liquid water but not so hot it boils away." },
+  { topic: "biology", question: "Titan's lakes and seas are made of liquid methane and ethane rather than water - why does this interest astrobiologists?", options: ["It raises the question of whether life could use a different liquid solvent entirely", "It proves Titan definitely has life", "It means Titan is the warmest moon", "It means Titan has an oxygen-rich atmosphere"], correctIndex: 0, explanation: "Titan's hydrocarbon lakes are a real-world test case for whether 'life' could work with a solvent other than water." },
+  { topic: "biology", question: "What is 'panspermia'?", options: ["The process of a star forming planets", "The hypothesis that life (or its building blocks) could spread between worlds via comets or asteroids", "A NASA mission to search for alien radio signals", "A type of extremophile bacteria"], correctIndex: 1, explanation: "Panspermia proposes that microbial life or prebiotic chemistry could hitch a ride between planets or star systems on impactors." },
+  { topic: "biology", question: "Why is Mars's surface especially hostile to life today, compared to early in its history?", options: ["Its thin atmosphere and lack of a global magnetic field let radiation reach the surface", "Its gravity increased dramatically", "It lost all of its iron oxide", "It became much colder than any moon in the solar system"], correctIndex: 0, explanation: "Without a thick atmosphere or protective magnetic field, Mars's surface is bathed in radiation that would be lethal to most known life." },
+  { topic: "biology", question: "Which Earth organism is famous for surviving the vacuum and radiation of outer space in experiments?", options: ["Tardigrades (water bears)", "Earthworms", "Jellyfish", "Houseflies"], correctIndex: 0, explanation: "Tardigrades have survived direct exposure to the vacuum and radiation of space in orbital experiments, making them a go-to extremophile example." },
+  { topic: "biology", question: "What role might Jupiter's strong gravity play in the habitability of the inner solar system?", options: ["It generates sunlight for Earth", "It controls Earth's seasons", "It can deflect or capture some comets and asteroids that might otherwise strike the inner planets", "It keeps Earth's atmosphere in place"], correctIndex: 2, explanation: "Jupiter's immense gravity influences the paths of many small bodies, which is part of why some call it a partial 'shield' for the inner solar system - though the effect is debated and not absolute." },
+  { topic: "biology", question: "What does a 'biosignature' refer to in the search for life on other worlds?", options: ["A fossil found on Earth", "A type of space telescope", "A chemical or physical sign, like an unusual gas mixture, that could indicate biological activity", "The orbit pattern of a planet"], correctIndex: 2, explanation: "Scientists look for biosignatures, such as gases that shouldn't coexist without something replenishing them, as indirect evidence of possible life." },
+  { topic: "math", question: "Earth's diameter is about 12,742 km. Jupiter's diameter is roughly 11 times that. About how wide is Jupiter?", options: ["About 50,000 km", "About 25,000 km", "About 1,000,000 km", "About 140,000 km"], correctIndex: 3, explanation: "12,742 km x 11 is about 140,000 km, close to Jupiter's real diameter of 139,820 km." },
+  { topic: "math", question: "Light takes about 8 minutes to travel 1 AU. Pluto orbits roughly 39 AU from the Sun. About how long does sunlight take to reach Pluto?", options: ["About 8 minutes", "About 5 hours", "About 1 hour", "About 24 hours"], correctIndex: 1, explanation: "39 AU x 8 minutes is about 312 minutes, or roughly 5 hours, for sunlight to reach Pluto." },
+  { topic: "math", question: "Mercury orbits the Sun in about 88 Earth days. Roughly how many Mercury years fit into one Earth year (365 days)?", options: ["About 4", "About 8", "About 2", "About 1"], correctIndex: 0, explanation: "365 divided by 88 is a little over 4, so about 4 Mercury years pass in a single Earth year." },
+  { topic: "math", question: "Mars's day is about 24.6 hours, very close to Earth's. About how many Mars days would it take to equal one Earth week (7 days)?", options: ["About 14 days", "About 7 days", "About 20 days", "About 3 days"], correctIndex: 1, explanation: "Since a Mars day is nearly the same length as an Earth day, it still takes about 7 Mars days to match one Earth week." },
+  { topic: "math", question: "Neptune takes about 165 Earth years to orbit the Sun once. About what fraction of a Neptune year has passed since 1989, Neptune's last close flyby (to roughly 2026)?", options: ["Almost none of a Neptune year", "About half a Neptune year", "A full Neptune year", "About a quarter of a Neptune year"], correctIndex: 3, explanation: "2026 minus 1989 is 37 years; 37 divided by 165 is close to a quarter of Neptune's long orbital year." },
+  { topic: "math", question: "Voyager 1 is roughly 170 AU from the Sun, and light takes about 8 minutes to cross 1 AU. Roughly how long does a radio signal from Voyager 1 take to reach Earth?", options: ["About a month", "A few minutes", "Just under a day", "About a week"], correctIndex: 2, explanation: "170 AU x 8 minutes is about 1,360 minutes, or roughly 22.7 hours - just under a full day." },
+  { topic: "math", question: "Venus orbits about 0.72 AU from the Sun, compared to Earth's 1 AU. Roughly what percentage of Earth's distance is that?", options: ["About 90%", "About 50%", "About 72%", "About 30%"], correctIndex: 2, explanation: "0.72 AU is 72% of 1 AU, Earth's distance from the Sun." },
+  { topic: "math", question: "Uranus takes about 84 Earth years to complete one orbit. Roughly how many times would Uranus have orbited the Sun in 168 years?", options: ["8 times", "4 times", "1 time", "2 times"], correctIndex: 3, explanation: "168 divided by 84 is exactly 2, so Uranus would complete two full orbits in that span." },
+  { topic: "math", question: "Mercury's surface temperature swings from about -180°C at night to 430°C during the day. What is the total size of that swing?", options: ["About 180 degrees", "About 610 degrees", "About 430 degrees", "About 250 degrees"], correctIndex: 1, explanation: "430 minus (-180) is 610, a swing of about 610 degrees Celsius between Mercury's day and night sides." },
+  { topic: "math", question: "Pluto's orbital period is about 248 Earth years. Roughly what fraction of one Pluto year has passed between its 1930 discovery and 2026?", options: ["About one Pluto year", "About two-fifths of a Pluto year", "About two full Pluto years", "About a tenth of a Pluto year"], correctIndex: 1, explanation: "2026 minus 1930 is 96 years; 96 divided by 248 is close to two-fifths of a single Pluto year." },
+  { topic: "math", question: "Earth orbits the Sun at roughly 107,000 km/h. Approximately how far does Earth travel along its orbit in one 24-hour day?", options: ["About 1 million km", "About 2.6 million km", "About 10 million km", "About 107,000 km"], correctIndex: 1, explanation: "107,000 km/h x 24 hours is about 2.57 million km traveled in a single day." },
+  { topic: "math", question: "Saturn has around 290 known moons and Jupiter has around 100. Roughly how many more moons does Saturn have than Jupiter, by these approximate counts?", options: ["About 50 more", "About 90 more", "About 290 more", "About 190 more"], correctIndex: 3, explanation: "290 minus 100 is about 190 - though both counts keep climbing as astronomers find more small moons." },
+  { topic: "math", question: "A day on Venus (about 243 Earth days) is longer than its year (about 225 Earth days). By roughly how many Earth days does its day exceed its year?", options: ["About 100 days", "About 243 days", "About 18 days", "About 50 days"], correctIndex: 2, explanation: "243 minus 225 is 18 - Venus's day is genuinely longer than its own year by about 18 Earth days." }
 ];
 
 const BADGES = [
   { id: "first-contact", name: "First Contact", icon: "\u2726", desc: "Complete your first test." },
   { id: "field-researcher", name: "Field Researcher", icon: "\u25d0", desc: "View full info for all ten bodies in Explore." },
   { id: "comparative-analyst", name: "Comparative Analyst", icon: "\u2b21", desc: "Compare two or more planets." },
-  { id: "grand-tour", name: "Grand Tour", icon: "\u2744", desc: "Complete a 50-question test." },
-  { id: "sharp-shooter", name: "Sharp Shooter", icon: "\u25ce", desc: "Score 100% on any test." },
-  { id: "persistent-explorer", name: "Persistent Explorer", icon: "\u25b2", desc: "Complete 5 tests in total." },
+  { id: "grand-tour", name: "Grand Tour", icon: "\u2744", desc: "Complete a test of 50 or more questions." },
+  { id: "sharp-shooter", name: "Sharp Shooter", icon: "\u25ce", desc: "Score 100% on a test of 10 or more questions." },
+  { id: "persistent-explorer", name: "Persistent Explorer", icon: "\u25b2", desc: "Complete 5 tests of 10 or more questions." },
   { id: "solar-scholar", name: "Solar Scholar", icon: "\u2609", desc: "Earn 1,000+ mission points." },
   { id: "system-master", name: "System Master", icon: "\u273a", desc: "Reach Flight Director rank." }
 ];
@@ -1350,12 +1482,16 @@ const Gamification = (function () {
     const newlyUnlocked = [];
     function unlock(id) { if (!hasBadge(id)) { state.badges.push(id); newlyUnlocked.push(id); } }
 
+    // A custom test can be any length, including 1 question - which would
+    // make "100% on a test" and "take 5 tests" trivial. Badges that are
+    // meant to mean something only count real tests of 10+ questions.
+    const realTests = state.testsTaken.filter(function (t) { return t.length >= 10; });
     if (state.testsTaken.length >= 1) unlock("first-contact");
     if (state.exploredPlanets.length >= PLANETS.length) unlock("field-researcher");
     if (state.comparedAtLeastOnce) unlock("comparative-analyst");
     if (state.testsTaken.some(function (t) { return t.length >= 50; })) unlock("grand-tour");
-    if (state.testsTaken.some(function (t) { return t.correctCount === t.length; })) unlock("sharp-shooter");
-    if (state.testsTaken.length >= 5) unlock("persistent-explorer");
+    if (realTests.some(function (t) { return t.correctCount === t.length; })) unlock("sharp-shooter");
+    if (realTests.length >= 5) unlock("persistent-explorer");
     if (state.points >= 1000) unlock("solar-scholar");
     if (state.points >= 2500) unlock("system-master");
 
@@ -1363,9 +1499,9 @@ const Gamification = (function () {
     return newlyUnlocked;
   }
 
-  function recordTest(length, correctCount, points) {
+  function recordTest(length, correctCount, points, byTopic) {
     state.points += points;
-    state.testsTaken.push({ length: length, correctCount: correctCount, points: points, completedAt: new Date().toISOString() });
+    state.testsTaken.push({ length: length, correctCount: correctCount, points: points, byTopic: byTopic || {}, completedAt: new Date().toISOString() });
     save();
     const newBadges = evaluateBadges();
     return { newBadges: newBadges };
@@ -1445,7 +1581,154 @@ const Gamification = (function () {
     }).join("");
   }
 
+  /* ---------- progress analytics ---------- */
+
+  const TOPIC_LABELS = {
+    sun: "Sun", mercury: "Mercury", venus: "Venus", earth: "Earth", mars: "Mars", jupiter: "Jupiter",
+    saturn: "Saturn", uranus: "Uranus", neptune: "Neptune", kuiper: "Kuiper Belt", general: "General",
+    chemistry: "Chemistry", physics: "Physics", biology: "Biology", math: "Mathematics"
+  };
+
+  function escapeText(str) {
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+
+  // Builds the "Your Progress" section: summary numbers, a line chart of
+  // accuracy over every test taken (with a dashed trend line so growth or
+  // decline is visible at a glance), and a per-subject bar chart
+  // aggregated across all tests that recorded subjects. Plain SVG/CSS on
+  // purpose - no charting library to load, so nothing extra can fail to
+  // load and nothing extra is fetched from a third party.
+  function renderProgressChart() {
+    const host = document.getElementById("progressChart");
+    if (!host) return;
+    const tests = (state.testsTaken || []).filter(function (t) { return t.length > 0; });
+
+    if (tests.length === 0) {
+      host.innerHTML = '<div class="progress-empty">No tests yet. Take one and your accuracy, growth and strongest subjects will show up here.</div>';
+      return;
+    }
+
+    const acc = tests.map(function (t) { return Math.round((t.correctCount / t.length) * 100); });
+    const avg = Math.round(acc.reduce(function (a, b) { return a + b; }, 0) / acc.length);
+    const best = Math.max.apply(null, acc);
+    const latest = acc[acc.length - 1];
+    const totalQs = tests.reduce(function (a, t) { return a + t.length; }, 0);
+
+    // Growth: average of the first few tests vs the most recent few. Using
+    // a small window instead of just first-vs-last keeps one lucky or
+    // unlucky test from swinging the whole headline number.
+    const win = Math.min(3, Math.floor(acc.length / 2)) || 1;
+    let growthHtml = '<span class="progress-stat__value">&ndash;</span>';
+    let insight = "Take a few more tests and your growth trend will appear.";
+    if (acc.length >= 2) {
+      const early = acc.slice(0, win).reduce(function (a, b) { return a + b; }, 0) / win;
+      const late = acc.slice(-win).reduce(function (a, b) { return a + b; }, 0) / win;
+      const diff = Math.round(late - early);
+      const cls = diff > 0 ? "is-up" : diff < 0 ? "is-down" : "";
+      growthHtml = '<span class="progress-stat__value ' + cls + '">' + (diff > 0 ? "+" : "") + diff + '%</span>';
+      insight = diff > 0
+        ? "Your recent tests average " + diff + " points higher than your first ones. That is real improvement."
+        : diff < 0
+          ? "Your recent tests are running " + Math.abs(diff) + " points below your early ones. Harder question sets will do that - check the subject bars below to see where."
+          : "Your accuracy is holding steady across tests.";
+    }
+
+    const stats =
+      '<div class="progress-stats">' +
+        '<div class="progress-stat"><span class="progress-stat__label">Tests taken</span><span class="progress-stat__value">' + tests.length + '</span></div>' +
+        '<div class="progress-stat"><span class="progress-stat__label">Average</span><span class="progress-stat__value">' + avg + '%</span></div>' +
+        '<div class="progress-stat"><span class="progress-stat__label">Best</span><span class="progress-stat__value">' + best + '%</span></div>' +
+        '<div class="progress-stat"><span class="progress-stat__label">Latest</span><span class="progress-stat__value">' + latest + '%</span></div>' +
+        '<div class="progress-stat"><span class="progress-stat__label">Growth</span>' + growthHtml + '</div>' +
+        '<div class="progress-stat"><span class="progress-stat__label">Questions answered</span><span class="progress-stat__value">' + totalQs + '</span></div>' +
+      '</div>';
+
+    // ---- line chart ----
+    const W = 640, H = 260, padL = 40, padR = 16, padT = 16, padB = 34;
+    const innerW = W - padL - padR, innerH = H - padT - padB;
+    const n = acc.length;
+    const xAt = function (i) { return padL + (n === 1 ? innerW / 2 : (i / (n - 1)) * innerW); };
+    const yAt = function (v) { return padT + innerH - (v / 100) * innerH; };
+
+    let grid = "";
+    [0, 25, 50, 75, 100].forEach(function (g) {
+      grid += '<line class="grid" x1="' + padL + '" x2="' + (W - padR) + '" y1="' + yAt(g) + '" y2="' + yAt(g) + '"></line>' +
+              '<text class="axis-label" x="' + (padL - 8) + '" y="' + (yAt(g) + 3) + '" text-anchor="end">' + g + '%</text>';
+    });
+
+    const pts = acc.map(function (v, i) { return xAt(i).toFixed(1) + "," + yAt(v).toFixed(1); });
+    const line = n > 1 ? '<polyline class="line" points="' + pts.join(" ") + '"></polyline>' : "";
+    const area = n > 1
+      ? '<polygon class="area" points="' + xAt(0).toFixed(1) + "," + yAt(0) + " " + pts.join(" ") + " " + xAt(n - 1).toFixed(1) + "," + yAt(0) + '"></polygon>'
+      : "";
+
+    // Least-squares trend line, so the overall direction is visible even
+    // when individual tests bounce around.
+    let trend = "";
+    if (n >= 3) {
+      let sx = 0, sy = 0, sxy = 0, sxx = 0;
+      acc.forEach(function (v, i) { sx += i; sy += v; sxy += i * v; sxx += i * i; });
+      const slope = (n * sxy - sx * sy) / (n * sxx - sx * sx);
+      const icpt = (sy - slope * sx) / n;
+      const clamp = function (v) { return Math.max(0, Math.min(100, v)); };
+      trend = '<line class="trend" x1="' + xAt(0).toFixed(1) + '" y1="' + yAt(clamp(icpt)).toFixed(1) +
+              '" x2="' + xAt(n - 1).toFixed(1) + '" y2="' + yAt(clamp(icpt + slope * (n - 1))).toFixed(1) + '"></line>';
+    }
+
+    let dots = "", xLabels = "";
+    const labelEvery = Math.max(1, Math.ceil(n / 10));
+    tests.forEach(function (t, i) {
+      const when = new Date(t.completedAt);
+      const dateStr = isNaN(when) ? "" : when.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+      dots += '<circle class="dot" cx="' + xAt(i).toFixed(1) + '" cy="' + yAt(acc[i]).toFixed(1) + '" r="4.5">' +
+              '<title>Test ' + (i + 1) + (dateStr ? " (" + dateStr + ")" : "") + ": " + t.correctCount + "/" + t.length + " correct, " + acc[i] + '%</title></circle>';
+      if (i % labelEvery === 0 || i === n - 1) {
+        xLabels += '<text class="axis-label" x="' + xAt(i).toFixed(1) + '" y="' + (H - 12) + '" text-anchor="middle">#' + (i + 1) + '</text>';
+      }
+    });
+
+    const svg =
+      '<div class="progress-svg-wrap"><svg class="progress-svg" viewBox="0 0 ' + W + " " + H + '" role="img" ' +
+      'aria-label="Line chart of your test accuracy over ' + n + ' test' + (n === 1 ? "" : "s") + '. Latest ' + latest + ' percent, average ' + avg + ' percent.">' +
+      grid + area + trend + line + dots + xLabels + '</svg></div>';
+
+    // ---- per-subject bars, aggregated over every test that has them ----
+    const agg = {};
+    tests.forEach(function (t) {
+      Object.keys(t.byTopic || {}).forEach(function (k) {
+        const a = agg[k] || (agg[k] = { correct: 0, total: 0 });
+        a.correct += t.byTopic[k].correct;
+        a.total += t.byTopic[k].total;
+      });
+    });
+    const topicKeys = Object.keys(agg).filter(function (k) { return agg[k].total >= 3; });
+    let bars = "";
+    if (topicKeys.length) {
+      topicKeys.sort(function (a, b) { return (agg[b].correct / agg[b].total) - (agg[a].correct / agg[a].total); });
+      bars = '<p class="progress-sub">Accuracy by subject</p><div class="topic-bars">' +
+        topicKeys.map(function (k) {
+          const pct = Math.round((agg[k].correct / agg[k].total) * 100);
+          const cls = pct >= 80 ? "is-strong" : pct < 50 ? "is-weak" : "";
+          return '<div class="topic-bar"><span>' + escapeText(TOPIC_LABELS[k] || k) + '</span>' +
+            '<span class="topic-bar__track"><span class="topic-bar__fill ' + cls + '" style="display:block;width:' + pct + '%"></span></span>' +
+            '<span>' + pct + '%</span></div>';
+        }).join("") + '</div>';
+      const weakest = topicKeys[topicKeys.length - 1], strongest = topicKeys[0];
+      if (topicKeys.length >= 2 && weakest !== strongest) {
+        insight += " Strongest subject so far: " + (TOPIC_LABELS[strongest] || strongest) +
+                   ". Most room to grow: " + (TOPIC_LABELS[weakest] || weakest) + ".";
+      }
+    }
+
+    host.innerHTML = stats + '<p class="progress-sub">Accuracy over time</p>' + svg + bars +
+      '<p class="progress-insight">' + escapeText(insight) + '</p>';
+  }
+
   function renderScoreboardSection() {
+    renderProgressChart();
     const score = totalScore();
     const rankInfo = getRank(score);
 
@@ -1667,9 +1950,51 @@ const ParallaxEngine = (function () {
     requestAnimationFrame(tick);
   }
 
+  // Scroll-linked "iris" reveal: a section starts as a small circle and
+  // opens out to its full size as it scrolls into view, driven directly by
+  // scroll position (scrub it back and it closes again) rather than a
+  // one-shot timer. Only touches sections tagged .iris-reveal, does nothing
+  // for people who prefer reduced motion, and leaves a section completely
+  // unclipped once it's fully open so shadows and glows aren't cut off.
+  function initIrisReveal() {
+    if (prefersReducedMotion()) return;
+    const targets = Array.prototype.slice.call(document.querySelectorAll(".iris-reveal"));
+    if (!targets.length) return;
+    let queued = false;
+
+    function update() {
+      queued = false;
+      const vh = window.innerHeight || 800;
+      targets.forEach(function (el) {
+        if (el.closest(".screen[hidden]")) return;
+        const rect = el.getBoundingClientRect();
+        // 0 while the section's top edge is still at the bottom of the viewport,
+        // 1 once it has travelled about 70% of the way up.
+        const p = Math.max(0, Math.min(1, (vh - rect.top) / (vh * 0.7)));
+        if (p >= 0.995) {
+          el.style.clipPath = "";
+          el.style.transform = "";
+          el.style.opacity = "";
+          return;
+        }
+        const e = 1 - Math.pow(1 - p, 3);
+        el.style.clipPath = "circle(" + (3 + e * 107).toFixed(1) + "% at 50% 22%)";
+        el.style.transform = "scale(" + (0.9 + e * 0.1).toFixed(3) + ")";
+        el.style.opacity = (0.2 + e * 0.8).toFixed(2);
+      });
+    }
+    function request() { if (!queued) { queued = true; requestAnimationFrame(update); } }
+
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+    window.addEventListener("hashchange", function () { setTimeout(request, 80); });
+    request();
+  }
+
   function init() {
     initStarfield();
     initWanderer();
+    initIrisReveal();
     initScrollReveal();
     window.addEventListener("resize", debounce(initStarfield, 400));
   }
@@ -1823,6 +2148,10 @@ const Explore = (function () {
     panel.innerHTML =
       '<span class="section__eyebrow reveal">' + planet.index + ' / ' + planet.kicker + '</span>' +
       '<h2 class="explore-detail__name reveal">' + planet.name + '</h2>' +
+      '<button type="button" class="explore-speaker reveal" id="exploreSpeaker" aria-label="Read ' + planet.name + '\u2019s information aloud">' +
+        '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><path d="M4 9v6h4l5 5V4L8 9H4z" fill="currentColor"></path><path d="M16.5 8.5a5 5 0 0 1 0 7" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round"></path></svg>' +
+        '<span>Listen to this planet</span>' +
+      '</button>' +
       '<p class="section__tag reveal">' + planet.tag + '</p>' +
       '<div class="explore-visual explore-visual--big reveal" data-mode="' + planet.visual + '" aria-hidden="true"></div>' +
       '<p class="section__hook reveal">' + planet.hook + '</p>' +
@@ -1843,6 +2172,13 @@ const Explore = (function () {
     document.getElementById("exploreCompareBtn").addEventListener("click", function () {
       Router.goTo("compare", id);
     });
+
+    const speakerBtn = document.getElementById("exploreSpeaker");
+    if (speakerBtn) {
+      speakerBtn.addEventListener("click", function () {
+        document.dispatchEvent(new CustomEvent("reader:play-request"));
+      });
+    }
 
     ParallaxEngine.initScrollReveal(panel);
     Gamification.recordExplored(id);
@@ -1961,7 +2297,7 @@ const Compare = (function () {
 
 /* =========================================================================
    ECLIPTIC — TEST MODULE
-   User picks a length (10 / 25 / 50); a random, non-repeating slice of the
+   User picks a length (10 to 200 in steps of 15, or any number); a random slice of the
    question bank is presented; scoring feeds Gamification's points model.
    ========================================================================= */
 
@@ -1987,12 +2323,28 @@ const TestEngine = (function () {
     document.getElementById("testResults").innerHTML = "";
   }
 
+  // Fills up to `length` questions. When length is within the bank size,
+  // this is just one shuffle, same as before. When someone asks for more
+  // questions than the bank has (it has 114; the length picker below goes
+  // up to 500 if typed in by hand), it reshuffles fresh "laps" through the
+  // whole bank and keeps appending until it hits the target, so a big test
+  // doesn't just silently cap out early - it's upfront that some questions
+  // will repeat instead.
+  function buildQuestionSet(length) {
+    const result = [];
+    while (result.length < length) {
+      const lap = shuffle(QUESTION_BANK);
+      const remaining = length - result.length;
+      result.push.apply(result, lap.slice(0, Math.min(remaining, lap.length)));
+    }
+    return result;
+  }
+
   function start(length) {
     currentLength = length;
-    const pool = shuffle(QUESTION_BANK);
     // Shuffle each question's options too - the bank has the right answer in
-    // slot B far too often (37 of 66), which made guessing "B" a strategy.
-    activeQuestions = pool.slice(0, Math.min(length, pool.length)).map(function (q) {
+    // slot B far too often, which made guessing "B" a strategy.
+    activeQuestions = buildQuestionSet(length).map(function (q) {
       const order = shuffle(q.options.map(function (_, i) { return i; }));
       return Object.assign({}, q, {
         options: order.map(function (i) { return q.options[i]; }),
@@ -2049,9 +2401,16 @@ const TestEngine = (function () {
     }
 
     let correctCount = 0;
+    // Per-subject tally for this attempt, saved with the test record so
+    // the Scoreboard can show which subjects are strong or weak over time,
+    // not just one overall percentage.
+    const byTopic = {};
     activeQuestions.forEach(function (q, qi) {
       const isCorrect = answers[qi] === q.correctIndex;
       if (isCorrect) correctCount++;
+      const t = byTopic[q.topic] || (byTopic[q.topic] = { correct: 0, total: 0 });
+      t.total++;
+      if (isCorrect) t.correct++;
       const optionEls = document.querySelectorAll('.cert-question[data-qi="' + qi + '"] .quiz__option');
       optionEls.forEach(function (o, oi) {
         o.disabled = true;
@@ -2068,7 +2427,7 @@ const TestEngine = (function () {
     hint.style.display = "none";
 
     const points = correctCount * QUICK_QUIZ_POINTS;
-    const result = Gamification.recordTest(activeQuestions.length, correctCount, points);
+    const result = Gamification.recordTest(activeQuestions.length, correctCount, points, byTopic);
     Gamification.renderAll();
     Gamification.announceBadges(result.newBadges);
     const pct = Math.round((correctCount / activeQuestions.length) * 100);
@@ -2090,10 +2449,56 @@ const TestEngine = (function () {
 
   function onEnter() { showSetup(); }
 
-  function init() {
-    document.querySelectorAll(".test-length-btn").forEach(function (btn) {
+  // Preset lengths: 10, 25, 40 ... up to 200, each 15 apart, instead of
+  // the old fixed 10/25/50. ~18 seconds per question, same pace the old
+  // three presets were quoted at, gives each one a believable time estimate.
+  const LENGTH_PRESETS = [];
+  for (let n = 10; n < 200; n += 15) LENGTH_PRESETS.push(n);
+  LENGTH_PRESETS.push(200); // steps of 15 from 10 land on 190, so 200 caps the range
+
+  function renderLengthGrid() {
+    const grid = document.getElementById("testLengthGrid");
+    if (!grid) return;
+    grid.innerHTML = LENGTH_PRESETS.map(function (n) {
+      const mins = Math.max(1, Math.round(n * 0.3));
+      const tag = n === LENGTH_PRESETS[0] ? "Quick check" : n === LENGTH_PRESETS[LENGTH_PRESETS.length - 1] ? "Marathon" : "~" + mins + " min";
+      return '<button type="button" class="test-length-btn" data-length="' + n + '">' + n + ' Questions<span>' + tag + (tag.indexOf("min") === -1 ? ", ~" + mins + " min" : "") + '</span></button>';
+    }).join("");
+    grid.querySelectorAll(".test-length-btn").forEach(function (btn) {
       btn.addEventListener("click", function () { start(parseInt(btn.dataset.length, 10)); });
     });
+  }
+
+  function wireCustomLength() {
+    const input = document.getElementById("testLengthCustom");
+    const btn = document.getElementById("testLengthCustomBtn");
+    const note = document.getElementById("testLengthNote");
+    if (!input || !btn) return;
+
+    function updateNote() {
+      const n = parseInt(input.value, 10);
+      if (!n || n < 1) { note.textContent = ""; return; }
+      note.textContent = n > QUESTION_BANK.length
+        ? "The bank has " + QUESTION_BANK.length + " unique questions, so some will repeat to reach " + n + "."
+        : "";
+    }
+    input.addEventListener("input", updateNote);
+
+    btn.addEventListener("click", function () {
+      const n = Math.floor(Number(input.value));
+      if (!n || n < 1) {
+        note.textContent = "Enter a number of 1 or more.";
+        note.style.color = "#e58a7a";
+        return;
+      }
+      note.style.color = "";
+      start(Math.min(n, 500)); // sane upper bound so a typo doesn't try to render 100,000 questions
+    });
+  }
+
+  function init() {
+    renderLengthGrid();
+    wireCustomLength();
   }
 
   return { init: init, onEnter: onEnter };
@@ -2374,14 +2779,22 @@ const Orrery = (function () {
         const c = Math.max(0.03, bodySize * 0.09);
         const box = new THREE.Mesh(
           new THREE.BoxGeometry(c, c, c),
-          new THREE.MeshBasicMaterial({ color: 0xffb454 })
+          new THREE.MeshBasicMaterial({ color: 0xb983ff })
         );
         box.position.x = r;
         craftPivot.add(box);
         addLabel(box, name, "craft", bodyId);
         layerGroups.craftIcons.push(box);
         moonPivotsAll.push({ pivot: craftPivot, speed: 2.4 - i * 0.5 });
-        trailTracked.push({ mesh: box, points: [], color: 0xffb454 });
+        trailTracked.push({ mesh: box, points: [], color: 0xb983ff });
+        // Clickable too, same as the asteroids/comets/dwarf planets - this
+        // is what makes "ISS", "Hubble" etc. open a real info card instead
+        // of just floating there as an unlabeled-until-hover box.
+        box.userData.sectionId = name;
+        clickable.push(box);
+        focusMeshById[name] = box;
+        focusRadiusByBody[name] = 0.6;
+        smallMeta[name] = { name: name };
       });
       return outerRadius;
     }
@@ -2392,7 +2805,9 @@ const Orrery = (function () {
     addLabel(sun, "Sun", "planet", "sun");
     focusRadiusByBody.sun = 1.7 * 4.5;
 
+    let earthOrbitRadius = 8; // overwritten below once Earth is built; this is just a sane fallback
     ORRERY_BODIES.forEach(function (body) {
+      if (body.id === "earth") earthOrbitRadius = body.orbitRadius;
       const pivot = new THREE.Object3D();
       pivot.rotation.y = Math.random() * Math.PI * 2;
       scene.add(pivot);
@@ -2473,10 +2888,20 @@ const Orrery = (function () {
       { name: "Pluto", r: 21.4, size: 0.2, speed: 0.06, color: 0xcdb8a2, group: "dwarfPlanets", ring: true },
       { name: "Haumea", r: 22.8, size: 0.15, speed: 0.055, color: 0xd9d6d0, group: "dwarfPlanets", ring: true },
       { name: "Makemake", r: 24.1, size: 0.15, speed: 0.05, color: 0xc98f6b, group: "dwarfPlanets", ring: true },
-      { name: "Eris", r: 25.8, size: 0.18, speed: 0.045, color: 0xe4e2dc, group: "dwarfPlanets", ring: true }
+      { name: "Eris", r: 25.8, size: 0.18, speed: 0.045, color: 0xe4e2dc, group: "dwarfPlanets", ring: true },
+      // Real spacecraft, stylised distances (their real distances in AU are
+      // in the hundreds and wouldn't fit this view) - ordered to roughly
+      // match how far each one has actually travelled. They have no "ring"
+      // (closed orbit line) because they're not orbiting the Sun - all
+      // four are either escaping it or still outbound through the Kuiper
+      // Belt, on one-way trajectories, not loops.
+      { name: "New Horizons", r: 28, size: 0.045, speed: 0.012, color: 0xd9c89a, group: "craftIcons" },
+      { name: "Voyager 2", r: 36, size: 0.045, speed: 0.009, color: 0xb7c6d9, group: "craftIcons" },
+      { name: "Voyager 1", r: 42, size: 0.045, speed: 0.007, color: 0xc9d3de, group: "craftIcons" },
+      { name: "Pioneer 10", r: 48, size: 0.045, speed: 0.006, color: 0x8f97a3, group: "craftIcons" }
     ];
     SMALL_BODIES.forEach(function (sb) {
-      const id = "small-" + sb.name.toLowerCase();
+      const id = "small-" + sb.name.toLowerCase().replace(/\s+/g, "-");
       const piv = new THREE.Object3D();
       piv.rotation.y = Math.random() * Math.PI * 2;
       scene.add(piv);
@@ -2708,7 +3133,7 @@ const Orrery = (function () {
       const uiBits = [
         document.querySelector(".orrery-zoom"), document.getElementById("orreryLabels"),
         document.getElementById("orreryFocusPanel"), document.getElementById("orreryInfo"),
-        document.querySelector(".orrery__hint")
+        document.querySelector(".orrery__hint"), document.getElementById("orreryCompass")
       ];
       uiBits.forEach(function (el) { if (el) el.style.visibility = layers.ui ? "" : "hidden"; });
       const layersBtn = document.getElementById("orreryLayersBtn");
@@ -2733,6 +3158,35 @@ const Orrery = (function () {
         });
       });
     }
+
+    // Compass: always-visible, points toward the Sun regardless of where
+    // you've flown off to or which way you're facing, with a distance
+    // readout - the fix for "I flew off and don't know where I am". The
+    // arrow itself is also a one-tap way home.
+    const compassEl = document.getElementById("orreryCompass");
+    const compassArrow = document.getElementById("orreryCompassArrow");
+    const compassDist = document.getElementById("orreryCompassDist");
+    const EDGE_OF_SYSTEM = 30; // just past Eris's orbit (25.8) - "left the solar system" past this
+    function updateCompass() {
+      if (!compassEl) return;
+      const toSun = new THREE.Vector3(0, 0, 0).sub(camPos);
+      const dist = camPos.length();
+      const camRight = new THREE.Vector3(1, 0, 0).applyQuaternion(orient);
+      const camFwd = forwardAxis.clone().applyQuaternion(orient);
+      const localX = toSun.dot(camRight);
+      const localZ = toSun.dot(camFwd);
+      const bearingDeg = Math.atan2(localX, localZ) * (180 / Math.PI);
+      compassArrow.style.transform = "rotate(" + bearingDeg.toFixed(1) + "deg)";
+
+      const auEquiv = dist / earthOrbitRadius;
+      if (dist > EDGE_OF_SYSTEM) {
+        compassDist.textContent = "Beyond the solar system \u00b7 ~" + auEquiv.toFixed(0) + "x Earth's orbit from the Sun";
+      } else {
+        compassDist.textContent = "~" + auEquiv.toFixed(1) + "x Earth's orbit from the Sun";
+      }
+      compassEl.classList.toggle("is-far", dist > EDGE_OF_SYSTEM);
+    }
+    if (compassArrow) compassArrow.addEventListener("click", function () { unfocus(); });
 
     const focusPanel = document.getElementById("orreryFocusPanel");
     const focusName = document.getElementById("orreryFocusName");
@@ -2956,6 +3410,7 @@ const Orrery = (function () {
       clampFromCollisions();
       applyCamera();
       camera.updateMatrixWorld();
+      updateCompass();
 
       if (layers.trails && !reduceMotion) {
         trailTracked.forEach(function (t) {
@@ -3533,7 +3988,13 @@ const Cloud = (function () {
         return;
       }
       forgotBtn.disabled = true;
-      sb.auth.resetPasswordForEmail(email).then(function (result) {
+      // redirectTo is explicit on purpose: without it, Supabase falls back
+      // to whatever "Site URL" is configured in the project dashboard,
+      // which may not match wherever this page actually ends up hosted -
+      // a real, separate reason a reset link can silently fail to land
+      // anywhere useful. Pointing it at the current page directly is what
+      // lets handlePasswordRecovery() below ever get a chance to run.
+      sb.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin + window.location.pathname }).then(function (result) {
         forgotBtn.disabled = false;
         if (result && result.error) {
           msg.textContent = friendlyAuthError(result.error);
@@ -3665,6 +4126,63 @@ const Cloud = (function () {
     wireDialog();
   }
 
+  // The actual "type a new password" screen a recovery link lands on.
+  // Separate dialog from the sign-in one on purpose: at this point there's
+  // already a live (temporary) recovery session, so this only ever asks
+  // for a new password and its confirmation, nothing else.
+  function openNewPasswordDialog() {
+    if (document.getElementById("newPasswordDialog")) {
+      document.getElementById("newPasswordDialog").showModal();
+      return;
+    }
+    const inputStyle = "width:100%;margin-bottom:.35rem;padding:.7em;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);color:inherit;border-radius:8px;font:inherit";
+    const labelStyle = "display:block;font-size:.72rem;color:var(--ink-faint);margin-bottom:.25rem";
+    document.body.insertAdjacentHTML(
+      "beforeend",
+      '<dialog id="newPasswordDialog" style="background:#0c0c16;color:#efece3;border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:2rem;max-width:360px">' +
+        '<form id="newPasswordForm" novalidate>' +
+        '<h3 style="font-family:var(--font-display);margin:0 0 .4rem">Set a New Password</h3>' +
+        '<p style="font-size:.78rem;color:var(--ink-faint);margin:0 0 1rem">You followed a password reset link. Choose a new password below to finish.</p>' +
+        '<label for="newPassword" style="' + labelStyle + '">New password *</label>' +
+        '<input id="newPassword" type="password" autocomplete="new-password" minlength="8" required style="' + inputStyle + '">' +
+        '<label for="newPasswordConfirm" style="' + labelStyle + '">Confirm new password *</label>' +
+        '<input id="newPasswordConfirm" type="password" autocomplete="new-password" minlength="8" required style="' + inputStyle + '">' +
+        '<div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.6rem">' +
+          '<button id="newPasswordSubmit" type="submit" class="btn btn--primary">Save New Password</button>' +
+        '</div>' +
+        '<p id="newPasswordMsg" role="alert" style="font-family:var(--font-mono);font-size:.75rem;color:#e58a7a;margin:.8rem 0 0"></p>' +
+        '</form>' +
+      '</dialog>'
+    );
+    const dlg = document.getElementById("newPasswordDialog");
+    const form = document.getElementById("newPasswordForm");
+    const msg = document.getElementById("newPasswordMsg");
+    form.addEventListener("submit", function (evt) {
+      evt.preventDefault();
+      const pass = document.getElementById("newPassword").value;
+      const confirm = document.getElementById("newPasswordConfirm").value;
+      msg.textContent = "";
+      msg.style.color = "";
+      if (pass.length < 8) { msg.textContent = "Password must be at least 8 characters."; return; }
+      if (pass !== confirm) { msg.textContent = "Passwords don't match."; return; }
+      const submitBtn = document.getElementById("newPasswordSubmit");
+      submitBtn.disabled = true;
+      sb.auth.updateUser({ password: pass }).then(function (result) {
+        submitBtn.disabled = false;
+        if (result && result.error) {
+          msg.textContent = friendlyAuthError(result.error);
+          return;
+        }
+        dlg.close();
+        dlg.remove();
+      }).catch(function (e) {
+        submitBtn.disabled = false;
+        msg.textContent = friendlyAuthError(e);
+      });
+    });
+    dlg.showModal();
+  }
+
   function init() {
     ensureDialog();
 
@@ -3689,6 +4207,19 @@ const Cloud = (function () {
 
       if (navBtn) {
         navBtn.textContent = currentUser ? "Sign Out" : "Sign In";
+      }
+
+      // This is the other half of "Forgot password?" that was missing
+      // before: clicking the emailed reset link brings someone back to
+      // this exact page with a one-time recovery session, and Supabase
+      // fires this specific event when that happens. Without listening
+      // for it, the person just landed back on a normal-looking page with
+      // no way to actually set a new password - which is why it looked
+      // like forgot-password "did nothing" even though the email worked.
+      if (event === "PASSWORD_RECOVERY") {
+        if (dialog && dialog.open) dialog.close();
+        openNewPasswordDialog();
+        return;
       }
 
       if (currentUser) {
@@ -4037,11 +4568,11 @@ const EXTERNAL_LINKS = {
   if (typeof window.speechSynthesis === "undefined") return;
 
   const SKIP_TAGS = ["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "SELECT", "NOSCRIPT"];
-  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast", "orrery-labels", "orrery-focus", "orrery-zoom", "orrery-info", "moon-orbit", "orrery-layers"];
+  const SKIP_CLASS_MARKERS = ["mentor-", "welcome-banner", "legal-dialog", "reader-", "cookie-banner", "badge-toast", "orrery-labels", "orrery-focus", "orrery-zoom", "orrery-info", "moon-orbit", "orrery-layers", "orrery-compass", "explore-speaker"];
   const BLOCK_SELECTOR = "p, h1, h2, h3, h4, h5, h6, li, td, th, button, a, label, dt, dd";
 
   const Reader = (function () {
-    let toggle, bar, playBtn, rateInput, rateOut, volInput, volOut, voiceSelect;
+    let toggle, bar, playBtn, rateInput, rateOut, volInput, volOut, pitchInput, pitchOut, voiceSelect;
     let utterances = [];
     let wordSpans = [];
     let currentIndex = -1;
@@ -4049,6 +4580,10 @@ const EXTERNAL_LINKS = {
     let isPlaying = false;
     let rate = 1;
     let volume = 1;
+    // A pitch a touch above dead-flat (1.0) reads as slightly more alert
+    // and less monotone on most engines - small, but it's the one knob
+    // speechSynthesis actually exposes for shaping tone, alongside rate.
+    let pitch = 1.02;
     let voices = [];
     let selectedVoiceURI = "";
 
@@ -4065,6 +4600,25 @@ const EXTERNAL_LINKS = {
       return "Other languages";
     }
 
+    // Rough, name-based guess at which voices are the higher-quality ones
+    // a device offers. This is the honest limit of what's fixable here:
+    // the actual sound of a voice, how natural, expressive or "alive" it
+    // is, comes entirely from whichever text-to-speech engine the
+    // person's browser and OS ship, not from this site's code. A phone or
+    // browser with only compact/robotic voices installed will still sound
+    // that way no matter what's picked here - this just makes sure the
+    // best of whatever IS available gets put first and chosen by default,
+    // rather than leaving it to whatever order the browser happens to list
+    // them in.
+    function voiceQualityScore(v) {
+      const n = (v.name || "").toLowerCase();
+      let score = 0;
+      if (/natural|neural|premium|enhanced|online|wavenet|studio|siri/.test(n)) score += 10;
+      if (v.localService === false) score += 2;
+      if (/compact|espeak|robot|novelty/.test(n)) score -= 5;
+      return score;
+    }
+
     function populateVoices() {
       if (!voiceSelect) return;
       voices = speechSynthesis.getVoices() || [];
@@ -4078,6 +4632,9 @@ const EXTERNAL_LINKS = {
       voices.forEach(function (v) {
         const g = accentGroup(v);
         (groups[g] = groups[g] || []).push(v);
+      });
+      Object.keys(groups).forEach(function (g) {
+        groups[g].sort(function (a, b) { return voiceQualityScore(b) - voiceQualityScore(a); });
       });
 
       const previous = selectedVoiceURI;
@@ -4129,6 +4686,17 @@ const EXTERNAL_LINKS = {
 
     function activeScreen() {
       return document.querySelector(".screen:not([hidden])") || document.body;
+    }
+
+    // On Explore specifically, reading the whole screen meant reading the
+    // sidebar list of all ten body names first, every single time, before
+    // ever reaching the planet you actually opened. Scoping to the detail
+    // panel alone (when it exists) is what fixes that, for both the
+    // floating reader bar and the per-planet speaker button below.
+    function readableRoot() {
+      const explorePanel = document.getElementById("explorePanel");
+      if (explorePanel && !explorePanel.closest(".screen[hidden]")) return explorePanel;
+      return activeScreen();
     }
 
     function wrapWords(root) {
@@ -4253,6 +4821,7 @@ const EXTERNAL_LINKS = {
       const utter = new SpeechSynthesisUtterance(u.text);
       utter.rate = Math.max(rate, 0.1);
       utter.volume = volume;
+      utter.pitch = pitch;
       if (selectedVoiceURI) {
         const chosen = voices.find(function (v) { return v.voiceURI === selectedVoiceURI; });
         if (chosen) {
@@ -4282,7 +4851,7 @@ const EXTERNAL_LINKS = {
     }
 
     function togglePlay() {
-      if (!utterances.length) { wrapWords(activeScreen()); wireWordClicks(); }
+      if (!utterances.length) { wrapWords(readableRoot()); wireWordClicks(); }
       if (!utterances.length) return;
       if (isPlaying && speechSynthesis.speaking && !speechSynthesis.paused) {
         speechSynthesis.pause();
@@ -4325,7 +4894,7 @@ const EXTERNAL_LINKS = {
       document.body.classList.add("reader-open");
       bar.classList.add("is-open");
       toggle.classList.add("is-active");
-      wrapWords(activeScreen());
+      wrapWords(readableRoot());
       wireWordClicks();
     }
 
@@ -4364,6 +4933,11 @@ const EXTERNAL_LINKS = {
         '<input type="range" id="readerVolume" min="0" max="100" step="5" value="100">' +
         '<span class="reader-bar__readout" id="readerVolOut">100%</span>' +
         '</div>' +
+        '<div class="reader-bar__slider-group">' +
+        '<span>Pitch</span>' +
+        '<input type="range" id="readerPitch" min="0.7" max="1.3" step="0.05" value="1.02">' +
+        '<span class="reader-bar__readout" id="readerPitchOut">1.02</span>' +
+        '</div>' +
         '<div class="reader-bar__voice-group">' +
         '<span>Voice</span>' +
         '<select id="readerVoice" class="reader-bar__voice-select" aria-label="Reading voice and accent"><option value="" disabled selected>Loading voices\u2026</option></select>' +
@@ -4377,6 +4951,8 @@ const EXTERNAL_LINKS = {
       rateInput = bar.querySelector("#readerRate");
       rateOut = bar.querySelector("#readerRateOut");
       volInput = bar.querySelector("#readerVolume");
+      pitchInput = bar.querySelector("#readerPitch");
+      pitchOut = bar.querySelector("#readerPitchOut");
       volOut = bar.querySelector("#readerVolOut");
       voiceSelect = bar.querySelector("#readerVoice");
 
@@ -4399,6 +4975,11 @@ const EXTERNAL_LINKS = {
         volOut.textContent = volInput.value + "%";
         applySettingsLive();
       });
+      pitchInput.addEventListener("input", function () {
+        pitch = parseFloat(pitchInput.value);
+        pitchOut.textContent = pitch.toFixed(2);
+        applySettingsLive();
+      });
 
       voiceSelect.addEventListener("change", function () {
         selectedVoiceURI = voiceSelect.value;
@@ -4414,6 +4995,19 @@ const EXTERNAL_LINKS = {
 
       window.addEventListener("hashchange", function () {
         if (isOpen) close();
+      });
+
+      // The per-planet speaker button (right under each planet's name on
+      // Explore) dispatches this instead of calling into the Reader
+      // directly - this whole module lives in its own closure with no
+      // global export, so a DOM event is the clean way for another part
+      // of the page to say "open the reader and start reading, right now".
+      document.addEventListener("reader:play-request", function () {
+        open();
+        utterances = [];
+        wrapWords(readableRoot());
+        wireWordClicks();
+        startFrom(0);
       });
     }
 
