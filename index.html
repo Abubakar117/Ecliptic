@@ -379,7 +379,7 @@ a { color: inherit; }
 @keyframes tabFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
 .explore-visual--big { width: 190px; height: 190px; margin: 1.6rem 0 2rem; }
-.explore-visual { animation: spherespin 18s linear infinite; }
+.explore-visual { animation: spherespin 18s linear infinite; } /* extends the base .explore-visual rule above */
 .explore-visual[data-mode="banded"] { animation: bandslide 8s linear infinite; }
 @keyframes spherespin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 @keyframes bandslide { from { background-position: 0 0; } to { background-position: 260px 0; } }
@@ -609,6 +609,106 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
 .reader-bar__close { margin-left: auto; background: none; border: none; color: var(--ink-faint); font-size: 1.1rem; cursor: pointer; }
 .reader-bar__close:hover { color: var(--ink); }
 @media (max-width: 640px) { .reader-bar { justify-content: center; } .reader-bar__slider-group input[type="range"] { width: 70px; } .reader-bar__voice-select { max-width: 140px; } }
+
+/* ---------- Admin role: announcement banner, feature switches, Admin page ---------- */
+.site-announcement { background: var(--accent-primary); color: #1a1305; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-align: center; padding: 0.55rem 1rem; }
+body.feat-no-mentor .mentor-toggle, body.feat-no-mentor .mentor-panel { display: none !important; }
+.feature-off-note { border: 1px dashed var(--border-glass); border-radius: 14px; padding: 1.4rem 1.2rem; margin: 2rem 0; background: var(--bg-panel); color: var(--ink-dim); text-align: center; font-family: var(--font-display); }
+.feature-off-note strong { display: block; color: var(--ink); margin-bottom: 0.3rem; font-size: 1.05rem; }
+.section__inner.is-feature-off > *:not(.feature-off-note) { display: none !important; }
+
+.admin-tabs { display: flex; gap: 0.4rem; flex-wrap: wrap; margin: 1.4rem 0 1.2rem; }
+.admin-tab { font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; padding: 0.55em 1.1em; border-radius: 999px; border: 1px solid var(--border-glass); background: transparent; color: var(--ink-dim); cursor: pointer; }
+.admin-tab.is-active { background: var(--bg-panel-strong); color: var(--accent-primary); border-color: var(--accent-primary); }
+.admin-msg { font-family: var(--font-mono); font-size: 0.78rem; min-height: 1.2em; margin: 0.4rem 0 0.8rem; color: var(--ink-dim); }
+.admin-msg.is-error { color: #e58a7a; }
+.admin-msg.is-ok { color: var(--accent-good); }
+.admin-note { color: var(--ink-dim); font-size: 0.9rem; line-height: 1.55; }
+.admin-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.8rem; margin-bottom: 1.6rem; }
+.admin-tile { background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 14px; padding: 1rem 1.1rem; }
+.admin-tile__num { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.8rem; color: var(--ink); }
+.admin-tile__label { font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); text-transform: uppercase; letter-spacing: 0.06em; }
+.admin-h { font-family: var(--font-display); font-size: 1.05rem; margin: 1.6rem 0 0.7rem; color: var(--ink); }
+.admin-bars { display: grid; gap: 0.35rem; }
+.admin-bar { display: grid; grid-template-columns: 110px 1fr 40px; gap: 0.6rem; align-items: center; font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-dim); }
+.admin-bar__track { background: var(--bg-panel); border-radius: 999px; height: 9px; overflow: hidden; }
+.admin-bar__fill { display: block; height: 100%; background: var(--accent-primary); border-radius: 999px; }
+.admin-toolbar { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 0.9rem; }
+.admin-input, .admin-select, .admin-textarea { background: rgba(255,255,255,.05); border: 1px solid var(--border-glass); color: var(--ink); border-radius: 10px; padding: 0.6em 0.8em; font: inherit; font-size: 0.9rem; }
+.admin-input { flex: 1 1 220px; min-width: 0; }
+.admin-textarea { width: 100%; min-height: 4.5rem; resize: vertical; }
+.admin-table-wrap { overflow-x: auto; border: 1px solid var(--border-glass); border-radius: 14px; }
+.admin-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 760px; }
+.admin-table th, .admin-table td { text-align: left; padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border-glass); white-space: nowrap; }
+.admin-table th { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-faint); font-weight: 500; }
+.admin-table tbody tr { cursor: pointer; }
+.admin-table tbody tr:hover { background: var(--bg-panel); }
+.admin-table td.num, .admin-table th.num { text-align: right; }
+.admin-sub { display: block; color: var(--ink-faint); font-size: 0.74rem; }
+.admin-chip { display: inline-block; font-family: var(--font-mono); font-size: 0.64rem; padding: 0.15em 0.6em; border-radius: 999px; border: 1px solid var(--border-glass); margin-left: 0.3rem; color: var(--ink-dim); }
+.admin-chip--admin { color: var(--accent-primary); border-color: var(--accent-primary); }
+.admin-chip--banned { color: #e58a7a; border-color: #e58a7a; }
+.admin-switch { display: flex; gap: 0.8rem; align-items: flex-start; padding: 0.85rem 1rem; border: 1px solid var(--border-glass); border-radius: 12px; background: var(--bg-panel); margin-bottom: 0.6rem; }
+.admin-switch input { margin-top: 0.25rem; width: 1.1rem; height: 1.1rem; accent-color: var(--accent-primary); flex-shrink: 0; }
+.admin-switch strong { display: block; font-family: var(--font-display); }
+.admin-switch span { color: var(--ink-dim); font-size: 0.82rem; }
+.admin-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
+.admin-btn { font-family: var(--font-display); font-weight: 600; font-size: 0.82rem; padding: 0.6em 1.1em; border-radius: 999px; border: 1px solid var(--border-glass); background: transparent; color: var(--ink); cursor: pointer; }
+.admin-btn:hover { background: var(--bg-panel-strong); }
+.admin-btn--primary { background: var(--accent-primary); color: #1a1305; border-color: transparent; }
+.admin-btn--danger { color: #e58a7a; border-color: #e58a7a; }
+.admin-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.admin-dialog { background: #0c0c16; color: var(--ink); border: 1px solid var(--border-glass); border-radius: 16px; padding: 1.6rem; width: min(640px, calc(100vw - 1.5rem)); max-height: 88vh; overflow: auto; }
+.admin-dialog::backdrop { background: rgba(0, 0, 0, 0.65); }
+.admin-dl { display: grid; grid-template-columns: 120px 1fr; gap: 0.35rem 1rem; font-size: 0.88rem; margin: 0.8rem 0; }
+.admin-dl dt { color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; padding-top: 0.15rem; }
+.admin-dl dd { margin: 0; overflow-wrap: anywhere; }
+
+/* ---------- Mentor AI chat ---------- */
+.mentor-panel { width: min(420px, calc(100vw - 2.4rem)); height: min(620px, calc(100vh - 7rem)); }
+.mentor-panel__tools { display: flex; align-items: center; gap: 0.2rem; }
+.mentor-panel__tool { background: none; border: none; color: var(--ink-faint); font-size: 1.05rem; cursor: pointer; padding: 0.1rem 0.35rem; border-radius: 6px; }
+.mentor-panel__tool:hover { color: var(--ink); background: var(--bg-panel); }
+.mentor-msg { overflow-wrap: anywhere; }
+.mentor-msg--bot { max-width: 92%; }
+.mentor-msg p { margin: 0 0 0.55em; }
+.mentor-msg p:last-child, .mentor-msg ul:last-child, .mentor-msg ol:last-child, .mentor-msg pre:last-child { margin-bottom: 0; }
+.mentor-msg ul, .mentor-msg ol { margin: 0.2em 0 0.6em; padding-left: 1.25em; }
+.mentor-msg li { margin: 0.15em 0; }
+.mentor-msg a { color: var(--accent-primary); }
+.mentor-msg code { font-family: var(--font-mono); font-size: 0.8em; background: rgba(255,255,255,0.08); padding: 0.1em 0.35em; border-radius: 4px; }
+.mentor-msg pre { margin: 0.4em 0 0.7em; padding: 0.7em 0.8em; background: rgba(0,0,0,0.4); border: 1px solid var(--border-glass); border-radius: 10px; overflow-x: auto; }
+.mentor-msg pre code { background: none; padding: 0; font-size: 0.78rem; line-height: 1.5; white-space: pre; }
+.mentor-note { align-self: center; font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-faint); text-align: center; max-width: 90%; }
+.mentor-dots { display: inline-flex; gap: 4px; align-items: center; height: 1em; }
+.mentor-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--ink-faint); animation: mentordot 1s infinite ease-in-out; }
+.mentor-dots i:nth-child(2) { animation-delay: 0.15s; }
+.mentor-dots i:nth-child(3) { animation-delay: 0.3s; }
+@keyframes mentordot { 0%, 80%, 100% { opacity: 0.25; transform: translateY(0); } 40% { opacity: 1; transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) { .mentor-dots i { animation: none; opacity: 0.6; } }
+.mentor-panel__input { align-items: flex-end; }
+.mentor-panel__input textarea { flex: 1; resize: none; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 18px; padding: 0.6em 0.9em; color: var(--ink); font: inherit; font-size: 0.85rem; line-height: 1.4; max-height: 110px; }
+.mentor-panel__input textarea:focus { outline: 1px solid var(--accent-primary); }
+.mentor-panel__input #mentorStop { background: transparent; color: var(--ink); border: 1px solid var(--border-glass); font-size: 0.8rem; }
+.mentor-panel__foot { margin: 0; padding: 0 1.2rem 0.7rem; font-family: var(--font-mono); font-size: 0.62rem; color: var(--ink-faint); text-align: center; flex-shrink: 0; }
+@media (max-width: 480px) { .mentor-panel { width: auto; height: min(78vh, calc(100vh - 6rem)); } }
+/* ---------- Mentor: attachments and voice ---------- */
+.mentor-tray { display: flex; flex-wrap: wrap; gap: 0.4rem; padding: 0.5rem 1.2rem 0; border-top: 1px solid var(--border-glass); flex-shrink: 0; }
+.mentor-tray[hidden] { display: none; }
+.mentor-attach { display: inline-flex; align-items: center; gap: 0.35rem; max-width: 100%; background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.2em 0.3em 0.2em 0.6em; font-size: 0.72rem; color: var(--ink-dim); }
+.mentor-attach img { width: 22px; height: 22px; object-fit: cover; border-radius: 50%; }
+.mentor-attach span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 160px; }
+.mentor-attach button { width: 20px; height: 20px; padding: 0; background: transparent; color: var(--ink-faint); border: none; border-radius: 50%; font-size: 0.7rem; cursor: pointer; }
+.mentor-attach button:hover { color: var(--ink); background: var(--bg-glass, rgba(255,255,255,0.08)); }
+.mentor-panel__input .mentor-icon { background: transparent; color: var(--ink); border: 1px solid var(--border-glass); font-size: 1rem; }
+.mentor-panel__input .mentor-icon:hover { border-color: var(--accent-primary); }
+.mentor-panel__input .mentor-icon.is-live, .mentor-panel__tool.is-live { background: #c0392b; color: #fff; border-color: #c0392b; animation: mentorPulse 1.2s ease-in-out infinite; }
+.mentor-panel__tool.is-live { border-radius: 6px; }
+@keyframes mentorPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+.mentor-msg__thumb { display: block; max-width: 100%; max-height: 140px; border-radius: 10px; margin-bottom: 0.4rem; }
+.mentor-panel.is-drop { outline: 2px dashed var(--accent-primary); outline-offset: -6px; }
+.mentor-panel__foot select { background: var(--bg-panel); color: var(--ink-dim); border: 1px solid var(--border-glass); border-radius: 6px; font: inherit; font-size: 0.62rem; margin-left: 0.4rem; }
+@media (prefers-reduced-motion: reduce) { .mentor-panel__input .mentor-icon.is-live, .mentor-panel__tool.is-live { animation: none; } }
 </style>
 </head>
 <body>
@@ -628,6 +728,8 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
   </div>
 </div>
 
+<div class="site-announcement" id="siteAnnouncement" role="status" hidden></div>
+
 <nav class="topbar" id="topbar">
   <button type="button" class="topbar__brand" data-goto="landing">ECLIPTIC</button>
   <div class="topbar__links" id="topbarLinks">
@@ -635,6 +737,7 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     <a href="#/compare" class="topbar__link" data-screen="compare">Compare</a>
     <a href="#/test" class="topbar__link" data-screen="test">Test</a>
     <a href="#/scoreboard" class="topbar__link" data-screen="scoreboard">Scoreboard</a>
+    <a href="#/admin" class="topbar__link" data-screen="admin" id="adminNavLink" hidden>Admin</a>
   </div>
   <button type="button" class="hud" id="hud" aria-label="View scoreboard">
     <span class="hud__rank" id="hudRank">Cadet</span>
@@ -820,6 +923,18 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
     <button type="button" class="reset-btn" id="resetProgressBtn">Reset Mission Progress</button>
   </div>
 </section>
+
+<section id="screen-admin" class="screen" hidden>
+  <div class="section__inner wide">
+    <span class="section__eyebrow">Control Room</span>
+    <h2 class="section__title">Admin Panel</h2>
+    <div id="adminRoot"></div>
+  </div>
+</section>
+
+<dialog id="adminUserDialog" class="admin-dialog">
+  <div id="adminUserBody"></div>
+</dialog>
 <script>
 /* =========================================================================
    ECLIPTIC — DATA MODULE
@@ -827,7 +942,7 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
    orrery params. Every other module reads from this file.
    ========================================================================= */
 
-const QUICK_QUIZ_POINTS = 10; // points per correct answer, any test length
+const POINTS_PER_CORRECT = 10; // points per correct answer, any test length
 
 const PLANETS = [
   {
@@ -1326,7 +1441,43 @@ const QUESTION_BANK = [
   { topic: "math", question: "Pluto's orbital period is about 248 Earth years. Roughly what fraction of one Pluto year has passed between its 1930 discovery and 2026?", options: ["About one Pluto year", "About two-fifths of a Pluto year", "About two full Pluto years", "About a tenth of a Pluto year"], correctIndex: 1, explanation: "2026 minus 1930 is 96 years; 96 divided by 248 is close to two-fifths of a single Pluto year." },
   { topic: "math", question: "Earth orbits the Sun at roughly 107,000 km/h. Approximately how far does Earth travel along its orbit in one 24-hour day?", options: ["About 1 million km", "About 2.6 million km", "About 10 million km", "About 107,000 km"], correctIndex: 1, explanation: "107,000 km/h x 24 hours is about 2.57 million km traveled in a single day." },
   { topic: "math", question: "Saturn has around 290 known moons and Jupiter has around 100. Roughly how many more moons does Saturn have than Jupiter, by these approximate counts?", options: ["About 50 more", "About 90 more", "About 290 more", "About 190 more"], correctIndex: 3, explanation: "290 minus 100 is about 190 - though both counts keep climbing as astronomers find more small moons." },
-  { topic: "math", question: "A day on Venus (about 243 Earth days) is longer than its year (about 225 Earth days). By roughly how many Earth days does its day exceed its year?", options: ["About 100 days", "About 243 days", "About 18 days", "About 50 days"], correctIndex: 2, explanation: "243 minus 225 is 18 - Venus's day is genuinely longer than its own year by about 18 Earth days." }
+  { topic: "math", question: "A day on Venus (about 243 Earth days) is longer than its year (about 225 Earth days). By roughly how many Earth days does its day exceed its year?", options: ["About 100 days", "About 243 days", "About 18 days", "About 50 days"], correctIndex: 2, explanation: "243 minus 225 is 18 - Venus's day is genuinely longer than its own year by about 18 Earth days." },
+  { topic: "sun", question: "What is the Sun's visible surface called?", options: ["The corona", "The core", "The photosphere", "The mantle"], correctIndex: 2, explanation: "The photosphere is the Sun's visible surface, at roughly 5,500 \u00b0C." },
+  { topic: "sun", question: "Why do sunspots look dark?", options: ["They are holes in the Sun", "They are shadows of planets", "They are cooler than the surrounding surface", "They are cooled lava"], correctIndex: 2, explanation: "Sunspots are regions of intense magnetic activity that are cooler (about 3,700 \u00b0C) than their surroundings, so they appear darker." },
+  { topic: "sun", question: "How long is the Sun's activity cycle, from one solar maximum to the next?", options: ["About 1 year", "About 5 years", "About 11 years", "About 50 years"], correctIndex: 2, explanation: "The Sun's magnetic activity cycle lasts about 11 years." },
+  { topic: "sun", question: "What is the solar wind?", options: ["Wind created by Earth's rotation", "Light pressure only", "Gas shed by comets", "A stream of charged particles flowing outward from the Sun"], correctIndex: 3, explanation: "The solar wind is a stream of charged particles from the Sun's corona. It is what causes auroras when it meets Earth's magnetic field." },
+  { topic: "mercury", question: "How long does Mercury take to orbit the Sun?", options: ["About 88 Earth days", "About 225 Earth days", "About 365 Earth days", "About 687 Earth days"], correctIndex: 0, explanation: "Mercury is the fastest planet, completing an orbit in about 88 Earth days." },
+  { topic: "mercury", question: "How many moons does Mercury have?", options: ["One", "Two", "None", "Three"], correctIndex: 2, explanation: "Mercury has no moons, and neither does Venus." },
+  { topic: "mercury", question: "Why is Mercury's surface covered in long cliffs called scarps?", options: ["Constant flooding", "Its iron core cooled and contracted, shrinking the planet", "Wind erosion", "Moonquakes"], correctIndex: 1, explanation: "As Mercury's large iron core cooled it contracted, wrinkling the crust into cliffs that run for hundreds of kilometres." },
+  { topic: "mercury", question: "Which spacecraft orbited Mercury from 2011 to 2015?", options: ["Mariner 10", "MESSENGER", "Voyager 2", "Cassini"], correctIndex: 1, explanation: "NASA's MESSENGER was the first spacecraft to orbit Mercury and ended its mission with a planned impact in 2015." },
+  { topic: "venus", question: "Which NASA spacecraft mapped Venus's surface with radar in the early 1990s?", options: ["Magellan", "Galileo", "Juno", "New Horizons"], correctIndex: 0, explanation: "Magellan used radar to see through the clouds and mapped most of the Venusian surface." },
+  { topic: "venus", question: "How does the air pressure on Venus's surface compare to Earth's?", options: ["About the same", "About 10 times higher", "About 90 times higher", "About 1,000 times higher"], correctIndex: 2, explanation: "Venus's dense atmosphere gives a surface pressure about 90 times Earth's, like being roughly 900 m deep in an ocean." },
+  { topic: "venus", question: "Which country's Venera probes landed on Venus and sent back the first surface images?", options: ["United States", "Soviet Union", "Japan", "China"], correctIndex: 1, explanation: "The Soviet Venera probes landed on Venus in the 1970s and 1980s, surviving only minutes in the heat and pressure." },
+  { topic: "venus", question: "Venus's surface is about 465 \u00b0C. Which metal could melt there?", options: ["Iron", "Steel", "Lead", "Titanium"], correctIndex: 2, explanation: "Lead melts at about 327 \u00b0C, well below Venus's surface temperature." },
+  { topic: "earth", question: "About how much is Earth's axis tilted?", options: ["0 degrees", "About 23.5 degrees", "About 45 degrees", "About 90 degrees"], correctIndex: 1, explanation: "Earth's roughly 23.5 degree tilt is what causes the seasons." },
+  { topic: "earth", question: "What is Earth's atmosphere mostly made of?", options: ["Oxygen", "Carbon dioxide", "Nitrogen", "Argon"], correctIndex: 2, explanation: "Earth's air is about 78% nitrogen and 21% oxygen." },
+  { topic: "earth", question: "How long does Earth take to spin once relative to the stars?", options: ["Exactly 24 hours", "About 23 hours 56 minutes", "About 25 hours", "About 28 hours"], correctIndex: 1, explanation: "One rotation relative to the stars (a sidereal day) takes about 23 hours 56 minutes. The solar day is 24 hours because Earth also moves along its orbit." },
+  { topic: "earth", question: "About how old is Earth?", options: ["About 100 million years", "About 1 billion years", "About 4.5 billion years", "About 13.8 billion years"], correctIndex: 2, explanation: "Earth formed about 4.5 billion years ago. 13.8 billion years is the age of the universe." },
+  { topic: "mars", question: "How long is a day (a sol) on Mars?", options: ["About 12 hours", "About 24 hours 37 minutes", "About 48 hours", "About 10 hours"], correctIndex: 1, explanation: "A Martian sol lasts about 24 hours 37 minutes, very close to an Earth day." },
+  { topic: "mars", question: "Which rover landed in Jezero Crater in 2021?", options: ["Spirit", "Curiosity", "Perseverance", "Opportunity"], correctIndex: 2, explanation: "NASA's Perseverance landed in Jezero Crater, an ancient river delta, to search for signs of past life." },
+  { topic: "mars", question: "What are Mars's polar ice caps made of?", options: ["Only methane", "Water ice and frozen carbon dioxide", "Liquid water", "Nitrogen snow"], correctIndex: 1, explanation: "Mars's caps are water ice with a seasonal layer of frozen carbon dioxide." },
+  { topic: "mars", question: "About how strong is gravity on Mars compared with Earth?", options: ["About 10%", "About 38%", "About 75%", "About 100%"], correctIndex: 1, explanation: "Mars's surface gravity is about 38% of Earth's." },
+  { topic: "jupiter", question: "Which four large moons of Jupiter did Galileo discover in 1610?", options: ["Titan, Rhea, Dione, Tethys", "Phobos, Deimos, Charon, Nix", "Triton, Nereid, Proteus, Larissa", "Io, Europa, Ganymede, Callisto"], correctIndex: 3, explanation: "Io, Europa, Ganymede and Callisto are the Galilean moons." },
+  { topic: "jupiter", question: "What is the largest moon in the solar system?", options: ["Titan", "Ganymede", "Callisto", "The Moon"], correctIndex: 1, explanation: "Ganymede, a moon of Jupiter, is larger than Mercury." },
+  { topic: "jupiter", question: "Why is Io so volcanically active?", options: ["Radioactive decay only", "Tidal flexing from Jupiter's gravity", "Heat from the Sun", "Constant meteorite impacts"], correctIndex: 1, explanation: "Jupiter and the other moons tug Io in a slightly stretched orbit, and the resulting tidal flexing heats its interior." },
+  { topic: "jupiter", question: "How does Jupiter's mass compare with the other planets?", options: ["Less than Earth", "About equal to Saturn", "More than twice all other planets combined", "About half the Sun's mass"], correctIndex: 2, explanation: "Jupiter has more than twice the mass of all the other planets put together." },
+  { topic: "saturn", question: "What are Saturn's rings mostly made of?", options: ["Rock and gas", "Water ice particles", "Liquid droplets", "Dust and sulfur"], correctIndex: 1, explanation: "The rings are billions of pieces of mostly water ice, from dust grains to house-sized chunks." },
+  { topic: "saturn", question: "How does Saturn's average density compare with water?", options: ["Heavier than rock", "Less dense than water", "Same as Earth", "Denser than iron"], correctIndex: 1, explanation: "Saturn's average density is about 0.69 g/cm\u00b3, so it would float in a big enough bathtub." },
+  { topic: "saturn", question: "Which moon of Saturn has a thick atmosphere and lakes of liquid methane?", options: ["Enceladus", "Mimas", "Titan", "Iapetus"], correctIndex: 2, explanation: "Titan is the only moon with a dense atmosphere, and it has methane and ethane lakes." },
+  { topic: "saturn", question: "How did the Cassini mission end in 2017?", options: ["It landed on Titan", "It was deliberately plunged into Saturn", "It left the solar system", "It crashed into Enceladus"], correctIndex: 1, explanation: "Cassini was sent into Saturn's atmosphere on purpose to avoid contaminating moons that might host life." },
+  { topic: "uranus", question: "What is unusual about Uranus's rotation?", options: ["It rotates backwards only", "It spins on its side, tilted about 98 degrees", "It does not rotate", "It spins faster than any planet"], correctIndex: 1, explanation: "Uranus is tilted about 98 degrees, so it effectively rolls around the Sun on its side." },
+  { topic: "uranus", question: "Why does Uranus look blue-green?", options: ["Methane in its atmosphere absorbs red light", "Oceans reflect the sky", "Copper oxide in the clouds", "Reflected light from Neptune"], correctIndex: 0, explanation: "Methane in the upper atmosphere absorbs red light and reflects blue-green." },
+  { topic: "uranus", question: "Who discovered Uranus in 1781?", options: ["Galileo Galilei", "William Herschel", "Johannes Kepler", "Edwin Hubble"], correctIndex: 1, explanation: "William Herschel spotted Uranus and at first thought it was a comet." },
+  { topic: "uranus", question: "Which spacecraft is the only one to have visited Uranus?", options: ["Pioneer 10", "Galileo", "Cassini", "Voyager 2"], correctIndex: 3, explanation: "Voyager 2 flew past Uranus in January 1986." },
+  { topic: "neptune", question: "How was Neptune discovered in 1846?", options: ["By accident through a telescope", "By predicting it from irregularities in Uranus's orbit", "By the Voyager 2 flyby", "By the Hubble telescope"], correctIndex: 1, explanation: "Astronomers calculated where an unseen planet must be pulling on Uranus, then found Neptune close to that position." },
+  { topic: "neptune", question: "What is unusual about Triton's orbit around Neptune?", options: ["It orbits opposite to Neptune's rotation (retrograde)", "It orbits only over the poles", "It does not orbit Neptune", "It orbits faster than Neptune spins"], correctIndex: 0, explanation: "Triton's retrograde orbit suggests it was captured from the Kuiper Belt rather than formed with Neptune." },
+  { topic: "neptune", question: "About how fast are the winds on Neptune?", options: ["About 100 km/h", "About 500 km/h", "Over 2,000 km/h", "About 50 km/h"], correctIndex: 2, explanation: "Neptune has the fastest winds in the solar system, reaching roughly 2,000 km/h." },
+  { topic: "neptune", question: "About how long is one year on Neptune?", options: ["About 29 Earth years", "About 84 Earth years", "About 165 Earth years", "About 248 Earth years"], correctIndex: 2, explanation: "Neptune takes about 165 Earth years to orbit the Sun, so it has completed just one orbit since its 1846 discovery." },
 ];
 
 const BADGES = [
@@ -1840,7 +1991,7 @@ const Gamification = (function () {
    for content within any screen.
    ========================================================================= */
 
-const ParallaxEngine = (function () {
+const SceneFX = (function () {
 
   function prefersReducedMotion() {
     return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1875,9 +2026,13 @@ const ParallaxEngine = (function () {
   }
 
   function initStarfield() {
-    buildLayer("starsFar", 140, 0.55, 1.2);
-    buildLayer("starsMid", 80, 0.8, 1.6);
-    buildLayer("starsNear", 40, 1, 2.1);
+    const lowEnd = (navigator.deviceMemory && navigator.deviceMemory <= 4) ||
+      (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) ||
+      (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const k = lowEnd ? 0.35 : 1;
+    buildLayer("starsFar", Math.round(140 * k), 0.55, 1.2);
+    buildLayer("starsMid", Math.round(80 * k), 0.8, 1.6);
+    buildLayer("starsNear", Math.round(40 * k), 1, 2.1);
   }
 
   function initScrollReveal(root) {
@@ -2180,12 +2335,12 @@ const Explore = (function () {
       });
     }
 
-    ParallaxEngine.initScrollReveal(panel);
+    SceneFX.initScrollReveal(panel);
     Gamification.recordExplored(id);
 
     const detailWrap = document.getElementById("exploreDetailWrap");
     if (detailWrap && window.innerWidth < 860) {
-      detailWrap.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+      detailWrap.scrollIntoView({ behavior: SceneFX.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
     }
   }
 
@@ -2379,14 +2534,27 @@ const TestEngine = (function () {
       btn.addEventListener("click", function () {
         const qi = parseInt(btn.dataset.qi, 10);
         const oi = parseInt(btn.dataset.index, 10);
+        if (answers[qi] !== null && answers[qi] !== undefined) return; // already locked in
         answers[qi] = oi;
-        run.querySelectorAll('.cert-question[data-qi="' + qi + '"] .quiz__option').forEach(function (o) { o.classList.remove("is-selected"); });
-        btn.classList.add("is-selected");
+        const q = activeQuestions[qi];
+        run.querySelectorAll('.cert-question[data-qi="' + qi + '"] .quiz__option').forEach(function (o, i) {
+          o.disabled = true;
+          if (i === q.correctIndex) o.classList.add("is-correct");
+          else if (i === oi) o.classList.add("is-incorrect");
+        });
+        const fb = document.createElement("p");
+        fb.className = "cert-question__explain";
+        fb.setAttribute("role", "status");
+        fb.textContent = (oi === q.correctIndex ? "Correct. " : "Not quite. ") + q.explanation;
+        document.querySelector('.cert-question[data-qi="' + qi + '"]').appendChild(fb);
+        const left = answers.filter(function (a) { return a === null; }).length;
+        const h = document.getElementById("testHint");
+        if (h) h.textContent = left ? left + " question" + (left === 1 ? "" : "s") + " left, then submit." : "All answered. Submit to see your score.";
       });
     });
 
     document.getElementById("testSubmitBtn").addEventListener("click", submit);
-    run.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+    run.scrollIntoView({ behavior: SceneFX.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
   }
 
   function submit() {
@@ -2417,16 +2585,12 @@ const TestEngine = (function () {
         if (oi === q.correctIndex) o.classList.add("is-correct");
         else if (oi === answers[qi]) o.classList.add("is-incorrect");
       });
-      const explain = document.createElement("p");
-      explain.className = "cert-question__explain";
-      explain.textContent = q.explanation;
-      document.querySelector('.cert-question[data-qi="' + qi + '"]').appendChild(explain);
     });
 
     document.getElementById("testSubmitBtn").style.display = "none";
     hint.style.display = "none";
 
-    const points = correctCount * QUICK_QUIZ_POINTS;
+    const points = correctCount * POINTS_PER_CORRECT;
     const result = Gamification.recordTest(activeQuestions.length, correctCount, points, byTopic);
     Gamification.renderAll();
     Gamification.announceBadges(result.newBadges);
@@ -2440,12 +2604,29 @@ const TestEngine = (function () {
         '<p class="cert-results__score">' + correctCount + ' / ' + activeQuestions.length + ' correct (' + pct + '%)</p>' +
         '<p class="cert-results__best">+' + points + ' mission points earned</p>' +
         '<p class="cert-results__rank">Current rank: <strong>' + rankInfo.current.name + '</strong></p>' +
+        (function () {
+          const missed = [];
+          activeQuestions.forEach(function (q, qi) { if (answers[qi] !== q.correctIndex) missed.push({ q: q, a: answers[qi], n: qi + 1 }); });
+          if (!missed.length) return '<p class="cert-results__best">Perfect run. Nothing to review.</p>';
+          return '<details class="cert-review" open><summary>Review ' + missed.length + ' missed question' + (missed.length === 1 ? '' : 's') + '</summary>' +
+            missed.map(function (m) {
+              return '<div class="cert-review__item" style="margin:.7rem 0;font-size:.85rem"><strong>' + m.n + '. ' + m.q.question + '</strong><br>' +
+                'You answered: ' + m.q.options[m.a] + '<br>Correct: ' + m.q.options[m.q.correctIndex] + '<br>' +
+                '<span style="color:var(--ink-dim)">' + m.q.explanation + '</span></div>';
+            }).join('') + '</details>';
+        })() +
         '<button type="button" class="cert-retake" id="testRetakeBtn">Take Another Test</button>' +
       '</div>';
-    resultsEl.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
+    resultsEl.scrollIntoView({ behavior: SceneFX.prefersReducedMotion() ? "auto" : "smooth", block: "start" });
 
     document.getElementById("testRetakeBtn").addEventListener("click", showSetup);
   }
+
+  window.addEventListener("beforeunload", function (e) {
+    const btn = document.getElementById("testSubmitBtn");
+    const inProgress = btn && btn.style.display !== "none" && answers.some(function (a) { return a !== null && a !== undefined; });
+    if (inProgress) { e.preventDefault(); e.returnValue = ""; }
+  });
 
   function onEnter() { showSetup(); }
 
@@ -3340,6 +3521,7 @@ const Orrery = (function () {
     });
 
     dom.addEventListener("wheel", function (e) {
+      if (!(e.ctrlKey || e.metaKey || document.activeElement === dom)) return; // let the page scroll
       e.preventDefault();
       moveForward(-e.deltaY * 0.018);
     }, { passive: false });
@@ -3355,7 +3537,7 @@ const Orrery = (function () {
 
     /* ---------- animation loop ---------- */
     const clock = new THREE.Clock();
-    const reduceMotion = ParallaxEngine.prefersReducedMotion();
+    const reduceMotion = SceneFX.prefersReducedMotion();
     const landingEl = document.getElementById("screen-landing");
 
     const labelPos = new THREE.Vector3();
@@ -3378,9 +3560,11 @@ const Orrery = (function () {
       });
     }
 
+    const camLimit = Math.max(camPos.length() * 4, 50);
     function animate() {
       requestAnimationFrame(animate);
       const dt = clock.getDelta();
+      if (landingEl.hidden || document.hidden) return; // no rotation math off-screen
       if (!reduceMotion) {
         pivots.forEach(function (p) { p.pivot.rotation.y += dt * 0.18 * p.speed; });
         spinners.forEach(function (s) { s.mesh.rotation.y += dt * 0.6 * s.spin; });
@@ -3407,6 +3591,7 @@ const Orrery = (function () {
         if (camPos.distanceTo(flyTarget) < 0.08) flyTarget = null;
       }
       if (orientTarget) orient.slerp(orientTarget, reduceMotion ? 1 : Math.min(1, dt * 3.5));
+      if (camPos.length() > camLimit) camPos.setLength(camLimit); // keep free-flight in range
       clampFromCollisions();
       applyCamera();
       camera.updateMatrixWorld();
@@ -3447,7 +3632,7 @@ const Orrery = (function () {
    ========================================================================= */
 
 const Router = (function () {
-  const SCREENS = ["landing", "explore", "compare", "test", "scoreboard"];
+  const SCREENS = ["landing", "explore", "compare", "test", "scoreboard", "admin"];
 
   function parseHash() {
     const raw = (window.location.hash || "").replace(/^#\/?/, "");
@@ -3483,7 +3668,11 @@ const Router = (function () {
     else if (r.screen === "compare") Compare.onEnter(r.param);
     else if (r.screen === "test") TestEngine.onEnter();
     else if (r.screen === "scoreboard") Gamification.renderAll();
-    else if (r.screen === "landing") ParallaxEngine.initScrollReveal(document.getElementById("screen-landing"));
+    else if (r.screen === "landing") SceneFX.initScrollReveal(document.getElementById("screen-landing"));
+    else if (r.screen === "admin" && typeof Admin !== "undefined") Admin.onEnter();
+
+    // Admin switches (test / compare turned off for maintenance) apply last.
+    if (typeof Admin !== "undefined") Admin.gate(r.screen);
   }
 
   function goTo(screen, param) {
@@ -3547,7 +3736,7 @@ const Router = (function () {
         e.preventDefault();
         target.setAttribute("tabindex", "-1");
         target.focus({ preventScroll: true });
-        target.scrollIntoView({ behavior: ParallaxEngine.prefersReducedMotion() ? "auto" : "smooth" });
+        target.scrollIntoView({ behavior: SceneFX.prefersReducedMotion() ? "auto" : "smooth" });
       }
     });
   }
@@ -3575,7 +3764,7 @@ const Router = (function () {
     Cookies.init();
     Gamification.initScoreboardUI();
     TestEngine.init();
-    ParallaxEngine.init();
+    SceneFX.init();
     Orrery.init();
     Router.init();
   });
@@ -3660,6 +3849,12 @@ const Cloud = (function () {
   let currentUser = null;
   let currentProfile = null;
   let pushTimer = null;
+  let interactiveLogin = false;
+  // Whether the signed-in person is an admin. This is ONLY a UI hint (it decides
+  // whether the Admin link and page show). It is never what protects anything:
+  // every admin_* function re-checks the role on the server, so a person who
+  // flips this value in DevTools sees an empty admin screen full of refusals.
+  let adminFlag = false;
   const PENDING_PROFILE_KEY = "ecliptic:pendingProfile";
 
   function log(msg, err) {
@@ -3730,13 +3925,30 @@ const Cloud = (function () {
 
   function signUp(email, password, profile) {
     stashPendingProfile(email, profile);
-    return sb.auth.signUp({ email: email, password: password }).then(function (result) {
+    // The profile fields travel WITH the signup request (stored server-side as
+    // user metadata). The localStorage stash above only works if the person
+    // confirms their email in the same browser they signed up in - on a phone
+    // email app or another device it is gone, which is what left name, phone
+    // and address blank. A database trigger copies this metadata into the
+    // profiles table (see supabase-setup.sql).
+    const meta = {
+      name: (profile && profile.name) || "",
+      location: (profile && profile.location) || "",
+      phone: (profile && profile.phone) || "",
+      address: (profile && profile.address) || ""
+    };
+    return sb.auth.signUp({ email: email, password: password, options: { data: meta } }).then(function (result) {
       if (result.error) throw result.error;
+      // With "Confirm email" on, Supabase fakes success for an existing
+      // address and returns a user with no identities.
+      if (result.data && result.data.user && result.data.user.identities && result.data.user.identities.length === 0)
+        throw { message: "User already registered" };
       return result.data;
     });
   }
 
   function signIn(email, password) {
+    interactiveLogin = true;
     return sb.auth.signInWithPassword({ email: email, password: password }).then(function (result) {
       if (result.error) throw result.error;
       return result.data;
@@ -3745,6 +3957,22 @@ const Cloud = (function () {
 
   function signOut() {
     return sb.auth.signOut();
+  }
+
+  function setAdminFlag(v) {
+    adminFlag = v;
+    document.dispatchEvent(new CustomEvent("cloud:admin", { detail: { isAdmin: v } }));
+  }
+
+  // Reads the flag from the person's own profile row (the "read own profile"
+  // policy allows that). Kept separate from the main profile read so that a
+  // database without the admin SQL yet just means "not an admin" instead of
+  // breaking progress sync.
+  function refreshAdminFlag() {
+    if (!currentUser) { setAdminFlag(false); return Promise.resolve(); }
+    return Promise.resolve(sb.from("profiles").select("is_admin").eq("id", currentUser.id).maybeSingle()).then(function (r) {
+      setAdminFlag(!!(r && !r.error && r.data && r.data.is_admin === true));
+    }).catch(function () { setAdminFlag(false); });
   }
 
   function uniqueArray(arr) {
@@ -3769,8 +3997,9 @@ const Cloud = (function () {
     if (!currentUser) return;
     const local = Gamification.exportState();
     const pending = takePendingProfile(currentUser.email);
+    refreshAdminFlag();
 
-    return sb.from("profiles").select("*").eq("id", currentUser.id).maybeSingle().then(function (result) {
+    return sb.from("profiles").select("name,location,phone,address,points,tests_taken,explored_planets,compared_at_least_once,badges,progress_reset_at").eq("id", currentUser.id).maybeSingle().then(function (result) {
       if (result.error) {
         log("read failed", result.error);
         notify("Your progress is still saved on this device.");
@@ -3779,16 +4008,35 @@ const Cloud = (function () {
 
       const data = result.data;
 
+      // Order: what was just typed on this device, then what the database
+      // already holds, then the signup metadata stored with the account.
+      const meta = (currentUser && currentUser.user_metadata) || {};
       currentProfile = {
-        name: (pending && pending.name) || (data && data.name) || "",
-        location: (pending && pending.location) || (data && data.location) || "",
+        name: (pending && pending.name) || (data && data.name) || meta.name || "",
+        location: (pending && pending.location) || (data && data.location) || meta.location || "",
         email: currentUser.email || (data && data.email) || "",
-        phone: (pending && pending.phone) || (data && data.phone) || "",
-        address: (pending && pending.address) || (data && data.address) || ""
+        phone: (pending && pending.phone) || (data && data.phone) || meta.phone || "",
+        address: (pending && pending.address) || (data && data.address) || meta.address || ""
       };
 
       let merged = local;
-      if (data) {
+      // An admin can reset someone's progress. Merging would just bring the old
+      // local copy straight back, so when the reset stamp is new to this device
+      // the cloud copy wins outright and the older local progress is dropped.
+      const resetAt = (data && data.progress_reset_at) || "";
+      const resetKey = "ecliptic:resetSeen:" + currentUser.id;
+      let resetSeen = "";
+      try { resetSeen = localStorage.getItem(resetKey) || ""; } catch (e) {}
+      if (data && resetAt && resetAt !== resetSeen) {
+        merged = {
+          points: data.points || 0,
+          testsTaken: data.tests_taken || [],
+          exploredPlanets: data.explored_planets || [],
+          comparedAtLeastOnce: !!data.compared_at_least_once,
+          badges: data.badges || []
+        };
+        try { localStorage.setItem(resetKey, resetAt); } catch (e) {}
+      } else if (data) {
         merged = {
           points: Math.max(data.points || 0, local.points || 0),
           testsTaken: dedupeByTime((data.tests_taken || []).concat(local.testsTaken || [])),
@@ -3856,13 +4104,16 @@ const Cloud = (function () {
   // message text.
   function friendlyAuthError(e) {
     const status = e && e.status;
-    if (status === 422) return "That email already has an account. Try signing in instead.";
     if (status === 429) return "Too many attempts. Wait a minute and try again.";
 
     const raw = (e && e.message) || "Something went wrong. Try again.";
     const m = raw.toLowerCase();
     if (m === "cloud-unavailable")
       return "Sign in isn't available right now (the login service failed to load). Check your connection and try again.";
+    if (m.indexOf("sign-ups are currently closed") !== -1 || m.indexOf("database error saving new user") !== -1)
+      return "New sign-ups are paused right now. Please try again later.";
+    if (m.indexOf("banned") !== -1 || m.indexOf("user is banned") !== -1)
+      return "This account has been suspended. Contact the site admin.";
     if (m.indexOf("already registered") !== -1 || m.indexOf("already been registered") !== -1)
       return "That email already has an account. Try signing in instead.";
     if (m.indexOf("invalid login") !== -1 || m.indexOf("invalid credentials") !== -1)
@@ -3915,6 +4166,26 @@ const Cloud = (function () {
       phone: document.getElementById("authPhoneError")
     };
 
+    const strengthEl = document.createElement("p");
+    strengthEl.id = "authStrength";
+    strengthEl.hidden = true;
+    strengthEl.style.cssText = "font-size:.68rem;margin:-.1rem 0 .5rem;color:var(--ink-faint)";
+    passInput.insertAdjacentElement("afterend", strengthEl);
+    function updateStrength() {
+      const v = passInput.value;
+      if (!v) { strengthEl.textContent = ""; return; }
+      let n = 0;
+      if (v.length >= 8) n++;
+      if (v.length >= 12) n++;
+      if (/[a-z]/.test(v) && /[A-Z]/.test(v)) n++;
+      if (/\d/.test(v)) n++;
+      if (/[^A-Za-z0-9]/.test(v)) n++;
+      const labels = ["Very weak", "Weak", "Fair", "Good", "Strong", "Strong"];
+      strengthEl.textContent = "Password strength: " + labels[n];
+      strengthEl.style.color = n >= 4 ? "var(--accent-good)" : n >= 3 ? "inherit" : "#e58a7a";
+    }
+    passInput.addEventListener("input", updateStrength);
+
     function setFieldError(key, text) {
       const el = fieldErrors[key];
       if (!el) return;
@@ -3956,6 +4227,8 @@ const Cloud = (function () {
         toggleBtn.textContent = "Need an account?";
         profileFields.hidden = true;
         confirmWrap.hidden = true;
+        forgotBtn.hidden = false;
+        strengthEl.hidden = true;
         passInput.setAttribute("autocomplete", "current-password");
       }
     });
@@ -3971,6 +4244,9 @@ const Cloud = (function () {
       toggleBtn.textContent = isSignup ? "Already have an account? Sign In" : "Need an account?";
       profileFields.hidden = !isSignup;
       confirmWrap.hidden = !isSignup;
+      forgotBtn.hidden = isSignup;
+      strengthEl.hidden = !isSignup;
+      updateStrength();
       // A browser's saved-password offer and a password manager's
       // generated-password offer both key off this attribute.
       passInput.setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
@@ -4201,9 +4477,31 @@ const Cloud = (function () {
       };
     }
 
+    const statusEl = document.createElement("span");
+    statusEl.id = "cloudStatus";
+    statusEl.setAttribute("role", "status");
+    statusEl.style.cssText = "font-family:var(--font-mono);font-size:.68rem;color:var(--ink-faint);margin-right:.5rem";
+    if (navBtn) navBtn.insertAdjacentElement("beforebegin", statusEl);
+    function paintStatus() {
+      if (!currentUser) { statusEl.textContent = ""; return; }
+      const off = navigator.onLine === false || pushRetryQueued;
+      statusEl.textContent = off ? "\u25CB Offline" : "\u25CF Synced";
+      statusEl.style.color = off ? "#e58a7a" : "var(--accent-good)";
+    }
+    window.addEventListener("online", function () { setTimeout(paintStatus, 1500); });
+    window.addEventListener("offline", paintStatus);
+    document.addEventListener("cloud:synced", paintStatus);
+
     sb.auth.onAuthStateChange(function (event, session) {
       currentUser = session ? session.user : null;
-      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser, event: event } }));
+      if (!currentUser && adminFlag) setAdminFlag(false);
+      paintStatus();
+      let evName = event;
+      if (event === "SIGNED_IN") {
+        if (interactiveLogin) interactiveLogin = false;
+        else evName = "SESSION_RESTORED";
+      }
+      document.dispatchEvent(new CustomEvent("cloud:auth", { detail: { user: currentUser, event: evName } }));
 
       if (navBtn) {
         navBtn.textContent = currentUser ? "Sign Out" : "Sign In";
@@ -4239,7 +4537,8 @@ const Cloud = (function () {
     signIn: signIn,
     signOut: signOut,
     pushToCloud: pushToCloud,
-    getUser: function () { return currentUser; }
+    getUser: function () { return currentUser; },
+    isAdmin: function () { return adminFlag; }
   };
 })();
 
@@ -4385,20 +4684,190 @@ const EXTERNAL_LINKS = {
     return { init: init };
   })();
 
-  /* ---------- Floating Mission Mentor (rule-based, not a live AI) ---------- */
+  /* ---------- Mission Mentor: AI chat with a built-in fallback ----------
+     Two brains in one window:
+       1. The AI brain: every message goes to a Cloudflare Worker (see
+          chat-worker/worker.js) which streams back an answer from a large
+          language model. It answers any topic, remembers the conversation, and
+          is told a little about the learner (rank, last test) so it can help
+          with their progress too.
+       2. The built-in brain (the original rule-based Mentor): used for page
+          navigation commands, and as the fallback whenever the AI cannot be
+          reached (no endpoint set, offline, daily free allowance used up).
+     Files and voice:
+       - Attach (paperclip, drag-and-drop, or paste): one picture at a time and up
+         to three documents. Pictures are shrunk in the browser first. Documents
+         (PDF, Word .docx, text, CSV, JSON, code) are turned into plain text in
+         the browser, so the original file never leaves the device.
+       - Talk (microphone): dictate into the message box and keep typing, or
+         switch on voice chat for a hands-free back and forth where answers are
+         read aloud. This uses the browser's built-in speech recognition and
+         speech voices, so it needs no server. Chrome, Edge and Safari support it;
+         Firefox does not support speech recognition.
+     Why a Worker and not a key in this file: anything in this page can be read
+     and copied by a visitor, so an AI key placed here would be stolen. */
+
+  // Paste your deployed Worker URL between the quotes, e.g.
+  // "https://ecliptic-chat.your-name.workers.dev". Left empty, the Mentor runs
+  // on the built-in rules only and nothing else about the site changes.
+  const CHAT_ENDPOINT = "";
+
   const Mentor = (function () {
-    let panel, toggle, body, input, opened = false;
+    const STORE_KEY = "ecliptic:mentor:v1";
+    const MAX_KEEP = 40;           // messages remembered between visits
+    const SEND_LIMIT = 12;         // messages the AI sees per question
+    let panel, toggle, body, input, sendBtn, stopBtn;
+    let opened = false;
+    let busy = false;
+    let controller = null;
+    let history = [];              // [{ role: "user" | "assistant", content }]
+    let noticeShown = false;
+    const MAX_DOCS = 3;
+    const MAX_DOC_CHARS = 14000;
+    const MAX_DOC_TOTAL = 24000;
+    const IMG_MAX_SIDE = 1280;
+    const IMG_MAX_CHARS = 1900000;           // stays under the Worker's image limit
+    const LANG_KEY = "ecliptic:mentor:lang";
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+    const HAS_TTS = typeof window.speechSynthesis !== "undefined" && typeof window.SpeechSynthesisUtterance !== "undefined";
+    let pendingImage = null;       // { name, dataUrl } - goes with the next message only
+    let docs = [];                 // [{ name, text, truncated }] - stay attached to this chat until removed
+    let voiceLang = "en-US";
+    let speakOn = false;           // read answers aloud
+    let voiceMode = false;         // hands-free: listen, answer, speak, listen again
+    let rec = null;
+    let listening = false;
+    let idleRounds = 0;
+    let micNoteShown = false;
+    let spokenUpTo = 0;
+    let pendingSpeech = 0;
+    let speechGen = 0;             // bumps when speech is cancelled, so stale end events are ignored
+    let streamDone = true;
+    let chatGen = 0;               // bumps on "new chat" so a late answer cannot land in the new conversation
 
-    function scrollToEnd() { body.scrollTop = body.scrollHeight; }
-
-    function addMsg(text, who) {
-      const div = document.createElement("div");
-      div.className = "mentor-msg mentor-msg--" + who;
-      div.textContent = text;
-      body.appendChild(div);
-      scrollToEnd();
+    /* ----- small safe Markdown renderer -----
+       AI text is untrusted: everything is HTML-escaped FIRST, and only a few
+       harmless patterns (bold, italic, code, lists, https links) are turned
+       back into tags. No raw HTML, images or scripts can get through. */
+    function esc(t) {
+      return String(t).replace(/[&<>"']/g, function (c) {
+        return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+      });
+    }
+    function inline(s) {
+      s = s.replace(/`([^`\n]+)`/g, "<code>$1</code>");
+      s = s.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+      s = s.replace(/(^|[\s(])\*([^*\s][^*\n]*)\*(?=[\s).,!?:;]|$)/g, "$1<em>$2</em>");
+      s = s.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer nofollow">$1</a>');
+      return s;
+    }
+    function blocks(seg) {
+      let out = "", list = null, para = [];
+      function flushPara() {
+        if (para.length) { out += "<p>" + para.map(function (l) { return inline(esc(l)); }).join("<br>") + "</p>"; para = []; }
+      }
+      function flushList() {
+        if (list) {
+          out += "<" + list.t + ">" + list.items.map(function (i) { return "<li>" + inline(esc(i)) + "</li>"; }).join("") + "</" + list.t + ">";
+          list = null;
+        }
+      }
+      seg.split("\n").forEach(function (line) {
+        let m;
+        if (!line.trim()) { flushPara(); flushList(); return; }
+        if ((m = line.match(/^\s*[-*•]\s+(.*)$/))) {
+          flushPara();
+          if (!list || list.t !== "ul") { flushList(); list = { t: "ul", items: [] }; }
+          list.items.push(m[1]); return;
+        }
+        if ((m = line.match(/^\s*\d+[.)]\s+(.*)$/))) {
+          flushPara();
+          if (!list || list.t !== "ol") { flushList(); list = { t: "ol", items: [] }; }
+          list.items.push(m[1]); return;
+        }
+        if ((m = line.match(/^#{1,4}\s+(.*)$/))) { flushPara(); flushList(); out += "<p><strong>" + inline(esc(m[1])) + "</strong></p>"; return; }
+        flushList(); para.push(line);
+      });
+      flushPara(); flushList();
+      return out;
+    }
+    function md(text) {
+      let html = "";
+      String(text).split("```").forEach(function (seg, i) {
+        if (i % 2 === 1) {
+          const nl = seg.indexOf("\n");
+          const code = (nl !== -1 && /^[\w+#.-]*$/.test(seg.slice(0, nl).trim())) ? seg.slice(nl + 1) : seg;
+          html += "<pre><code>" + esc(code.replace(/\n$/, "")) + "</code></pre>";
+        } else {
+          html += blocks(seg);
+        }
+      });
+      return html;
     }
 
+    /* ----- storage (best effort: private windows can block it) ----- */
+    function loadHistory() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
+        if (Array.isArray(raw)) {
+          history = raw.filter(function (m) {
+            return m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string";
+          }).slice(-MAX_KEEP);
+        }
+      } catch (e) { history = []; }
+    }
+    function saveHistory() {
+      try { localStorage.setItem(STORE_KEY, JSON.stringify(history.slice(-MAX_KEEP))); } catch (e) {}
+    }
+
+    /* ----- message bubbles ----- */
+    function scrollToEnd(force) {
+      const near = body.scrollHeight - body.scrollTop - body.clientHeight < 90;
+      if (force || near) body.scrollTop = body.scrollHeight;
+    }
+    function addUser(text, thumb, thumbName) {
+      const div = document.createElement("div");
+      div.className = "mentor-msg mentor-msg--user";
+      if (thumb) {
+        const im = document.createElement("img");
+        im.className = "mentor-msg__thumb"; im.src = thumb; im.alt = thumbName || "attached image";
+        div.appendChild(im);
+      }
+      const span = document.createElement("span");
+      span.textContent = text;
+      div.appendChild(span);
+      body.appendChild(div);
+      scrollToEnd(true);
+    }
+    function addBot(text, asMarkdown) {
+      const div = document.createElement("div");
+      div.className = "mentor-msg mentor-msg--bot";
+      if (asMarkdown) div.innerHTML = md(text); else div.textContent = text;
+      body.appendChild(div);
+      scrollToEnd(true);
+      return div;
+    }
+    function addNote(text) {
+      const div = document.createElement("div");
+      div.className = "mentor-note";
+      div.textContent = text;
+      body.appendChild(div);
+      scrollToEnd(true);
+      return div;
+    }
+    function setBusy(v) {
+      busy = v;
+      sendBtn.hidden = v;
+      stopBtn.hidden = !v;
+      input.disabled = v;
+      if (!v && !voiceMode) input.focus();
+    }
+    function hideChips() {
+      const q = document.getElementById("mentorQuick");
+      if (q) q.hidden = true;
+    }
+
+    /* ----- the built-in brain (original rule-based Mentor) ----- */
     function findPlanet(t) {
       return PLANETS.filter(function (p) {
         return t.indexOf(p.id) !== -1 || t.indexOf(p.name.toLowerCase()) !== -1;
@@ -4438,9 +4907,9 @@ const EXTERNAL_LINKS = {
     }
 
     function rankSummary() {
-      const rank = Gamification.getRank();
+      const rank = Gamification.getRank(Gamification.exportState().points);
       let msg = "You are currently ranked " + rank.current.name + ".";
-      if (rank.next) msg += " " + (rank.next.threshold - Gamification.exportState().points) + " points to " + rank.next.name + ".";
+      if (rank.next) msg += " " + (rank.next.min - Gamification.exportState().points) + " points to " + rank.next.name + ".";
       return msg;
     }
 
@@ -4466,16 +4935,550 @@ const EXTERNAL_LINKS = {
       if (/test|quiz/.test(t)) { Router.goTo("test"); return "Opening the Test screen - good luck."; }
       if (/^(hi|hello|hey)\b/.test(t)) return "Hello! Ask me about any planet, how your last test went, or what to try next.";
       if (/what can you do|help/.test(t)) return "I can explain any body in the solar system, summarize your test results, tell you your badges and rank, and jump you to Explore, Compare, or Test.";
-      return "I am not sure about that one yet - I can talk about any planet, your test scores, badges, or rank. Try one of the suggestions below.";
+      return "I am not sure about that one in offline mode - I can talk about any planet, your test scores, badges, or rank. Try one of the suggestions below.";
     }
 
-    function handleSend() {
-      const val = input.value;
-      if (!val.trim()) return;
-      addMsg(val, "user");
+    // Plain "take me to X" commands are handled instantly on the page.
+    function navCommand(t) {
+      const m = t.trim().toLowerCase().match(/^(?:please\s+)?(?:open|go to|take me to|show me|jump to)\s+(?:the\s+)?(explore|compare|test|quiz|scoreboard|score board)\b/);
+      if (!m) return null;
+      const where = m[1] === "quiz" ? "test" : (m[1] === "score board" ? "scoreboard" : m[1]);
+      Router.goTo(where);
+      return "Opening " + where.charAt(0).toUpperCase() + where.slice(1) + ".";
+    }
+
+    /* ----- the AI brain ----- */
+    function buildContext() {
+      const ctx = {};
+      try {
+        const s = Gamification.exportState();
+        const parts = (window.location.hash || "").replace(/^#\/?/, "").split("/").filter(Boolean);
+        ctx.screen = parts[0] || "landing";
+        if (parts[1]) ctx.viewing = parts[1];
+        ctx.points = s.points;
+        ctx.rank = Gamification.getRank(s.points).current.name;
+        ctx.testsTaken = s.testsTaken.length;
+        ctx.badges = s.badges.length;
+        ctx.explored = s.exploredPlanets.slice(0, 12);
+        if (s.testsTaken.length) {
+          const last = s.testsTaken[s.testsTaken.length - 1];
+          ctx.lastTest = last.correctCount + "/" + last.length;
+        }
+      } catch (e) {}
+      return ctx;
+    }
+
+    function getToken() {
+      try {
+        if (typeof sb !== "undefined" && sb.auth && typeof sb.auth.getSession === "function") {
+          return Promise.resolve(sb.auth.getSession()).then(function (r) {
+            return r && r.data && r.data.session ? r.data.session.access_token : null;
+          }).catch(function () { return null; });
+        }
+      } catch (e) {}
+      return Promise.resolve(null);
+    }
+
+    // Reads the server-sent-event stream and paints the answer as it arrives.
+    function readStream(res, bubble) {
+      const type = res.headers.get("Content-Type") || "";
+      if (type.indexOf("application/json") !== -1) {
+        return res.json().then(function (j) {
+          const text = (j && (j.response || j.reply)) || "";
+          bubble.classList.remove("is-typing");
+          bubble.dataset.raw = text;
+          bubble.innerHTML = md(text);
+          speakProgress(text, true);
+          return text;
+        });
+      }
+      if (!res.body || !res.body.getReader) throw { status: 0 };
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "", full = "", painted = false;
+      function paint() {
+        painted = false;
+        bubble.classList.remove("is-typing");
+        bubble.dataset.raw = full;
+        bubble.innerHTML = md(full);
+        scrollToEnd(false);
+        speakProgress(full, false);
+      }
+      function take(line) {
+        line = line.trim();
+        if (line.indexOf("data:") !== 0) return;
+        const data = line.slice(5).trim();
+        if (!data || data === "[DONE]") return;
+        try {
+          const j = JSON.parse(data);
+          const piece = typeof j.response === "string" ? j.response
+            : (j.choices && j.choices[0] && ((j.choices[0].delta && j.choices[0].delta.content) || j.choices[0].text)) || "";
+          if (piece) full += piece;
+        } catch (e) {}
+      }
+      function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) {
+            if (buffer) take(buffer);
+            paint();
+            speakProgress(full, true);
+            return full;
+          }
+          buffer += decoder.decode(r.value, { stream: true });
+          const lines = buffer.split("\n");
+          buffer = lines.pop();
+          lines.forEach(take);
+          if (!painted) { painted = true; requestAnimationFrame(paint); }
+          return pump();
+        });
+      }
+      return pump();
+    }
+
+    function localReply(text, why) {
+      const reply = respond(text) || "I did not catch that.";
+      if (why && !noticeShown) { noticeShown = true; addNote(why); }
+      addBot(reply, false);
+      history.push({ role: "assistant", content: reply });
+      saveHistory();
+      sayLocal(reply);
+    }
+
+    // Built-in answers are spoken too, so voice chat keeps working without the AI.
+    function sayLocal(reply) {
+      spokenUpTo = 0; streamDone = true;
+      speakProgress(reply, true);
+      speechIdle();
+    }
+
+    function askAI(text, attachments) {
+      const gen = chatGen;
+      setBusy(true);
+      spokenUpTo = 0; streamDone = false;
+      const bubble = addBot("", false);
+      bubble.classList.add("is-typing");
+      bubble.innerHTML = '<span class="mentor-dots"><i></i><i></i><i></i></span>';
+      controller = new AbortController();
+      const timer = setTimeout(function () { if (controller) controller.abort("timeout"); }, 45000);
+
+      getToken().then(function (token) {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers.Authorization = "Bearer " + token;
+        return fetch(CHAT_ENDPOINT, {
+          method: "POST",
+          headers: headers,
+          body: JSON.stringify({ messages: history.slice(-SEND_LIMIT), context: buildContext(), attachments: attachments || [] }),
+          signal: controller.signal
+        });
+      }).then(function (res) {
+        if (!res.ok) throw { status: res.status };
+        return readStream(res, bubble);
+      }).then(function (full) {
+        if (gen !== chatGen) return;
+        if (!full.trim()) throw { status: 0 };
+        history.push({ role: "assistant", content: full });
+        saveHistory();
+      }).catch(function (err) {
+        if (gen !== chatGen) return;
+        const stopped = controller && controller.signal.aborted && controller.signal.reason !== "timeout";
+        const partial = (bubble.dataset.raw || "").trim();
+        if (stopped) {
+          if (partial) { history.push({ role: "assistant", content: partial }); saveHistory(); addNote("Stopped."); }
+          else { bubble.remove(); history.pop(); addNote("Stopped."); }
+          return;
+        }
+        if (partial) {                      // connection dropped mid-answer: keep what arrived
+          history.push({ role: "assistant", content: partial });
+          saveHistory();
+          addNote("The connection dropped before the answer finished.");
+          return;
+        }
+        bubble.remove();
+        const s = err && err.status;
+        if (attachments && attachments.length) {
+          const sawImage = attachments.some(function (a) { return a.kind === "image"; });
+          const msg = s === 429 ? "The AI has used up its free allowance for now, so I can't read your file. It resets daily."
+            : (sawImage && s === 503 ? "I can't look at images right now. If you describe it, I'll help from that."
+            : "I couldn't reach the AI to read your file. Please try again in a moment.");
+          addBot(msg, false);
+          history.push({ role: "assistant", content: msg });
+          saveHistory();
+          return;
+        }
+        let why = "I can't reach my AI brain right now, so I'm answering from built-in knowledge.";
+        if (s === 429) why = "The AI has used up its free allowance for now, so I'm answering from built-in knowledge. It resets daily.";
+        else if (s === 401) why = "Sign in to chat with the full AI. Meanwhile I'm answering from built-in knowledge.";
+        localReply(text, why);
+      }).then(function () {
+        clearTimeout(timer);
+        controller = null;
+        streamDone = true;
+        setBusy(false);
+        paintVoice();
+        speechIdle();
+      });
+    }
+
+    function send(raw) {
+      if (busy) return;
+      let text = String(raw || "").trim().slice(0, 2000);
+      const image = pendingImage;
+      if (!text && image) text = "Please describe this image and explain what it shows.";
+      if (!text && docs.length) text = "Please summarise the attached file and list the key points.";
+      if (!text) return;
+      stopSpeaking();
+      stopListening();
+      hideChips();
+      const attachments = [];
+      if (image) attachments.push({ kind: "image", name: image.name, dataUrl: image.dataUrl });
+      docs.forEach(function (dd) { attachments.push({ kind: "text", name: dd.name, text: dd.text }); });
+      addUser(text, image && image.dataUrl, image && image.name);
+      history.push({ role: "user", content: text });
       input.value = "";
-      const reply = respond(val);
-      setTimeout(function () { addMsg(reply, "bot"); }, 300);
+      pendingImage = null;
+      renderTray();
+      autosize();
+      const nav = navCommand(text);
+      if (nav) {
+        addBot(nav, false);
+        history.push({ role: "assistant", content: nav });
+        saveHistory();
+        sayLocal(nav);
+        return;
+      }
+      if (attachments.length && (!CHAT_ENDPOINT || navigator.onLine === false)) {
+        const msg = "I need my AI connection to read files and pictures, and it is not available right now.";
+        addBot(msg, false);
+        history.push({ role: "assistant", content: msg });
+        saveHistory();
+        sayLocal(msg);
+        return;
+      }
+      if (!CHAT_ENDPOINT || navigator.onLine === false) {
+        const why = !CHAT_ENDPOINT ? "" : "You're offline, so I'm answering from built-in knowledge.";
+        setTimeout(function () { localReply(text, why); }, 250);
+        return;
+      }
+      askAI(text, attachments);
+    }
+
+    /* ----- attachments ----- */
+    const TEXT_EXT = /\.(txt|md|markdown|csv|tsv|json|xml|html?|css|js|mjs|ts|jsx|tsx|py|java|c|cc|cpp|h|hpp|cs|go|rs|rb|php|sh|sql|ya?ml|toml|ini|log|tex|r)$/i;
+    const scriptCache = {};
+    function loadScript(url) {
+      if (scriptCache[url]) return scriptCache[url];
+      scriptCache[url] = new Promise(function (resolve, reject) {
+        const el = document.createElement("script");
+        el.src = url; el.async = true;
+        el.onload = resolve;
+        el.onerror = function () { delete scriptCache[url]; reject(new Error("Could not load the reader for this file type.")); };
+        document.head.appendChild(el);
+      });
+      return scriptCache[url];
+    }
+    function readAs(file, how) {
+      return new Promise(function (resolve, reject) {
+        const fr = new FileReader();
+        fr.onload = function () { resolve(fr.result); };
+        fr.onerror = function () { reject(new Error("Could not read " + file.name)); };
+        if (how === "text") fr.readAsText(file); else fr.readAsArrayBuffer(file);
+      });
+    }
+    function shrinkImage(file) {
+      return new Promise(function (resolve, reject) {
+        const url = URL.createObjectURL(file);
+        const img = new Image();
+        img.onload = function () {
+          const scale = Math.min(1, IMG_MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+          const w = Math.max(1, Math.round(img.naturalWidth * scale));
+          const h = Math.max(1, Math.round(img.naturalHeight * scale));
+          const canvas = document.createElement("canvas");
+          canvas.width = w; canvas.height = h;
+          const ctx = canvas.getContext("2d");
+          ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, w, h);   // transparent PNGs become white, not black
+          ctx.drawImage(img, 0, 0, w, h);
+          URL.revokeObjectURL(url);
+          let q = 0.85, out = canvas.toDataURL("image/jpeg", q);
+          while (out.length > IMG_MAX_CHARS && q > 0.4) { q -= 0.1; out = canvas.toDataURL("image/jpeg", q); }
+          if (out.length > IMG_MAX_CHARS) reject(new Error("That image is too large to send."));
+          else resolve(out);
+        };
+        img.onerror = function () { URL.revokeObjectURL(url); reject(new Error("I could not open that image.")); };
+        img.src = url;
+      });
+    }
+    function readPdf(file) {
+      return loadScript("https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js").then(function () {
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js";
+        return readAs(file, "buffer");
+      }).then(function (buf) {
+        return window.pdfjsLib.getDocument({ data: buf }).promise;
+      }).then(function (pdf) {
+        let text = "";
+        function page(n) {
+          if (n > pdf.numPages || n > 40 || text.length > MAX_DOC_CHARS) return Promise.resolve(text);
+          return pdf.getPage(n).then(function (p) { return p.getTextContent(); }).then(function (c) {
+            text += c.items.map(function (i) { return i.str; }).join(" ") + "\n\n";
+            return page(n + 1);
+          });
+        }
+        return page(1);
+      });
+    }
+    function readDocx(file) {
+      return loadScript("https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js").then(function () {
+        return readAs(file, "buffer");
+      }).then(function (buf) {
+        return window.mammoth.extractRawText({ arrayBuffer: buf });
+      }).then(function (r) { return r.value; });
+    }
+
+    function renderTray() {
+      const tray = document.getElementById("mentorTray");
+      if (!tray) return;
+      tray.innerHTML = "";
+      function chip(label, thumb, onRemove) {
+        const c = document.createElement("span");
+        c.className = "mentor-attach";
+        if (thumb) { const im = document.createElement("img"); im.src = thumb; im.alt = ""; c.appendChild(im); }
+        const t = document.createElement("span");
+        t.textContent = label;
+        c.appendChild(t);
+        const x = document.createElement("button");
+        x.type = "button"; x.textContent = "\u2715"; x.setAttribute("aria-label", "Remove " + label);
+        x.addEventListener("click", onRemove);
+        c.appendChild(x);
+        tray.appendChild(c);
+      }
+      if (pendingImage) chip(pendingImage.name, pendingImage.dataUrl, function () { pendingImage = null; renderTray(); });
+      docs.forEach(function (d, i) {
+        chip("\uD83D\uDCC4 " + d.name + (d.truncated ? " (first part)" : ""), null, function () { docs.splice(i, 1); renderTray(); });
+      });
+      tray.hidden = !(pendingImage || docs.length);
+    }
+
+    function addFiles(list) {
+      Array.prototype.slice.call(list || []).forEach(function (file) {
+        const name = file.name || "file";
+        if (/^image\//.test(file.type)) {
+          if (file.size > 15 * 1024 * 1024) { addNote(name + " is too large (15 MB max)."); return; }
+          shrinkImage(file).then(function (url) {
+            pendingImage = { name: name, dataUrl: url };
+            renderTray();
+          }).catch(function (e) { addNote(e.message); });
+          return;
+        }
+        if (docs.length >= MAX_DOCS) { addNote("You can attach up to " + MAX_DOCS + " documents. Remove one first."); return; }
+        if (file.size > 20 * 1024 * 1024) { addNote(name + " is too large (20 MB max)."); return; }
+        let job;
+        if (/\.pdf$/i.test(name) || file.type === "application/pdf") job = readPdf(file);
+        else if (/\.docx$/i.test(name)) job = readDocx(file);
+        else if (TEXT_EXT.test(name) || /^text\//.test(file.type)) job = readAs(file, "text");
+        else { addNote("I can read pictures, PDF, Word (.docx), text, CSV, JSON and code files. " + name + " is not one of those."); return; }
+        const reading = addNote("Reading " + name + "\u2026");
+        job.then(function (text) {
+          if (reading.parentNode) reading.parentNode.removeChild(reading);
+          text = String(text || "").replace(/\u0000/g, "").trim();
+          if (!text) { addNote(name + " has no text I can read (a scanned PDF, for example)."); return; }
+          const used = docs.reduce(function (a, d) { return a + d.text.length; }, 0);
+          const take = text.slice(0, Math.min(MAX_DOC_CHARS, MAX_DOC_TOTAL - used));
+          if (take.length < 200 && text.length >= 200) { addNote("No room left for " + name + ". Remove another document first."); return; }
+          docs.push({ name: name, text: take, truncated: take.length < text.length });
+          renderTray();
+          if (take.length < text.length) addNote(name + " is long, so I will read the first part of it.");
+        }).catch(function (e) {
+          if (reading.parentNode) reading.parentNode.removeChild(reading);
+          addNote(e && e.message ? e.message : "I could not read " + name + ".");
+        });
+      });
+    }
+
+    /* ----- speaking (text to speech) ----- */
+    function stripForSpeech(t) {
+      return String(t)
+        .replace(/```[\s\S]*?```/g, " (code block skipped) ")
+        .replace(/`([^`]*)`/g, "$1")
+        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, "$1")
+        .replace(/^\s*#{1,4}\s+/gm, "")
+        .replace(/^\s*[-*\u2022]\s+/gm, "")
+        .replace(/(\*\*|__|\*)/g, "")
+        .replace(/`+/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+    function pickVoice() {
+      const vs = window.speechSynthesis.getVoices() || [];
+      const base = voiceLang.slice(0, 2).toLowerCase();
+      return vs.filter(function (v) { return v.lang === voiceLang; })[0]
+        || vs.filter(function (v) { return v.lang && v.lang.toLowerCase().indexOf(base) === 0; })[0]
+        || null;
+    }
+    function speechIdle() {
+      if (pendingSpeech === 0 && streamDone && voiceMode && !busy && !listening && !rec) startListening("voice");
+    }
+    function enqueueSpeech(text) {
+      if (!text || !HAS_TTS) return;
+      // Long utterances get cut off by some browsers, so speak in short pieces.
+      const pieces = text.match(/[^.!?\u0964\n]+[.!?\u0964]*\s*/g) || [text];
+      let buf = "";
+      const parts = [];
+      pieces.forEach(function (p) {
+        if ((buf + p).length > 180 && buf) { parts.push(buf); buf = p; } else { buf += p; }
+      });
+      if (buf) parts.push(buf);
+      parts.forEach(function (part) {
+        const u = new SpeechSynthesisUtterance(part.trim());
+        u.lang = voiceLang;
+        const v = pickVoice();
+        if (v) u.voice = v;
+        pendingSpeech++;
+        const g = speechGen;
+        u.onend = u.onerror = function () {
+          if (g !== speechGen) return;
+          pendingSpeech = Math.max(0, pendingSpeech - 1); paintVoice(); speechIdle();
+        };
+        window.speechSynthesis.speak(u);
+      });
+      paintVoice();
+    }
+    function fenceCount(t) { return t.split("```").length - 1; }
+    // Called as the answer streams in: speaks each finished sentence at once,
+    // but never stops in the middle of a code block (those are skipped, not read).
+    function speakProgress(full, final) {
+      if (!speakOn || !HAS_TTS) return;
+      let cut = 0;
+      if (final) {
+        cut = full.length - spokenUpTo;
+      } else {
+        const re = /[.!?\u0964](?=\s)|\n/g;
+        let hit;
+        while ((hit = re.exec(full.slice(spokenUpTo))) !== null) {
+          const end = hit.index + hit[0].length;
+          if (fenceCount(full.slice(0, spokenUpTo + end)) % 2 === 0) cut = end;
+        }
+      }
+      if (cut <= 0) return;
+      const region = full.slice(spokenUpTo, spokenUpTo + cut);
+      spokenUpTo += cut;
+      enqueueSpeech(stripForSpeech(region));
+    }
+    function stopSpeaking() {
+      if (!HAS_TTS) return;
+      speechGen++;
+      pendingSpeech = 0;
+      try { window.speechSynthesis.cancel(); } catch (e) {}
+      paintVoice();
+    }
+
+    /* ----- listening (speech to text) ----- */
+    function paintVoice() {
+      const mic = document.getElementById("mentorMic");
+      const vc = document.getElementById("mentorVoice");
+      const sp = document.getElementById("mentorSpeak");
+      if (mic) { mic.classList.toggle("is-live", listening && !voiceMode); mic.setAttribute("aria-pressed", String(listening && !voiceMode)); }
+      if (vc) { vc.classList.toggle("is-live", voiceMode); vc.setAttribute("aria-pressed", String(voiceMode)); }
+      if (sp) { sp.textContent = speakOn ? "\uD83D\uDD0A" : "\uD83D\uDD07"; sp.setAttribute("aria-pressed", String(speakOn)); }
+      if (input) {
+        input.placeholder = listening ? "Listening\u2026 speak now"
+          : (voiceMode ? (pendingSpeech ? "Speaking\u2026 tap the headset to stop" : (busy ? "Thinking\u2026" : "Voice chat on")) : "Ask anything\u2026");
+      }
+    }
+    function micFirstUseNote() {
+      if (micNoteShown) return;
+      micNoteShown = true;
+      addNote("Voice typing uses your browser's speech service, which may send audio to the browser maker (Google, Apple or Microsoft) to turn it into text.");
+    }
+    function stopListening() {
+      if (rec) { try { rec.onend = null; rec.abort(); } catch (e) {} rec = null; }
+      listening = false;
+      paintVoice();
+    }
+    function exitVoiceMode(why) {
+      voiceMode = false;
+      stopListening();
+      stopSpeaking();
+      if (why) addNote(why);
+      paintVoice();
+    }
+    function startListening(mode) {
+      if (!SR || listening) return;
+      stopSpeaking();
+      micFirstUseNote();
+      const baseText = mode === "dictate" ? input.value.trim() : "";
+      let finalText = "", lastErr = "";
+      const r = new SR();
+      rec = r;
+      r.lang = voiceLang;
+      r.interimResults = true;
+      r.continuous = false;
+      r.maxAlternatives = 1;
+      r.onstart = function () { listening = true; paintVoice(); };
+      r.onresult = function (e) {
+        let interim = "";
+        for (let i = e.resultIndex; i < e.results.length; i++) {
+          if (e.results[i].isFinal) finalText += e.results[i][0].transcript; else interim += e.results[i][0].transcript;
+        }
+        input.value = (baseText + " " + finalText + interim).trim();
+        autosize();
+      };
+      r.onerror = function (e) { lastErr = e.error || "error"; };
+      r.onend = function () {
+        listening = false;
+        rec = null;
+        paintVoice();
+        const heard = finalText.trim();
+        if (lastErr === "not-allowed" || lastErr === "service-not-allowed") {
+          exitVoiceMode("The microphone is blocked. Allow it in your browser's site settings (the lock icon next to the address), then try again.");
+          return;
+        }
+        if (lastErr === "network") { exitVoiceMode("Speech recognition could not reach its service. Check your connection, or type instead."); return; }
+        if (mode === "voice" && voiceMode) {
+          if (heard) { idleRounds = 0; send(heard); }
+          else if (++idleRounds >= 2) exitVoiceMode("I did not hear anything, so voice chat is off. Tap the headset to start again.");
+          else startListening("voice");
+        } else if (mode === "dictate" && heard) {
+          input.focus();            // the words are in the box: edit by typing, or press send
+        }
+      };
+      try { r.start(); } catch (e) { rec = null; }
+    }
+    function toggleMic() {
+      if (!SR) return;
+      if (listening) { stopListening(); return; }
+      if (voiceMode) exitVoiceMode();
+      startListening("dictate");
+    }
+    function toggleVoiceMode() {
+      if (!SR) return;
+      if (voiceMode) { exitVoiceMode("Voice chat off."); return; }
+      if (busy) return;
+      voiceMode = true;
+      speakOn = true;
+      idleRounds = 0;
+      stopListening();
+      paintVoice();
+      startListening("voice");
+    }
+
+    /* ----- window ----- */
+    function greet() {
+      addBot(CHAT_ENDPOINT
+        ? "Hi, I'm Mission Mentor. Ask me anything: planets and space, homework, coding, ideas, or how you're doing here."
+        : "Hi, I'm your Mission Mentor. Ask me about any planet, how your last test went, or what to try next.", false);
+    }
+
+    function clearChat() {
+      chatGen++;
+      if (busy && controller) controller.abort();
+      exitVoiceMode();
+      docs = []; pendingImage = null; renderTray();
+      history = [];
+      saveHistory();
+      body.innerHTML = "";
+      noticeShown = false;
+      const q = document.getElementById("mentorQuick");
+      if (q) q.hidden = false;
+      greet();
     }
 
     function open() {
@@ -4483,16 +5486,30 @@ const EXTERNAL_LINKS = {
       toggle.setAttribute("aria-expanded", "true");
       if (!opened) {
         opened = true;
-        addMsg("Hi, I am your Mission Mentor. Ask me about any planet, how your last test went, or what to try next.", "bot");
+        if (history.length) {
+          history.forEach(function (m) { if (m.role === "user") addUser(m.content); else addBot(m.content, true); });
+          hideChips();
+        } else {
+          greet();
+        }
       }
+      setTimeout(function () { if (input) input.focus(); }, 50);
     }
 
     function close() {
+      if (voiceMode || listening) exitVoiceMode();
+      stopSpeaking();
       panel.classList.remove("is-open");
       toggle.setAttribute("aria-expanded", "false");
     }
 
+    function autosize() {
+      input.style.height = "auto";
+      input.style.height = Math.min(input.scrollHeight, 110) + "px";
+    }
+
     function ensureUI() {
+      loadHistory();
       toggle = document.createElement("button");
       toggle.type = "button";
       toggle.className = "mentor-toggle";
@@ -4502,39 +5519,101 @@ const EXTERNAL_LINKS = {
 
       panel = document.createElement("div");
       panel.className = "mentor-panel";
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-label", "Mission Mentor chat");
       panel.innerHTML =
         '<div class="mentor-panel__header">' +
-        '<div><p class="mentor-panel__title">Mission Mentor</p><p class="mentor-panel__subtitle">Your solar system study buddy</p></div>' +
+        '<div><p class="mentor-panel__title">Mission Mentor</p><p class="mentor-panel__subtitle">' + (CHAT_ENDPOINT ? "AI study buddy · ask anything" : "Your solar system study buddy") + '</p></div>' +
+        '<div class="mentor-panel__tools">' +
+        (SR ? '<button type="button" class="mentor-panel__tool" id="mentorVoice" aria-label="Voice chat (hands-free)" aria-pressed="false" title="Voice chat">\uD83C\uDFA7</button>' : '') +
+        (HAS_TTS ? '<button type="button" class="mentor-panel__tool" id="mentorSpeak" aria-label="Read answers aloud" aria-pressed="false" title="Read answers aloud">\uD83D\uDD07</button>' : '') +
+        '<button type="button" class="mentor-panel__tool" id="mentorClear" aria-label="Start a new chat" title="New chat">↻</button>' +
         '<button type="button" class="mentor-panel__close" aria-label="Close">✕</button>' +
-        '</div>' +
-        '<div class="mentor-panel__body" id="mentorBody"></div>' +
+        '</div></div>' +
+        '<div class="mentor-panel__body" id="mentorBody" role="log" aria-live="polite"></div>' +
         '<div class="mentor-panel__quick" id="mentorQuick">' +
-        '<button type="button" class="mentor-chip" data-q="How did I do on my last test?">Last test?</button>' +
+        '<button type="button" class="mentor-chip" data-q="Explain black holes simply">Black holes?</button>' +
+        '<button type="button" class="mentor-chip" data-q="Why is the sky blue?">Why is the sky blue?</button>' +
         '<button type="button" class="mentor-chip" data-q="Tell me about Mars">About Mars</button>' +
-        '<button type="button" class="mentor-chip" data-q="What are my badges?">My badges</button>' +
+        '<button type="button" class="mentor-chip" data-q="How did I do on my last test?">Last test?</button>' +
         '<button type="button" class="mentor-chip" data-q="What should I do next?">What next?</button>' +
         '</div>' +
+        '<div class="mentor-tray" id="mentorTray" hidden></div>' +
         '<div class="mentor-panel__input">' +
-        '<input type="text" id="mentorInput" placeholder="Ask about a planet, your score...">' +
+        (CHAT_ENDPOINT ? '<button type="button" class="mentor-icon" id="mentorAttach" aria-label="Attach a picture or document" title="Attach a picture or document">\uD83D\uDCCE</button>' +
+          '<input type="file" id="mentorFile" multiple hidden accept="image/*,.pdf,.docx,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.ts,.py,.java,.c,.cpp,.cs,.go,.rs,.rb,.php,.sh,.sql,.yml,.yaml,.log">' : '') +
+        '<textarea id="mentorInput" rows="1" maxlength="2000" placeholder="Ask anything…" aria-label="Message"></textarea>' +
+        (SR ? '<button type="button" class="mentor-icon" id="mentorMic" aria-label="Speak your message" aria-pressed="false" title="Speak your message">\uD83C\uDFA4</button>' : '') +
         '<button type="button" id="mentorSend" aria-label="Send">→</button>' +
-        '</div>';
+        '<button type="button" id="mentorStop" aria-label="Stop" hidden>■</button>' +
+        '</div>' +
+        '<p class="mentor-panel__foot">' + (CHAT_ENDPOINT ? "AI can make mistakes. Check important facts." : "Offline mode: built-in answers only.") +
+        ((SR || HAS_TTS) ? ' <select id="mentorLang" aria-label="Voice language" title="Voice language">' +
+          [["en-US", "English (US)"], ["en-GB", "English (UK)"], ["en-IN", "English (India)"], ["hi-IN", "Hindi"], ["mr-IN", "Marathi"], ["ur-PK", "Urdu"], ["ar-SA", "Arabic"], ["es-ES", "Spanish"], ["fr-FR", "French"], ["de-DE", "German"]].map(function (l) {
+            return '<option value="' + l[0] + '">' + l[1] + '</option>';
+          }).join("") + '</select>' : '') + '</p>';
 
       document.body.appendChild(toggle);
       document.body.appendChild(panel);
       body = document.getElementById("mentorBody");
       input = document.getElementById("mentorInput");
+      sendBtn = document.getElementById("mentorSend");
+      stopBtn = document.getElementById("mentorStop");
 
       toggle.addEventListener("click", function () {
         if (panel.classList.contains("is-open")) close(); else open();
       });
       panel.querySelector(".mentor-panel__close").addEventListener("click", close);
-      document.getElementById("mentorSend").addEventListener("click", handleSend);
-      input.addEventListener("keydown", function (e) { if (e.key === "Enter") handleSend(); });
-      panel.querySelectorAll(".mentor-chip").forEach(function (chip) {
-        chip.addEventListener("click", function () {
-          input.value = chip.getAttribute("data-q");
-          handleSend();
+      document.getElementById("mentorClear").addEventListener("click", clearChat);
+      sendBtn.addEventListener("click", function () { send(input.value); });
+      stopBtn.addEventListener("click", function () { if (controller) controller.abort("user"); stopSpeaking(); if (voiceMode) exitVoiceMode(); });
+      input.addEventListener("input", autosize);
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input.value); }
+        if (e.key === "Escape") close();
+      });
+      const mic = document.getElementById("mentorMic");
+      if (mic) mic.addEventListener("click", toggleMic);
+      const vc = document.getElementById("mentorVoice");
+      if (vc) vc.addEventListener("click", toggleVoiceMode);
+      const sp = document.getElementById("mentorSpeak");
+      if (sp) sp.addEventListener("click", function () {
+        speakOn = !speakOn;
+        if (!speakOn) { stopSpeaking(); if (voiceMode) exitVoiceMode(); }
+        paintVoice();
+      });
+      const lang = document.getElementById("mentorLang");
+      if (lang) {
+        try { voiceLang = localStorage.getItem(LANG_KEY) || (navigator.language || "en-US"); } catch (e) { voiceLang = navigator.language || "en-US"; }
+        if (!Array.prototype.some.call(lang.options, function (o) { return o.value === voiceLang; })) voiceLang = "en-US";
+        lang.value = voiceLang;
+        lang.addEventListener("change", function () {
+          voiceLang = lang.value;
+          try { localStorage.setItem(LANG_KEY, voiceLang); } catch (e) {}
+          if (listening) stopListening();
         });
+      }
+      const attach = document.getElementById("mentorAttach");
+      const fileInput = document.getElementById("mentorFile");
+      if (attach && fileInput) {
+        attach.addEventListener("click", function () { fileInput.click(); });
+        fileInput.addEventListener("change", function () { addFiles(fileInput.files); fileInput.value = ""; });
+        panel.addEventListener("dragover", function (e) { e.preventDefault(); panel.classList.add("is-drop"); });
+        panel.addEventListener("dragleave", function () { panel.classList.remove("is-drop"); });
+        panel.addEventListener("drop", function (e) {
+          e.preventDefault(); panel.classList.remove("is-drop");
+          if (e.dataTransfer && e.dataTransfer.files) addFiles(e.dataTransfer.files);
+        });
+        input.addEventListener("paste", function (e) {
+          const files = e.clipboardData && e.clipboardData.files;
+          if (files && files.length) { e.preventDefault(); addFiles(files); }
+        });
+      }
+      if (HAS_TTS) {
+        window.addEventListener("beforeunload", function () { try { window.speechSynthesis.cancel(); } catch (er) {} });
+      }
+      panel.querySelectorAll(".mentor-chip").forEach(function (chip) {
+        chip.addEventListener("click", function () { send(chip.getAttribute("data-q")); });
       });
     }
 
@@ -5016,6 +6095,486 @@ const EXTERNAL_LINKS = {
   })();
 
   document.addEventListener("DOMContentLoaded", function () { Reader.init(); });
+})();
+</script>
+<script>
+/* =========================================================================
+   ECLIPTIC - ADMIN MODULE
+   The Admin page is only a window onto server-side functions (see
+   supabase-setup.sql, section 7). Hiding or editing this page in the
+   browser gives a normal user nothing: every admin_* function re-checks
+   on the server that the caller is an admin.
+
+   Also applies the site-wide switches an admin can set: announcement
+   banner, tests / compare / mentor off, and (server-side) closed sign-ups.
+   Everything here fails soft: if the admin SQL has not been run yet, the
+   site simply behaves as before.
+   ========================================================================= */
+const Admin = (function () {
+  const DEFAULTS = {
+    announcement: "", announcement_enabled: false,
+    signups_enabled: true, tests_enabled: true, compare_enabled: true, mentor_enabled: true
+  };
+  const ACTION_LABELS = {
+    delete_user: "Deleted user", reset_progress: "Reset progress", ban_user: "Banned user",
+    unban_user: "Unbanned user",
+    update_settings: "Changed site settings"
+  };
+
+  let settings = Object.assign({}, DEFAULTS);
+  let user = null;
+  let isAdmin = false;
+  let authKnown = false;       // false until Supabase has reported the stored session once
+  let denied = false;          // one redirect + toast per refusal, not a loop
+  let users = [];
+  let tab = "overview";
+  let query = "";
+  let sortKey = "created_at";
+  let lastSettingsFetch = 0;
+
+  function esc(v) {
+    return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+    });
+  }
+  function fmtDate(v) { return v ? new Date(v).toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" }) : "—"; }
+  function fmtDateTime(v) { return v ? new Date(v).toLocaleString() : "Never"; }
+  function isBanned(u) { return !!(u && u.banned_until && new Date(u.banned_until) > new Date()); }
+  function currentScreen() { return (window.location.hash || "").replace(/^#\/?/, "").split("/")[0] || "landing"; }
+  function root() { return document.getElementById("adminRoot"); }
+  function planetLabel(id) {
+    try {
+      const p = PLANETS.filter(function (x) { return x.id === id; })[0];
+      if (p) return p.name;
+    } catch (e) {}
+    return String(id).charAt(0).toUpperCase() + String(id).slice(1);
+  }
+
+  function rpc(name, args) {
+    return sb.rpc(name, args || {}).then(function (r) {
+      if (r && r.error) throw r.error;
+      return r ? r.data : null;
+    });
+  }
+  function errText(e) {
+    const m = (e && e.message) || "Something went wrong.";
+    if (/admin only/i.test(m)) return "Your account is not an admin.";
+    if (/does not exist|could not find the function|schema cache/i.test(m)) return "The admin SQL has not been run in Supabase yet (run supabase-setup.sql).";
+    if (m === "cloud-unavailable") return "Can't reach the server. Check your connection.";
+    return m;
+  }
+  function setMsg(text, kind) {
+    const el = document.getElementById("adminMsg");
+    if (!el) return;
+    el.textContent = text || "";
+    el.className = "admin-msg" + (kind ? " is-" + kind : "");
+  }
+
+  /* ---------- Site-wide switches (everyone) ---------- */
+  function applySettings() {
+    const banner = document.getElementById("siteAnnouncement");
+    if (banner) {
+      const on = settings.announcement_enabled && settings.announcement;
+      banner.hidden = !on;
+      banner.textContent = on ? settings.announcement : "";
+    }
+    document.body.classList.toggle("feat-no-mentor", settings.mentor_enabled === false && !isAdmin);
+    gate();
+  }
+
+  function loadSettings(force) {
+    const now = Date.now();
+    if (!force && now - lastSettingsFetch < 60000) return Promise.resolve();
+    lastSettingsFetch = now;
+    return Promise.resolve(sb.from("site_settings").select("*").eq("id", 1).maybeSingle()).then(function (r) {
+      if (r && r.data) settings = Object.assign({}, DEFAULTS, r.data);
+      applySettings();
+    }).catch(function () {});
+  }
+
+  // Test and Compare can be switched off for maintenance. Admins still get
+  // through (so they can check things), with a note saying it is off.
+  function gate() {
+    [["test", "tests_enabled", "The knowledge test"], ["compare", "compare_enabled", "Compare mode"]].forEach(function (f) {
+      const sec = document.getElementById("screen-" + f[0]);
+      const inner = sec && sec.querySelector(".section__inner");
+      if (!inner) return;
+      const off = settings[f[1]] === false;
+      let note = inner.querySelector(".feature-off-note");
+      if (off && !note) {
+        note = document.createElement("div");
+        note.className = "feature-off-note";
+        inner.insertBefore(note, inner.firstChild);
+      }
+      if (note) {
+        note.hidden = !off;
+        note.innerHTML = isAdmin
+          ? "<strong>" + f[2] + " is switched off for visitors</strong>You can still use it because you are an admin."
+          : "<strong>" + f[2] + " is switched off for now</strong>The site admin has paused this for maintenance. Please check back soon.";
+      }
+      inner.classList.toggle("is-feature-off", off && !isAdmin);
+    });
+  }
+
+  /* ---------- Who am I ---------- */
+  // The flag comes from Cloud.isAdmin(); this only updates what is visible.
+  function setAdmin(v) {
+    isAdmin = v;
+    const link = document.getElementById("adminNavLink");
+    if (link) link.hidden = !v;
+    applySettings();
+    if (currentScreen() === "admin") onEnter();
+  }
+
+  function toast(text) {
+    const el = document.createElement("div");
+    el.className = "badge-toast badge-toast--error";
+    el.setAttribute("role", "status");
+    el.innerHTML = '<span class="badge-toast__icon">\u26A0</span><span class="badge-toast__text"><strong>' + esc(text) + '</strong></span>';
+    document.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add("is-visible"); });
+    setTimeout(function () { el.classList.remove("is-visible"); setTimeout(function () { el.remove(); }, 400); }, 3200);
+  }
+
+  // Not an admin: back to the landing page with a short notice.
+  function deny() {
+    if (denied) return;
+    denied = true;
+    toast("Not authorized.");
+    if (typeof Router !== "undefined") Router.goTo("landing"); else window.location.hash = "#/";
+    setTimeout(function () { denied = false; }, 500);
+  }
+
+  /* ---------- Admin page ---------- */
+  function onEnter() {
+    const host = root();
+    if (!host) return;
+    // Right after a page load the stored session is not known yet. Wait for it
+    // (with a time limit, in case the login service never answers).
+    if (!authKnown) {
+      host.innerHTML = '<p class="admin-note">Checking your access\u2026</p>';
+      setTimeout(function () { if (!authKnown) { authKnown = true; setAdmin(false); } }, 4000);
+      return;
+    }
+    if (!user || !Cloud.isAdmin()) { host.innerHTML = ""; deny(); return; }
+    host.innerHTML =
+      '<div class="admin-tabs" role="tablist">' +
+        [["overview", "Overview"], ["users", "Users"], ["site", "Site controls"], ["log", "Activity log"]].map(function (t) {
+          return '<button type="button" class="admin-tab' + (t[0] === tab ? " is-active" : "") + '" data-tab="' + t[0] + '">' + t[1] + '</button>';
+        }).join("") +
+      '</div><p class="admin-msg" id="adminMsg" role="status"></p><div id="adminPane"></div>';
+    showTab(tab);
+  }
+
+  function showTab(t) {
+    tab = t;
+    document.querySelectorAll(".admin-tab").forEach(function (b) { b.classList.toggle("is-active", b.dataset.tab === t); });
+    setMsg("");
+    const pane = document.getElementById("adminPane");
+    if (!pane) return;
+    pane.innerHTML = '<p class="admin-note">Loading…</p>';
+    if (t === "site") return renderSite(pane);
+    if (t === "log") return renderLog(pane);
+    loadUsers().then(function () {
+      if (tab !== t) return;
+      if (t === "users") renderUsers(pane); else renderOverview(pane);
+    }).catch(function (e) { pane.innerHTML = ""; setMsg(errText(e), "error"); });
+  }
+
+  function loadUsers() {
+    return rpc("admin_list_users").then(function (data) { users = data || []; });
+  }
+
+  /* Overview */
+  function renderOverview(pane) {
+    const now = Date.now(), week = 7 * 864e5;
+    const tiles = [
+      ["Total users", users.length],
+      ["New this week", users.filter(function (u) { return now - new Date(u.created_at) < week; }).length],
+      ["Active this week", users.filter(function (u) { return u.last_sign_in_at && now - new Date(u.last_sign_in_at) < week; }).length],
+      ["Tests taken", users.reduce(function (a, u) { return a + (u.tests_count || 0); }, 0)],
+      ["Average points", users.length ? Math.round(users.reduce(function (a, u) { return a + (u.points || 0); }, 0) / users.length) : 0],
+      ["Admins", users.filter(function (u) { return u.is_admin; }).length],
+      ["Suspended", users.filter(isBanned).length]
+    ];
+    // sign-ups per day, last 14 days
+    const days = [];
+    for (let i = 13; i >= 0; i--) {
+      const d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - i);
+      days.push({ d: d, n: 0 });
+    }
+    users.forEach(function (u) {
+      const c = new Date(u.created_at); c.setHours(0, 0, 0, 0);
+      days.forEach(function (x) { if (x.d.getTime() === c.getTime()) x.n++; });
+    });
+    const maxDay = Math.max.apply(null, days.map(function (x) { return x.n; }).concat([1]));
+    // most explored bodies
+    const counts = {};
+    users.forEach(function (u) { (u.explored_planets || []).forEach(function (id) { counts[id] = (counts[id] || 0) + 1; }); });
+    const top = Object.keys(counts).sort(function (a, b) { return counts[b] - counts[a]; }).slice(0, 8);
+    const maxTop = top.length ? counts[top[0]] : 1;
+
+    pane.innerHTML =
+      '<div class="admin-tiles">' + tiles.map(function (t) {
+        return '<div class="admin-tile"><span class="admin-tile__num">' + esc(t[1]) + '</span><span class="admin-tile__label">' + esc(t[0]) + '</span></div>';
+      }).join("") + '</div>' +
+      '<h3 class="admin-h">Sign-ups, last 14 days</h3><div class="admin-bars">' +
+      days.map(function (x) {
+        return '<div class="admin-bar"><span>' + esc(x.d.toLocaleDateString(undefined, { month: "short", day: "numeric" })) + '</span>' +
+          '<span class="admin-bar__track"><span class="admin-bar__fill" style="width:' + (x.n / maxDay * 100) + '%"></span></span><span>' + x.n + '</span></div>';
+      }).join("") + '</div>' +
+      '<h3 class="admin-h">Most explored bodies</h3>' +
+      (top.length ? '<div class="admin-bars">' + top.map(function (id) {
+        return '<div class="admin-bar"><span>' + esc(planetLabel(id)) + '</span><span class="admin-bar__track"><span class="admin-bar__fill" style="width:' +
+          (counts[id] / maxTop * 100) + '%"></span></span><span>' + counts[id] + '</span></div>';
+      }).join("") + '</div>' : '<p class="admin-note">Nobody has explored anything yet.</p>');
+  }
+
+  /* Users */
+  function visibleUsers() {
+    const q = query.trim().toLowerCase();
+    let list = users.filter(function (u) {
+      if (!q) return true;
+      return [u.name, u.email, u.location, u.phone].some(function (f) { return f && String(f).toLowerCase().indexOf(q) !== -1; });
+    });
+    list = list.slice().sort(function (a, b) {
+      if (sortKey === "name") return String(a.name || a.email || "").localeCompare(String(b.name || b.email || ""));
+      if (sortKey === "points") return (b.points || 0) - (a.points || 0);
+      const av = a[sortKey] ? new Date(a[sortKey]).getTime() : 0;
+      const bv = b[sortKey] ? new Date(b[sortKey]).getTime() : 0;
+      return bv - av;
+    });
+    return list;
+  }
+
+  function renderUsers(pane) {
+    pane.innerHTML =
+      '<div class="admin-toolbar">' +
+        '<input class="admin-input" id="adminSearch" type="search" placeholder="Search name, email, country, phone" value="' + esc(query) + '" aria-label="Search users">' +
+        '<select class="admin-select" id="adminSort" aria-label="Sort users">' +
+          [["created_at", "Newest first"], ["last_sign_in_at", "Recently active"], ["points", "Most points"], ["name", "Name A–Z"]].map(function (o) {
+            return '<option value="' + o[0] + '"' + (o[0] === sortKey ? " selected" : "") + '>' + o[1] + '</option>';
+          }).join("") +
+        '</select>' +
+        '<button type="button" class="admin-btn" id="adminRefresh">Refresh</button>' +
+        '<button type="button" class="admin-btn" id="adminCsv">Export CSV</button>' +
+      '</div><div class="admin-table-wrap"><table class="admin-table"><thead><tr>' +
+        '<th>User</th><th>Country</th><th class="num">Points</th><th class="num">Tests</th><th class="num">Planets</th><th class="num">Badges</th><th>Joined</th><th>Last sign-in</th><th></th>' +
+      '</tr></thead><tbody id="adminRows"></tbody></table></div><p class="admin-note" id="adminCount"></p>';
+    paintRows();
+  }
+
+  function paintRows() {
+    const body = document.getElementById("adminRows");
+    if (!body) return;
+    const list = visibleUsers();
+    body.innerHTML = list.map(function (u) {
+      return '<tr data-id="' + esc(u.id) + '" tabindex="0">' +
+        '<td>' + esc(u.name || "—") +
+          (u.is_admin ? '<span class="admin-chip admin-chip--admin">admin</span>' : "") +
+          (isBanned(u) ? '<span class="admin-chip admin-chip--banned">suspended</span>' : "") +
+          '<span class="admin-sub">' + esc(u.email) + '</span></td>' +
+        '<td>' + esc(u.location || "—") + '</td>' +
+        '<td class="num">' + esc(u.points) + '</td><td class="num">' + esc(u.tests_count) + '</td>' +
+        '<td class="num">' + esc(u.planets_count) + '</td><td class="num">' + esc(u.badges_count) + '</td>' +
+        '<td>' + esc(fmtDate(u.created_at)) + '</td><td>' + esc(u.last_sign_in_at ? fmtDate(u.last_sign_in_at) : "Never") + '</td>' +
+        '<td><button type="button" class="admin-btn admin-btn--danger" data-del="' + esc(u.id) + '" data-email="' + esc(u.email) + '"' +
+          (user && u.id === user.id ? " disabled" : "") + '>Delete</button></td></tr>';
+    }).join("") || '<tr><td colspan="9">No users match.</td></tr>';
+    const c = document.getElementById("adminCount");
+    if (c) c.textContent = list.length + " of " + users.length + " users. Click a row for details and actions.";
+  }
+
+  function csvCell(v) {
+    let s = v == null ? "" : String(v);
+    if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;          // stop spreadsheet formula injection
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  function exportCsv() {
+    if (!window.confirm("This file contains personal details (email, phone, address). Keep it private. Download?")) return;
+    const head = ["name", "email", "phone", "country", "address", "points", "tests", "planets", "badges", "is_admin", "suspended", "joined", "last_sign_in"];
+    const rows = visibleUsers().map(function (u) {
+      return [u.name, u.email, u.phone, u.location, u.address, u.points, u.tests_count, u.planets_count, u.badges_count,
+        u.is_admin, isBanned(u), u.created_at, u.last_sign_in_at].map(csvCell).join(",");
+    });
+    const blob = new Blob([head.join(",") + "\n" + rows.join("\n")], { type: "text/csv;charset=utf-8" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "ecliptic-users-" + new Date().toISOString().slice(0, 10) + ".csv";
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
+  /* User detail dialog */
+  function openUser(id) {
+    const dlg = document.getElementById("adminUserDialog");
+    const body = document.getElementById("adminUserBody");
+    if (!dlg || !body) return;
+    body.innerHTML = '<p class="admin-note">Loading…</p>';
+    if (!dlg.open) dlg.showModal();
+    rpc("admin_get_user", { target_id: id }).then(function (u) {
+      if (!u) { body.innerHTML = '<p class="admin-note">User not found.</p>'; return; }
+      const self = user && u.id === user.id;
+      const tests = (u.tests_taken || []).slice().reverse();
+      body.innerHTML =
+        '<h3 class="admin-h" style="margin-top:0">' + esc(u.name || u.email) +
+          (u.is_admin ? '<span class="admin-chip admin-chip--admin">admin</span>' : "") +
+          (isBanned(u) ? '<span class="admin-chip admin-chip--banned">suspended</span>' : "") + '</h3>' +
+        '<dl class="admin-dl">' +
+          '<dt>Email</dt><dd>' + esc(u.email) + '</dd>' +
+          '<dt>Phone</dt><dd>' + esc(u.phone || "—") + '</dd>' +
+          '<dt>Country</dt><dd>' + esc(u.location || "—") + '</dd>' +
+          '<dt>Address</dt><dd>' + esc(u.address || "—") + '</dd>' +
+          '<dt>Points</dt><dd>' + esc(u.points || 0) + '</dd>' +
+          '<dt>Joined</dt><dd>' + esc(fmtDateTime(u.created_at)) + '</dd>' +
+          '<dt>Last sign-in</dt><dd>' + esc(fmtDateTime(u.last_sign_in_at)) + '</dd>' +
+          '<dt>Compared</dt><dd>' + (u.compared_at_least_once ? "Yes" : "No") + '</dd>' +
+          '<dt>Explored</dt><dd>' + esc((u.explored_planets || []).map(planetLabel).join(", ") || "—") + '</dd>' +
+          '<dt>Badges</dt><dd>' + esc((u.badges || []).join(", ") || "—") + '</dd>' +
+        '</dl>' +
+        '<h3 class="admin-h">Test history (' + tests.length + ')</h3>' +
+        (tests.length ? '<div class="admin-table-wrap"><table class="admin-table" style="min-width:0"><thead><tr><th>When</th><th class="num">Questions</th><th class="num">Correct</th><th class="num">Points</th></tr></thead><tbody>' +
+          tests.slice(0, 50).map(function (t) {
+            return '<tr style="cursor:default"><td>' + esc(fmtDateTime(t.completedAt)) + '</td><td class="num">' + esc(t.length) + '</td><td class="num">' + esc(t.correctCount) + '</td><td class="num">' + esc(t.points) + '</td></tr>';
+          }).join("") + '</tbody></table></div>' : '<p class="admin-note">No tests taken.</p>') +
+        '<p class="admin-msg" id="adminDlgMsg" role="status"></p>' +
+        '<div class="admin-actions" data-uid="' + esc(u.id) + '" data-email="' + esc(u.email) + '">' +
+          '<button type="button" class="admin-btn" data-act="reset">Reset progress</button>' +
+          '<button type="button" class="admin-btn" data-act="' + (isBanned(u) ? "unban" : "ban") + '"' + (self ? " disabled" : "") + '>' + (isBanned(u) ? "Unsuspend" : "Suspend") + '</button>' +
+          '<button type="button" class="admin-btn admin-btn--danger" data-act="delete"' + (self ? " disabled" : "") + '>Delete user</button>' +
+          '<button type="button" class="admin-btn" data-act="close">Close</button>' +
+        '</div>';
+    }).catch(function (e) { body.innerHTML = '<p class="admin-msg is-error">' + esc(errText(e)) + '</p>'; });
+  }
+
+  function dlgMsg(text, kind) {
+    const el = document.getElementById("adminDlgMsg");
+    if (el) { el.textContent = text; el.className = "admin-msg is-" + kind; }
+  }
+
+  function userAction(act, id, email) {
+    const dlg = document.getElementById("adminUserDialog");
+    if (act === "close") { dlg.close(); return; }
+    const say = function (text, kind) { if (dlg.open) dlgMsg(text, kind); else setMsg(text, kind); };
+    let call, ok;
+    if (act === "reset") {
+      if (!window.confirm("Reset all points, tests, badges and explored planets for " + email + "? The account stays. This cannot be undone.")) return;
+      call = rpc("admin_reset_progress", { target_id: id }); ok = "Progress reset. It applies on their next visit.";
+    } else if (act === "ban" || act === "unban") {
+      if (act === "ban" && !window.confirm("Suspend " + email + "? They will be unable to sign in.")) return;
+      call = rpc("admin_set_ban", { target_id: id, banned: act === "ban" }); ok = act === "ban" ? "User suspended." : "User unsuspended.";
+    } else if (act === "delete") {
+      const typed = window.prompt("This permanently deletes the account and all its data.\nType the email to confirm:\n" + email);
+      if (typed === null) return;
+      if (typed.trim().toLowerCase() !== String(email).toLowerCase()) { say("Email did not match. Nothing was deleted.", "error"); return; }
+      call = rpc("admin_delete_user", { target_id: id }); ok = "User deleted.";
+    } else return;
+
+    say("Working…", "");
+    call.then(function () {
+      if (act === "delete") { dlg.close(); setMsg(ok, "ok"); } else { say(ok, "ok"); }
+      return loadUsers().then(function () {
+        if (tab === "users") { const pane = document.getElementById("adminPane"); if (pane && act === "delete") renderUsers(pane); else paintRows(); }
+        else if (tab === "overview") { const pane = document.getElementById("adminPane"); if (pane) renderOverview(pane); }
+        if (act !== "delete" && dlg.open) setTimeout(function () { openUser(id); setTimeout(function () { say(ok, "ok"); }, 400); }, 0);
+      });
+    }).catch(function (e) { say(errText(e), "error"); });
+  }
+
+  /* Site controls */
+  function renderSite(pane) {
+    loadSettings(true).then(function () {
+      if (tab !== "site") return;
+      const sw = [
+        ["signups_enabled", "Allow new sign-ups", "Off: the server rejects new accounts. Existing users can still sign in."],
+        ["tests_enabled", "Knowledge test", "Off: visitors see a maintenance notice instead of the test. Admins can still use it."],
+        ["compare_enabled", "Compare mode", "Off: visitors see a maintenance notice instead of Compare."],
+        ["mentor_enabled", "Mentor chat button", "Off: the mentor button is hidden for visitors."]
+      ];
+      pane.innerHTML =
+        '<h3 class="admin-h" style="margin-top:0">Announcement banner</h3>' +
+        '<label class="admin-switch"><input type="checkbox" id="setAnnOn"' + (settings.announcement_enabled ? " checked" : "") + '><div><strong>Show banner on every page</strong><span>Shown above the navigation bar to all visitors.</span></div></label>' +
+        '<textarea class="admin-textarea" id="setAnnText" maxlength="280" placeholder="e.g. Scheduled maintenance tonight at 10 PM IST" aria-label="Announcement text">' + esc(settings.announcement) + '</textarea>' +
+        '<h3 class="admin-h">Feature switches</h3>' +
+        sw.map(function (s) {
+          return '<label class="admin-switch"><input type="checkbox" data-key="' + s[0] + '"' + (settings[s[0]] !== false ? " checked" : "") + '><div><strong>' + s[1] + '</strong><span>' + s[2] + '</span></div></label>';
+        }).join("") +
+        '<div class="admin-actions"><button type="button" class="admin-btn admin-btn--primary" id="adminSaveSite">Save changes</button></div>' +
+        '<p class="admin-note" style="margin-top:1rem">Changes reach visitors within about a minute (their page checks for updates when they return to it).</p>';
+    });
+  }
+
+  function saveSite() {
+    const val = function (k) { const el = document.querySelector('#adminPane [data-key="' + k + '"]'); return el ? el.checked : true; };
+    setMsg("Saving…", "");
+    rpc("admin_update_settings", {
+      p_announcement: document.getElementById("setAnnText").value,
+      p_announcement_enabled: document.getElementById("setAnnOn").checked,
+      p_signups: val("signups_enabled"), p_tests: val("tests_enabled"),
+      p_compare: val("compare_enabled"), p_mentor: val("mentor_enabled")
+    }).then(function () { setMsg("Saved.", "ok"); return loadSettings(true); })
+      .catch(function (e) { setMsg(errText(e), "error"); });
+  }
+
+  /* Activity log */
+  function renderLog(pane) {
+    rpc("admin_get_audit", { lim: 100 }).then(function (rows) {
+      if (tab !== "log") return;
+      rows = rows || [];
+      pane.innerHTML = '<div class="admin-toolbar"><button type="button" class="admin-btn" id="adminLogRefresh">Refresh</button></div>' +
+        '<div class="admin-table-wrap"><table class="admin-table"><thead><tr><th>When</th><th>Admin</th><th>Action</th><th>Target</th></tr></thead><tbody>' +
+        (rows.map(function (r) {
+          return '<tr style="cursor:default"><td>' + esc(fmtDateTime(r.created_at)) + '</td><td>' + esc(r.admin_email || "—") + '</td><td>' +
+            esc(ACTION_LABELS[r.action] || r.action) + '</td><td>' + esc(r.target_email || "—") + '</td></tr>';
+        }).join("") || '<tr><td colspan="4">Nothing logged yet.</td></tr>') + '</tbody></table></div>' +
+        '<p class="admin-note">Shows the last 100 admin actions. Entries cannot be edited or removed from the site.</p>';
+    }).catch(function (e) { pane.innerHTML = ""; setMsg(errText(e), "error"); });
+  }
+
+  /* ---------- Wiring ---------- */
+  document.addEventListener("click", function (e) {
+    const t = e.target;
+    if (!t || !t.closest) return;
+    const tabBtn = t.closest(".admin-tab");
+    if (tabBtn && root() && root().contains(tabBtn)) { showTab(tabBtn.dataset.tab); return; }
+    if (t.closest("#adminSignIn")) { const b = document.getElementById("authNavBtn"); if (b) b.click(); return; }
+    if (t.closest("#adminRefresh")) { setMsg("Refreshing…"); loadUsers().then(function () { paintRows(); setMsg(""); }).catch(function (er) { setMsg(errText(er), "error"); }); return; }
+    if (t.closest("#adminCsv")) { exportCsv(); return; }
+    if (t.closest("#adminSaveSite")) { saveSite(); return; }
+    if (t.closest("#adminLogRefresh")) { showTab("log"); return; }
+    const del = t.closest("#adminRows [data-del]");
+    if (del) { e.stopPropagation(); if (!del.disabled) userAction("delete", del.dataset.del, del.dataset.email); return; }
+    const row = t.closest("#adminRows tr[data-id]");
+    if (row) { openUser(row.dataset.id); return; }
+    const act = t.closest("#adminUserDialog [data-act]");
+    if (act) {
+      const wrap = act.closest("[data-uid]");
+      userAction(act.dataset.act, wrap ? wrap.dataset.uid : "", wrap ? wrap.dataset.email : "");
+    }
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && e.target && e.target.matches && e.target.matches("#adminRows tr[data-id]")) openUser(e.target.dataset.id);
+  });
+  document.addEventListener("input", function (e) {
+    if (e.target && e.target.id === "adminSearch") { query = e.target.value; paintRows(); }
+  });
+  document.addEventListener("change", function (e) {
+    if (e.target && e.target.id === "adminSort") { sortKey = e.target.value; paintRows(); }
+  });
+
+  document.addEventListener("cloud:auth", function (e) {
+    user = (e.detail && e.detail.user) || null;
+    authKnown = true;
+    if (!user) { users = []; setAdmin(false); }
+    // signed in: wait for Cloud's "cloud:admin" before deciding either way
+  });
+  document.addEventListener("cloud:admin", function (e) {
+    setAdmin(!!(e.detail && e.detail.isAdmin));
+  });
+  document.addEventListener("visibilitychange", function () { if (!document.hidden) loadSettings(false); });
+  document.addEventListener("DOMContentLoaded", function () { loadSettings(true); });
+
+  return { onEnter: onEnter, gate: gate, loadSettings: loadSettings, isAdmin: function () { return isAdmin; } };
 })();
 </script>
 </body>
