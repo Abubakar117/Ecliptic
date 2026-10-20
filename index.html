@@ -612,6 +612,89 @@ body.reader-open .mentor-toggle { bottom: 5.7rem; }
 
 /* ---------- Admin role: announcement banner, feature switches, Admin page ---------- */
 .site-announcement { background: var(--accent-primary); color: #1a1305; font-family: var(--font-display); font-weight: 600; font-size: 0.9rem; text-align: center; padding: 0.55rem 1rem; }
+/* The drifting starfield is wider than a phone screen; without this the page can be dragged sideways. */
+html { overflow-x: hidden; overflow-x: clip; }
+/* ---------- Mentor: chat manager, tools, dialogs ---------- */
+.mentor-panel { transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), width 0.2s var(--ease), height 0.2s var(--ease); }
+.mentor-panel.is-wide { width: min(920px, calc(100vw - 2.4rem)); height: min(80vh, 740px); }
+.mentor-panel__header { align-items: center; gap: 0.6rem; }
+.mentor-panel__head-text { flex: 1; min-width: 0; }
+.mentor-panel__title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mentor-panel__subtitle { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mentor-panel__tools { display: flex; align-items: center; gap: 0.15rem; flex-shrink: 0; }
+.mentor-split { flex: 1; min-height: 0; display: flex; position: relative; }
+.mentor-col { flex: 1; min-width: 0; display: flex; flex-direction: column; position: relative; }
+.mentor-col .mentor-panel__body { min-height: 0; }
+.mentor-side { display: none; flex-direction: column; gap: 0.5rem; width: 240px; flex-shrink: 0; padding: 0.7rem; border-right: 1px solid var(--border-glass); background: var(--bg-void); min-height: 0; }
+.mentor-panel.is-wide .mentor-side { display: flex; }
+.mentor-panel.is-wide .mentor-sidebtn { display: none; }
+.mentor-panel.show-side .mentor-side { display: flex; position: absolute; z-index: 6; top: 0; bottom: 0; left: 0; width: min(280px, 88%); box-shadow: 8px 0 24px rgba(0, 0, 0, 0.45); }
+.mentor-panel.is-wide.show-side .mentor-side { position: static; box-shadow: none; width: 240px; }
+.mentor-side__list { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 0.25rem; min-height: 0; }
+.mentor-search, .mentor-projectbar select, .mentor-field input, .mentor-field textarea, .mentor-field select { background: var(--bg-panel); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.5em 0.7em; color: var(--ink); font: inherit; font-size: 0.8rem; width: 100%; box-sizing: border-box; }
+.mentor-search:focus, .mentor-field input:focus, .mentor-field textarea:focus, .mentor-field select:focus { outline: 1px solid var(--accent-primary); }
+.mentor-field input.is-bad, .mentor-field textarea.is-bad { border-color: #e5534b; }
+.mentor-tabs { display: flex; gap: 0.25rem; }
+.mentor-tab { flex: 1; background: var(--bg-panel); border: 1px solid var(--border-glass); color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.7rem; padding: 0.4em 0.2em; border-radius: 8px; cursor: pointer; }
+.mentor-tab[aria-selected="true"] { color: var(--ink); border-color: var(--accent-primary); }
+.mentor-projectbar { display: flex; gap: 0.3rem; align-items: center; }
+.mentor-projectbar[hidden] { display: none; }
+.mentor-row { display: flex; align-items: center; gap: 0.15rem; border-radius: 8px; border: 1px solid transparent; }
+.mentor-row:hover, .mentor-row:focus-within { background: var(--bg-panel); }
+.mentor-row.is-active { border-color: var(--accent-primary); background: var(--bg-panel); }
+.mentor-row__title { flex: 1; min-width: 0; text-align: left; background: none; border: none; color: var(--ink); font: inherit; font-size: 0.8rem; padding: 0.5em 0.5em; cursor: pointer; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mentor-row__title--static { white-space: pre-line; cursor: default; line-height: 1.35; }
+.mentor-row__act { opacity: 0; }
+.mentor-row:hover .mentor-row__act, .mentor-row:focus-within .mentor-row__act, .mentor-row.is-active .mentor-row__act { opacity: 1; }
+@media (hover: none) { .mentor-row__act { opacity: 1; } }
+.mentor-mini { background: none; border: 1px solid transparent; color: var(--ink-faint); font-size: 0.75rem; border-radius: 6px; padding: 0.25em 0.45em; cursor: pointer; font-family: inherit; }
+.mentor-mini:hover { color: var(--ink); border-color: var(--border-glass); }
+.mentor-empty { color: var(--ink-faint); font-size: 0.75rem; line-height: 1.4; margin: 0.3rem 0.2rem; }
+.mentor-btn { background: var(--bg-panel); color: var(--ink); border: 1px solid var(--border-glass); border-radius: 999px; padding: 0.5em 1em; font: inherit; font-size: 0.8rem; cursor: pointer; }
+.mentor-btn:hover { border-color: var(--accent-primary); }
+.mentor-btn.is-primary { background: var(--accent-primary); color: #1d0f33; border-color: transparent; font-weight: 600; }
+.mentor-btn.is-danger { background: #e5534b; color: #fff; }
+.mentor-panel__input .mentor-btn, .mentor-modal .mentor-btn { width: auto; height: auto; }
+.mentor-modal { position: absolute; inset: 0; z-index: 10; background: rgba(5, 3, 14, 0.7); display: flex; align-items: center; justify-content: center; padding: 0.8rem; }
+.mentor-modal__box { width: min(420px, 100%); max-height: 100%; overflow-y: auto; background: var(--bg-void); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 1rem; display: flex; flex-direction: column; gap: 0.7rem; box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5); }
+.mentor-modal__title { margin: 0; font-family: var(--font-display); font-size: 1rem; }
+.mentor-modal__text { margin: 0; color: var(--ink-faint); font-size: 0.8rem; line-height: 1.4; }
+.mentor-modal__buttons { display: flex; gap: 0.5rem; justify-content: flex-end; flex-wrap: wrap; }
+.mentor-field { display: flex; flex-direction: column; gap: 0.25rem; }
+.mentor-field__label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-faint); }
+.mentor-plist { display: flex; flex-direction: column; gap: 0.4rem; }
+.mentor-plist__row { display: flex; align-items: center; gap: 0.3rem; }
+.mentor-plist__name { flex: 1; font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mentor-viewer { max-height: 46vh; overflow-y: auto; font-size: 0.85rem; line-height: 1.45; }
+.mentor-viewer img, .mentor-gen { max-width: 100%; border-radius: 10px; display: block; }
+.mentor-acts { display: flex; gap: 0.3rem; margin-top: 0.5rem; flex-wrap: wrap; }
+.mentor-act { background: none; border: 1px solid var(--border-glass); color: var(--ink-faint); font-family: var(--font-mono); font-size: 0.65rem; border-radius: 999px; padding: 0.2em 0.7em; cursor: pointer; }
+.mentor-act:hover { color: var(--ink); border-color: var(--accent-primary); }
+.mentor-inputwrap { position: relative; flex-shrink: 0; }
+.mentor-menu { position: absolute; left: 0.7rem; bottom: 100%; z-index: 5; width: min(250px, calc(100% - 1.4rem)); background: var(--bg-void); border: 1px solid var(--border-glass); border-radius: var(--radius-md); padding: 0.3rem; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: flex; flex-direction: column; }
+.mentor-menu[hidden] { display: none; }
+.mentor-menu__item { display: flex; align-items: center; gap: 0.6rem; background: none; border: none; color: var(--ink); font: inherit; font-size: 0.82rem; padding: 0.55em 0.7em; border-radius: 8px; cursor: pointer; text-align: left; }
+.mentor-menu__item:hover, .mentor-menu__item:focus-visible { background: var(--bg-panel); }
+.mentor-menu__icon { width: 1.4em; text-align: center; }
+.mentor-toast { position: absolute; left: 50%; bottom: 5.4rem; transform: translateX(-50%); z-index: 7; background: var(--accent-primary); color: #1d0f33; font-size: 0.78rem; font-weight: 600; padding: 0.5em 1em; border-radius: 999px; max-width: 90%; text-align: center; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4); }
+.mentor-toast[hidden] { display: none; }
+.mentor-toggle.has-news::after { content: ""; position: absolute; top: 4px; right: 4px; width: 12px; height: 12px; border-radius: 50%; background: #ff5d73; border: 2px solid var(--bg-void); }
+@media (max-width: 640px) {
+  .mentor-widebtn { display: none; }
+  .mentor-panel.is-wide { width: min(360px, calc(100vw - 2.4rem)); height: min(520px, calc(100vh - 8rem)); }
+  .mentor-panel.is-wide .mentor-side { display: none; }
+  .mentor-panel.is-wide .mentor-sidebtn { display: inline-flex; }
+  .mentor-panel.is-wide.show-side .mentor-side { display: flex; position: absolute; width: min(280px, 88%); box-shadow: 8px 0 24px rgba(0, 0, 0, 0.45); }
+}
+@media (max-width: 480px) { .mentor-panel.is-wide { width: auto; } }
+/* ---------- Realistic planets (Explore page) ---------- */
+.moon-orbit__center.has-art { background: none; overflow: visible; }
+.explore-visual.explore-visual--big.has-art { background: none; box-shadow: none; border-radius: 0; animation: visualGrow 1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.explore-visual.explore-visual--big.has-art[data-planet="sun"] { border-radius: 50%; background: radial-gradient(circle, #f08a22 55%, #c8570f 100%); box-shadow: 0 0 60px 12px rgba(255, 150, 40, 0.45), 0 0 140px 36px rgba(255, 110, 20, 0.16); }
+.explore-visual.explore-visual--big[data-planet="saturn"] { width: min(100%, 350px); }
+.planet-art-canvas { display: block; max-width: 100%; }
+@media (max-width: 640px) { .explore-visual.explore-visual--big[data-planet="saturn"] { width: min(100%, 280px); } }
+@media (prefers-reduced-motion: reduce) { .explore-visual.explore-visual--big.has-art { animation: none; } }
 body.feat-no-mentor .mentor-toggle, body.feat-no-mentor .mentor-panel { display: none !important; }
 .feature-off-note { border: 1px dashed var(--border-glass); border-radius: 14px; padding: 1.4rem 1.2rem; margin: 2rem 0; background: var(--bg-panel); color: var(--ink-dim); text-align: center; font-family: var(--font-display); }
 .feature-off-note strong { display: block; color: var(--ink); margin-bottom: 0.3rem; font-size: 1.05rem; }
@@ -1516,6 +1599,577 @@ const ORRERY_BODIES = [
 ];
 
 /* =========================================================================
+   ECLIPTIC - PLANET ART
+   Realistic planet surfaces drawn in the browser, with no image files to
+   download. Every world gets a map built from layered noise plus its famous
+   features: Earth's continents and clouds, Jupiter's belts and Great Red
+   Spot, Saturn's ringlets, Mars's polar caps and dark plains, Mercury's and
+   the Moon's craters, Neptune's dark spot, and a granulated, spotted Sun.
+   Colours and shapes follow NASA imagery; positions of small features are
+   simplified. The same maps feed the 3D model (as textures) and the Explore
+   page (as a rotating, lit sphere), so a planet looks the same everywhere.
+   ========================================================================= */
+const PlanetArt = (function () {
+  const TAU = Math.PI * 2;
+  const cache = {};
+
+  /* ----- seeded random numbers and 3D Perlin noise ----- */
+  function hashStr(s) { let h = 2166136261; for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619); return h >>> 0; }
+  function rng(seed) {
+    let s = (seed >>> 0) || 1;
+    return function () { s ^= s << 13; s >>>= 0; s ^= s >>> 17; s ^= s << 5; s >>>= 0; return s / 4294967296; };
+  }
+  function makeNoise(seed) {
+    const r = rng(seed), perm = [], p = new Uint8Array(512);
+    for (let i = 0; i < 256; i++) perm[i] = i;
+    for (let i = 255; i > 0; i--) { const j = Math.floor(r() * (i + 1)), t = perm[i]; perm[i] = perm[j]; perm[j] = t; }
+    for (let i = 0; i < 512; i++) p[i] = perm[i & 255];
+    function fade(t) { return t * t * t * (t * (t * 6 - 15) + 10); }
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function grad(h, x, y, z) { h &= 15; const u = h < 8 ? x : y, v = h < 4 ? y : (h === 12 || h === 14 ? x : z); return ((h & 1) === 0 ? u : -u) + ((h & 2) === 0 ? v : -v); }
+    function noise(x, y, z) {
+      const fx = Math.floor(x), fy = Math.floor(y), fz = Math.floor(z);
+      const X = fx & 255, Y = fy & 255, Z = fz & 255;
+      x -= fx; y -= fy; z -= fz;
+      const u = fade(x), v = fade(y), w = fade(z);
+      const A = p[X] + Y, AA = p[A] + Z, AB = p[A + 1] + Z, B = p[X + 1] + Y, BA = p[B] + Z, BB = p[B + 1] + Z;
+      return lerp(lerp(lerp(grad(p[AA], x, y, z), grad(p[BA], x - 1, y, z), u), lerp(grad(p[AB], x, y - 1, z), grad(p[BB], x - 1, y - 1, z), u), v),
+                  lerp(lerp(grad(p[AA + 1], x, y, z - 1), grad(p[BA + 1], x - 1, y, z - 1), u), lerp(grad(p[AB + 1], x, y - 1, z - 1), grad(p[BB + 1], x - 1, y - 1, z - 1), u), v), w);
+    }
+    function fbm(x, y, z, oct) {
+      let a = 1, f = 1, s = 0, n = 0;
+      for (let i = 0; i < oct; i++) { s += a * noise(x * f, y * f, z * f); n += a; a *= 0.5; f *= 2.03; }
+      return s / n;
+    }
+    // Noise that wraps around in longitude, stretchable (for the belts of gas giants).
+    function cyl(u, v, rLon, kLat, off) { const a = u * TAU; return noise(Math.cos(a) * rLon, Math.sin(a) * rLon, v * kLat + (off || 0)); }
+    function cylFbm(u, v, rLon, kLat, oct, off) {
+      let a = 1, f = 1, s = 0, n = 0;
+      for (let i = 0; i < oct; i++) { s += a * cyl(u, v, rLon * f, kLat * f, off); n += a; a *= 0.5; f *= 2.03; }
+      return s / n;
+    }
+    return { noise: noise, fbm: fbm, cyl: cyl, cylFbm: cylFbm, rand: rng(seed ^ 0x9e3779b9) };
+  }
+
+  /* ----- colour helpers (colours are [r, g, b] 0-255) ----- */
+  function clamp(x, a, b) { return x < a ? a : x > b ? b : x; }
+  function smooth(a, b, x) { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); }
+  function mix(a, b, t) { return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t]; }
+  function scale(c, k) { return [c[0] * k, c[1] * k, c[2] * k]; }
+  function ramp(stops, t) {
+    if (t <= stops[0][0]) return stops[0][1];
+    for (let i = 1; i < stops.length; i++) if (t <= stops[i][0]) return mix(stops[i - 1][1], stops[i][1], (t - stops[i - 1][0]) / (stops[i][0] - stops[i - 1][0]));
+    return stops[stops.length - 1][1];
+  }
+  function canvas(w, h) { const c = document.createElement("canvas"); c.width = w; c.height = h; return c; }
+
+  /* Paint an equirectangular map: fn gets a point on the unit sphere. */
+  function paint(w, h, fn) {
+    const c = canvas(w, h), ctx = c.getContext("2d"), img = ctx.createImageData(w, h), d = img.data, out = [0, 0, 0, 255];
+    for (let j = 0; j < h; j++) {
+      const lat = (0.5 - (j + 0.5) / h) * Math.PI, cl = Math.cos(lat), sl = Math.sin(lat);
+      for (let i = 0; i < w; i++) {
+        const lon = ((i + 0.5) / w) * TAU;
+        out[3] = 255;
+        fn(cl * Math.cos(lon), sl, cl * Math.sin(lon), lat, (i + 0.5) / w, (j + 0.5) / h, out);
+        const k = (j * w + i) * 4;
+        d[k] = out[0]; d[k + 1] = out[1]; d[k + 2] = out[2]; d[k + 3] = out[3];
+      }
+    }
+    ctx.putImageData(img, 0, 0);
+    return c;
+  }
+  function put(out, c, k) { out[0] = c[0] * k; out[1] = c[1] * k; out[2] = c[2] * k; }
+
+  /* Craters are painted as soft discs with a lit rim, wider near the poles so
+     they stay round on the sphere. */
+  function craters(c, rand, count, minR, maxR, strength, tint) {
+    const ctx = c.getContext("2d"), w = c.width, h = c.height;
+    for (let n = 0; n < count; n++) {
+      const r = minR * Math.pow(maxR / minR, Math.pow(rand(), 2.4));
+      const v = 0.04 + rand() * 0.92, x = rand() * w, y = v * h;
+      const sx = 1 / Math.max(0.22, Math.cos((0.5 - v) * Math.PI));
+      [0, -w, w].forEach(function (dx) {
+        const cx = x + dx;
+        if (cx + r * sx < 0 || cx - r * sx > w) return;
+        ctx.save(); ctx.translate(cx, y); ctx.scale(sx, 1);
+        const g = ctx.createRadialGradient(0, 0, r * 0.1, 0, 0, r);
+        g.addColorStop(0, "rgba(0,0,0," + (0.26 * strength) + ")");
+        g.addColorStop(0.55, "rgba(0,0,0," + (0.15 * strength) + ")");
+        g.addColorStop(0.8, "rgba(0,0,0," + (0.04 * strength) + ")");
+        g.addColorStop(0.9, "rgba(" + tint + "," + (0.11 * strength) + ")");
+        g.addColorStop(1, "rgba(" + tint + ",0)");
+        ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, r, 0, TAU); ctx.fill();
+        if (r > maxR * 0.45 && rand() < 0.5) {            // bright ejecta rays from the bigger, younger craters
+          ctx.strokeStyle = "rgba(" + tint + "," + (0.10 * strength) + ")"; ctx.lineWidth = Math.max(1, r * 0.05);
+          for (let k = 0; k < 9; k++) { const a = rand() * TAU, l = r * (1.6 + rand() * 2.4); ctx.beginPath(); ctx.moveTo(Math.cos(a) * r, Math.sin(a) * r); ctx.lineTo(Math.cos(a) * l, Math.sin(a) * l); ctx.stroke(); }
+        }
+        ctx.restore();
+      });
+    }
+  }
+
+  /* ===================== Earth: simplified continent outlines (lon, lat) ===================== */
+  const LAND = [
+    // North America
+    [[-168,66],[-162,70],[-152,71],[-141,70],[-128,70],[-115,68],[-100,68],[-95,72],[-85,70],[-82,67],[-88,64],[-94,60],[-93,57],[-86,55],[-80,52],[-79,56],[-77,61],[-72,62],[-65,60],[-61,56],[-56,52],[-60,47],[-66,45],[-70,43],[-74,40],[-76,36],[-80,32],[-81,27],[-80,25.5],[-83,28],[-85,30],[-90,30],[-94,29.5],[-97.5,27],[-97.5,22],[-95,19],[-91,18.5],[-90,21],[-87,21],[-88,16],[-84,15.5],[-83,11],[-79.5,9],[-77.5,8],[-80,7.2],[-83,8.5],[-86,11],[-88,13.2],[-92,14.5],[-96,15.8],[-101,17.5],[-105,20],[-106,23],[-109,25.5],[-112,29],[-114.5,31.5],[-114.5,28],[-112,24.5],[-110,23],[-111,25.5],[-114,28.5],[-116.5,32],[-118,34],[-121,35.5],[-123.5,38.5],[-124.5,43],[-124,47],[-123,49],[-127,51],[-130,54.5],[-134,58],[-140,59.8],[-147,61],[-152,59.5],[-157,57.5],[-163,55],[-158,58.5],[-162,60],[-166,62.5],[-165.5,64.5]],
+    // Greenland
+    [[-73,78],[-60,82],[-35,83.5],[-20,82],[-18,76],[-22,70],[-27,68],[-35,66],[-42,60],[-47,61],[-52,65],[-54,69],[-58,75],[-66,76.5]],
+    // South America
+    [[-77,8],[-72,12],[-64,10.5],[-60,8.5],[-52,5],[-50,0],[-44,-2.5],[-35,-5.5],[-35,-9],[-38.5,-13],[-39,-18],[-41,-22],[-45,-23.5],[-48.5,-26],[-53,-33.5],[-57,-35.5],[-57.5,-38.5],[-62,-39],[-65,-41],[-64,-45],[-67.5,-46.5],[-66,-48],[-69,-51.5],[-68.5,-53],[-71,-54],[-74,-52],[-75.5,-47],[-73.5,-40],[-73.5,-37],[-71.5,-30],[-70.5,-22],[-70.2,-18],[-76,-14],[-79,-8],[-81,-5],[-80,-1],[-80,2],[-77.5,4]],
+    // Africa
+    [[-17,21],[-16.5,16],[-17.5,14.5],[-14.5,10],[-12,7.5],[-8,4.5],[-4,5],[1,6],[5,6],[8.5,4.5],[9.5,1],[9,-2],[12,-5.5],[13.5,-11],[12,-17],[15,-27],[18,-32.5],[20,-34.8],[25,-34],[30,-31],[32.5,-27],[35,-24],[35,-19],[40.5,-15],[40,-10],[39.5,-5],[42,-1],[46,2.5],[51,11.8],[44,10.5],[43.2,12],[39,15.5],[37,21],[35,25],[32.6,29.9],[32,31.2],[27,31.5],[20,31],[19,30.2],[15,32.2],[10.2,34],[10,36.8],[3,36.8],[-2,35.2],[-6,35.8],[-9.5,32],[-10,28.5],[-13,27.5]],
+    // Europe and Asia
+    [[-9.5,37],[-9,43],[-2,43.5],[-1.5,46],[-4.5,48.5],[-1.5,48.7],[2,51],[4.5,52.5],[8,53.8],[8.5,57],[10.5,57.7],[10.5,55],[14,54],[19,54.5],[21,57],[24,59.3],[30,60],[28,61.5],[22.5,60.2],[21.2,63],[25.3,65.5],[22,65.8],[17.5,62.5],[19,60],[16.5,57],[14,55.5],[12,56],[11,59],[8,58],[5,59.5],[5,62.5],[10,64.5],[14.5,68],[19,70],[26,71],[31,70],[33,69],[41,66.5],[34,66],[38,64.5],[44,66],[44,68],[54,68.5],[60,69.5],[68,69],[73,72.5],[80,73],[88,75.5],[100,77],[112,76],[113,73.5],[128,73],[140,72.5],[150,71],[160,70],[170,70],[180,69],[180,65],[177,64.5],[172,64],[166,60],[163,58],[160,54],[156.5,51],[155.8,56],[160,59.5],[156,60],[152,59],[143,59.2],[137,54],[141,52.5],[140.5,48],[135,43.5],[131,42.5],[129.5,41],[129.5,37],[126.5,34.5],[126.5,37.5],[124.5,39.5],[121.5,39],[122,40.5],[118,39],[119,37],[122.5,37],[120,35],[121.5,32],[122,30],[120,26],[117,23.5],[113,22],[110,21],[108,21.5],[106,19],[109,15],[109,12],[106,9],[105,8.5],[103,10.5],[100,13.5],[100,10],[103,5.5],[104,1.4],[101.5,2.8],[98,8],[98.5,12],[97,16.5],[94,18],[92,21],[90.5,22],[87,21.5],[86,19.5],[81,16],[80,13],[79.8,10],[77.5,8],[76,10],[73,16],[72.8,20.5],[70,21],[67,24.5],[62,25],[57,25.8],[56.5,27],[54,26.5],[51,28.5],[48.5,30],[50,26],[50.5,25],[51.5,24.5],[54,24],[56,26],[58,23.5],[59.8,22.5],[58,20.5],[55,17],[52,16],[48,14],[43.5,12.5],[42.5,16],[40,20],[37,25],[35,28],[34.8,29.5],[34.5,31],[34.8,32],[35.5,34],[36,36.5],[32,36.3],[28,36.8],[26.5,38.5],[27,40],[29,41],[26,40.5],[23.5,40],[24,38],[22,36.5],[20,39.5],[19.5,41.5],[16,43.5],[13.5,45.5],[12.3,44.5],[16,41.8],[18.5,40.2],[16,38],[15.7,40],[12,42],[10,44],[8,44.2],[6,43.2],[3,43],[3,42],[0.5,40.5],[-0.5,38.5],[-2,36.8],[-5.5,36],[-6.5,37]],
+    // Australia
+    [[114,-22],[113.5,-26],[115,-34],[118,-35],[123.5,-34],[129,-31.5],[132,-32],[135,-34.8],[138,-35.5],[138,-33],[140,-37.5],[144,-38.5],[147,-38.5],[150,-37.5],[153,-31],[153,-25.5],[150,-22.5],[146.5,-19],[145.5,-14.5],[143.5,-14],[142.5,-10.7],[141.5,-13],[141,-17],[139.5,-17.5],[136.5,-15.5],[137,-12],[135,-12],[131,-11.3],[129.5,-14.5],[126,-14],[122,-17.5],[120,-19.5],[117,-20.7]],
+    // Antarctica
+    [[-180,-78],[-150,-77],[-120,-74],[-90,-73],[-70,-65],[-60,-64],[-45,-77],[-30,-72],[-10,-70],[10,-70],[40,-68],[70,-67],[90,-66],[110,-66],[140,-67],[160,-70],[180,-78],[180,-90],[-180,-90]],
+    // islands
+    [[-5.5,50],[1.5,51],[1.7,53],[-0.5,54.5],[-2,57.5],[-3,58.6],[-5,58.5],[-6,56.5],[-5,54.7],[-3.2,54],[-4.5,52.5],[-5.2,51.7]],
+    [[-10,52],[-6,52.2],[-6,54.5],[-8,55.2],[-10,54]],
+    [[-24,65.5],[-18,66.3],[-14,65],[-18,63.4],[-22,63.8]],
+    [[130.5,31.5],[132,34],[135,34],[137,34.5],[140,35],[141.5,38],[141.5,41],[140,40],[139.5,38],[136.5,37],[133,35.5],[131,34.5]],
+    [[140,42],[142,42.5],[145,43.3],[142,45.5],[141.5,44],[140,43]],
+    [[120,18.5],[122,18.3],[122,14],[124,13],[121,13.5],[120.5,15]],
+    [[122,8],[126,9.5],[126,6.5],[123.5,6.5]],
+    [[95,5.5],[98,4],[104,-1],[106,-5.5],[102,-4.5],[98,0.5],[95.5,3]],
+    [[105.5,-6.5],[108,-6.3],[114.5,-7.8],[114,-8.7],[106,-7.5]],
+    [[109,1.5],[111,2],[114,4.5],[117,7],[119,5.5],[118,1],[116.5,-3.5],[114,-4],[110.5,-3],[109,-1]],
+    [[131,-0.8],[135,-3.3],[138,-1.5],[141,-2.6],[145,-4.8],[147.5,-6],[150.5,-10.5],[147,-10],[143,-9],[141,-9],[138,-8.3],[137.5,-5.5],[133,-4],[132,-2.8]],
+    [[144.7,-40.8],[148.3,-41],[148,-43],[146.2,-43.5]],
+    [[172.7,-34.5],[175,-37],[178,-37.7],[176.5,-39.8],[175.2,-41.5],[173.8,-39.5]],
+    [[172.5,-40.5],[174,-41.7],[171,-44.5],[169,-46.6],[166.5,-46],[168,-44],[171.2,-42.8]],
+    [[49.3,-12],[50.5,-15.5],[47.5,-25],[45,-25.5],[43.5,-22],[44.5,-16.5],[47,-15]],
+    [[79.8,9.5],[81.8,7.5],[80.5,6],[79.8,7.8]],
+    [[-85,22],[-80,23],[-74.2,20.2],[-77.5,19.8],[-81,22.5]],
+    [[-74.5,18.5],[-69,19.8],[-68.5,18.5],[-72,17.8]],
+    [[-8,41],[-8,44]] // (ignored, too thin)
+  ];
+  const WATER = [   // inland seas cut out of the land
+    [[28,41.5],[28,44],[30,46],[33,46],[34,45],[37,44.5],[41.5,42],[41,41],[36,41.5],[32,41.8]],
+    [[47,45],[50,46.5],[53,45],[53.5,41],[53,37],[50,37],[49,40],[47,43]]
+  ];
+  function landMask(w, h) {
+    const c = canvas(w, h), ctx = c.getContext("2d");
+    ctx.fillStyle = "#000"; ctx.fillRect(0, 0, w, h);
+    function poly(list, color) {
+      if (list.length < 3) return;
+      ctx.fillStyle = color; ctx.beginPath();
+      list.forEach(function (p, i) { const x = ((p[0] + 180) / 360) * w, y = ((90 - p[1]) / 180) * h; if (i) ctx.lineTo(x, y); else ctx.moveTo(x, y); });
+      ctx.closePath(); ctx.fill();
+    }
+    LAND.forEach(function (l) { poly(l, "#fff"); });
+    WATER.forEach(function (l) { poly(l, "#000"); });
+    return c;
+  }
+  function sampler(c) {
+    const d = c.getContext("2d").getImageData(0, 0, c.width, c.height).data, w = c.width, h = c.height;
+    return function (u, v) {            // u, v in 0..1, bilinear, red channel 0..1
+      const x = u * w - 0.5, y = clamp(v * h - 0.5, 0, h - 1), x0 = Math.floor(x), y0 = Math.floor(y), fx = x - x0, fy = y - y0;
+      const xa = ((x0 % w) + w) % w, xb = (xa + 1) % w, ya = Math.floor(y), yb = Math.min(h - 1, ya + 1);
+      const a = d[(ya * w + xa) * 4], b = d[(ya * w + xb) * 4], e = d[(yb * w + xa) * 4], f = d[(yb * w + xb) * 4];
+      return ((a * (1 - fx) + b * fx) * (1 - fy) + (e * (1 - fx) + f * fx) * fy) / 255;
+    };
+  }
+
+  /* ===================== the individual worlds ===================== */
+  const BUILD = {};
+
+  BUILD.mercury = function (w, h, N) {
+    const c = paint(w, h, function (x, y, z, lat, u, v, out) {
+      const a = N.fbm(x * 2.2, y * 2.2, z * 2.2, 5), b = N.fbm(x * 9 + 7, y * 9, z * 9, 4), m = N.fbm(x * 0.9 + 3, y * 0.9, z * 0.9, 3);
+      const g = 128 + a * 46 + b * 24 + m * 18;
+      put(out, [1.02, 0.985, 0.94], g);
+    });
+    craters(c, N.rand, Math.round(w * 0.55), w * 0.0035, w * 0.045, 1.0, "235,230,222");
+    return c;
+  };
+  BUILD.moon = function (w, h, N) {
+    const c = paint(w, h, function (x, y, z, lat, u, v, out) {
+      const a = N.fbm(x * 2.4, y * 2.4, z * 2.4, 5), b = N.fbm(x * 10, y * 10, z * 10, 3), m = smooth(0.02, 0.2, N.fbm(x * 1.4 + 5, y * 1.4, z * 1.4, 4));
+      let g = 150 + a * 40 + b * 14;
+      g = g * (1 - 0.42 * m);
+      put(out, [1.0, 0.995, 0.985], g);
+    });
+    craters(c, N.rand, Math.round(w * 0.5), w * 0.003, w * 0.04, 1.0, "240,238,232");
+    return c;
+  };
+  BUILD.mars = function (w, h, N) {
+    const c = paint(w, h, function (x, y, z, lat, u, v, out) {
+      const n = N.fbm(x * 1.7, y * 1.7, z * 1.7, 5) * 0.5 + 0.5, d = N.fbm(x * 7 + 2, y * 7, z * 7, 4), dark = smooth(0.0, 0.2, N.fbm(x * 1.15 + 9, y * 1.15, z * 1.15, 4));
+      let col = mix([214, 146, 88], [168, 78, 46], smooth(0.34, 0.66, n));
+      col = mix(col, [88, 56, 44], dark * 0.62 * smooth(-0.9, 0.5, -y * 0.0 + 0.2 - Math.abs(y) * 0.6 + 0.4));
+      col = scale(col, 0.9 + d * 0.28);
+      const cap = smooth(0.0, 0.05, (Math.abs(lat) * 57.2958 - (80 - d * 6)) / 10);
+      col = mix(col, [244, 244, 248], clamp(cap, 0, 1) * 0.95);
+      out[0] = col[0]; out[1] = col[1]; out[2] = col[2];
+    });
+    craters(c, N.rand, Math.round(w * 0.25), w * 0.003, w * 0.03, 0.8, "250,222,190");
+    const ctx = c.getContext("2d");               // Valles Marineris: a long dark canyon near the equator
+    ctx.strokeStyle = "rgba(96,50,34,0.34)"; ctx.lineCap = "round"; ctx.filter = "blur(1px)";
+    [[3.4, 0], [1.8, 0.8]].forEach(function (s) {
+      ctx.lineWidth = w * 0.0042 * s[0] / 3.4 + 1; ctx.beginPath();
+      ctx.moveTo(w * 0.215, h * (0.545 + s[1] * 0.004)); ctx.bezierCurveTo(w * 0.25, h * 0.55, w * 0.29, h * 0.555, w * 0.335, h * 0.56); ctx.stroke();
+    });
+    ctx.filter = "none";
+    const g = ctx.createRadialGradient(w * 0.19, h * 0.45, 1, w * 0.19, h * 0.45, w * 0.028);   // Olympus Mons
+    g.addColorStop(0, "rgba(120,80,60,0.45)"); g.addColorStop(1, "rgba(120,80,60,0)"); ctx.fillStyle = g; ctx.fillRect(w * 0.15, h * 0.38, w * 0.08, h * 0.14);
+    return c;
+  };
+  BUILD.venus = function (w, h, N) {
+    return paint(w, h, function (x, y, z, lat, u, v, out) {
+      const wx = N.noise(x * 1.6, y * 1.6, z * 1.6) * 0.6;
+      const s = N.cylFbm(u, v * 1.0, 0.8, 5.5, 5, wx * 3), t = N.fbm(x * 3 + wx, y * 5, z * 3 + wx, 4);
+      let col = mix([238, 214, 158], [222, 186, 118], smooth(-0.3, 0.45, s));
+      col = mix(col, [250, 236, 196], smooth(0.15, 0.6, t) * 0.55);
+      col = mix(col, [201, 156, 96], smooth(0.38, 0.8, -t) * 0.35);
+      const pol = smooth(60, 90, Math.abs(lat) * 57.2958); col = mix(col, [226, 196, 140], pol * 0.5);
+      out[0] = col[0]; out[1] = col[1]; out[2] = col[2];
+    });
+  };
+  BUILD.earth = function (w, h, N) {
+    const lc = landMask(w, h), sm = sampler(lc);
+    const blur = canvas(w, h), bx = blur.getContext("2d"); bx.filter = "blur(" + Math.max(2, Math.round(w / 170)) + "px)"; bx.drawImage(lc, 0, 0); bx.filter = "none";
+    const sb = sampler(blur);
+    const rough = canvas(w, h), rctx = rough.getContext("2d"), rimg = rctx.createImageData(w, h);
+    const color = paint(w, h, function (x, y, z, lat, u, v, out) {
+      const m = sm(u, v), mb = sb(u, v);
+      const coast = N.fbm(x * 8, y * 8, z * 8, 4) * 0.34, elev = N.fbm(x * 3.2 + 4, y * 3.2, z * 3.2, 5);
+      const hgt = mb * 0.95 + coast * 0.55 + (m - 0.5) * 0.25 + elev * 0.10;
+      const adeg = Math.abs(lat) * 57.2958;
+      let col, rr;
+      if (hgt > 0.5) {
+        const moist = N.fbm(x * 2.2 + 11, y * 2.2, z * 2.2, 4) * 0.5 + 0.5, high = smooth(0.12, 0.45, elev + (hgt - 0.5) * 0.4);
+        const warm = 1 - smooth(25, 62, adeg);
+        // deserts sit near 15-35 degrees; rain forests near the equator
+        const desert = smooth(0.0, 1.0, (1 - Math.abs(adeg - 25) / 14)) * (1 - moist * 0.9);
+        col = mix([70, 120, 56], [112, 140, 62], smooth(0.35, 0.7, 1 - moist));
+        col = mix(col, [38, 92, 44], smooth(0.5, 0.9, moist) * warm * (1 - smooth(14, 34, adeg)));
+        col = mix(col, [201, 170, 106], clamp(desert * 1.3, 0, 1));
+        col = mix(col, [128, 124, 92], smooth(48, 68, adeg) * 0.7);
+        col = mix(col, [120, 104, 86], high * 0.75);
+        col = mix(col, [244, 247, 250], Math.max(smooth(66, 76, adeg + elev * 8), high * smooth(0.35, 0.6, elev) * 0.55));
+        col = scale(col, 0.92 + N.fbm(x * 14, y * 14, z * 14, 2) * 0.22);
+        rr = 215;
+      } else {
+        const depth = smooth(0.5, 0.18, hgt);
+        col = mix([60, 142, 196], [8, 34, 82], depth);
+        col = mix(col, [32, 160, 178], smooth(0.5, 0.42, hgt) * 0.45);
+        col = mix(col, [236, 246, 252], smooth(68, 80, adeg + N.fbm(x * 6, y * 6, z * 6, 3) * 6) * 0.95);
+        rr = adeg > 72 ? 150 : 40;
+      }
+      out[0] = col[0]; out[1] = col[1]; out[2] = col[2];
+      const k = (Math.round(v * h - 0.5) * w + Math.round(u * w - 0.5)) * 4;
+      if (k >= 0 && k < rimg.data.length) { rimg.data[k] = rr; rimg.data[k + 1] = rr; rimg.data[k + 2] = rr; rimg.data[k + 3] = 255; }
+    });
+    rctx.putImageData(rimg, 0, 0);
+    color.rough = rough;
+    return color;
+  };
+  BUILD.earthClouds = function (w, h, N) {
+    return paint(w, h, function (x, y, z, lat, u, v, out) {
+      const wv = N.noise(x * 1.5, y * 1.5, z * 1.5);
+      let c = N.fbm(x * 2.6 + wv * 0.9, y * 3.4, z * 2.6 + wv * 0.9, 6) * 0.5 + 0.5;
+      const band = 0.5 + 0.5 * Math.cos(lat * 6.0) * 0.8;              // belts of cloud around 0, 40-60 degrees
+      c = c * 0.75 + band * 0.32 + Math.max(0, N.fbm(x * 1.4 + 20, y * 1.4, z * 1.4, 3)) * 0.25;
+      const a = smooth(0.52, 0.86, c);
+      out[0] = 255; out[1] = 255; out[2] = 255; out[3] = Math.round(a * 235);
+    });
+  };
+
+  /* Gas giants: belts and zones as colour bands, bent by turbulence. */
+  function gasGiant(w, h, N, P) {
+    const nb = P.bands.length;
+    return paint(w, h, function (x, y, z, lat, u, v, out) {
+      const turb = N.cylFbm(u, v, P.turbLon, P.turbLat, 4, 5) * P.warp;
+      const t = clamp(v + turb * P.warpScale, 0, 0.9999) * (nb - 1), i = Math.floor(t), f = t - i;
+      let col = mix(P.bands[i], P.bands[Math.min(nb - 1, i + 1)], smooth(P.edgeLo, P.edgeHi, f));
+      const streak = N.cylFbm(u, v, P.streakLon, P.streakLat, 4, 11), swirl = N.cylFbm(u, v + turb * 0.02, P.swirlLon, P.swirlLat, 5, 17);
+      col = scale(col, 1 + streak * P.streakAmt + swirl * P.swirlAmt);
+      if (P.bright) { const br = smooth(P.bright[0], P.bright[1], swirl + streak * 0.4); col = mix(col, P.brightColor, br * P.brightAmt); }
+      const pol = smooth(P.polar[0], 90, Math.abs(lat) * 57.2958);
+      col = mix(col, P.polarColor, pol * P.polarAmt);
+      out[0] = col[0]; out[1] = col[1]; out[2] = col[2];
+    });
+  }
+  function oval(ctx, cx, cy, rx, ry, stops, rot) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(rot || 0); ctx.scale(rx, ry);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 1);
+    stops.forEach(function (s) { g.addColorStop(s[0], s[1]); });
+    ctx.fillStyle = g; ctx.beginPath(); ctx.arc(0, 0, 1, 0, TAU); ctx.fill(); ctx.restore();
+  }
+  BUILD.jupiter = function (w, h, N) {
+    const R = N.rand;
+    // from the south pole to the north: zones (pale) and belts (dark), as seen in Hubble and Juno images
+    const bands = [[150,128,104],[168,138,106],[212,190,158],[176,128,86],[232,214,186],[160,104,70],[222,196,160],[194,136,92],[240,226,198],[150,98,66],[232,208,172],[190,128,84],[236,220,190],[170,114,76],[218,196,162],[156,122,98],[130,118,106]];
+    const c = gasGiant(w, h, N, { bands: bands, turbLon: 1.7, turbLat: 5, warp: 1, warpScale: 0.075, edgeLo: 0.32, edgeHi: 0.68, streakLon: 0.7, streakLat: 70, streakAmt: 0.11, swirlLon: 3, swirlLat: 14, swirlAmt: 0.17, bright: [0.2, 0.7], brightColor: [246, 238, 220], brightAmt: 0.25, polar: [62], polarColor: [120, 112, 108], polarAmt: 0.55 });
+    const ctx = c.getContext("2d");
+    for (let k = 0; k < 24; k++) {                              // small white and brown ovals and storms
+      const x = R() * w, y = h * (0.18 + R() * 0.64), s = w * (0.004 + R() * 0.009);
+      oval(ctx, x, y, s * 2.2, s, [[0, "rgba(250,244,230," + (0.35 + R() * 0.3) + ")"], [1, "rgba(250,244,230,0)"]], 0);
+    }
+    const gx = w * 0.30, gy = h * 0.615;                        // the Great Red Spot, about 22 degrees south
+    oval(ctx, gx, gy, w * 0.062, h * 0.043, [[0, "rgba(232,200,170,0.95)"], [0.55, "rgba(196,102,70,0.95)"], [0.82, "rgba(176,82,58,0.9)"], [1, "rgba(176,82,58,0)"]], 0);
+    ctx.strokeStyle = "rgba(240,224,200,0.55)"; ctx.lineWidth = h * 0.006;
+    for (let k = 0; k < 3; k++) { ctx.beginPath(); ctx.ellipse(gx, gy, w * (0.016 + k * 0.014), h * (0.011 + k * 0.01), 0, 0.3 + k, 4.4 + k); ctx.stroke(); }
+    oval(ctx, gx + w * 0.085, gy + h * 0.02, w * 0.02, h * 0.014, [[0, "rgba(255,250,240,0.9)"], [1, "rgba(255,250,240,0)"]], 0);
+    return c;
+  };
+  BUILD.saturn = function (w, h, N) {
+    const bands = [[160,150,132],[196,172,126],[226,204,152],[212,184,132],[238,220,170],[220,194,140],[232,212,160],[206,178,126],[226,204,152],[214,188,138],[188,166,124],[150,142,126]];
+    return gasGiant(w, h, N, { bands: bands, turbLon: 1.2, turbLat: 4, warp: 1, warpScale: 0.035, edgeLo: 0.15, edgeHi: 0.85, streakLon: 0.6, streakLat: 55, streakAmt: 0.045, swirlLon: 2.4, swirlLat: 10, swirlAmt: 0.05, polar: [66], polarColor: [150, 150, 140], polarAmt: 0.45 });
+  };
+  BUILD.uranus = function (w, h, N) {
+    const bands = [[166,222,224],[176,230,230],[184,234,232],[172,228,228],[186,236,234],[176,230,230],[166,224,226]];
+    return gasGiant(w, h, N, { bands: bands, turbLon: 0.9, turbLat: 3, warp: 1, warpScale: 0.02, edgeLo: 0.1, edgeHi: 0.9, streakLon: 0.5, streakLat: 30, streakAmt: 0.02, swirlLon: 1.6, swirlLat: 7, swirlAmt: 0.03, polar: [55], polarColor: [206, 244, 240], polarAmt: 0.5 });
+  };
+  BUILD.neptune = function (w, h, N) {
+    const bands = [[44,74,176],[50,84,190],[62,102,214],[48,82,186],[70,112,222],[52,88,196],[60,98,208],[44,76,178],[56,92,200]];
+    const c = gasGiant(w, h, N, { bands: bands, turbLon: 1.5, turbLat: 5, warp: 1, warpScale: 0.05, edgeLo: 0.2, edgeHi: 0.8, streakLon: 0.7, streakLat: 40, streakAmt: 0.06, swirlLon: 3, swirlLat: 10, swirlAmt: 0.09, bright: [0.35, 0.75], brightColor: [226, 238, 255], brightAmt: 0.5, polar: [64], polarColor: [90, 130, 226], polarAmt: 0.4 });
+    const ctx = c.getContext("2d");
+    oval(ctx, w * 0.62, h * 0.62, w * 0.05, h * 0.034, [[0, "rgba(16,30,100,0.85)"], [0.7, "rgba(24,44,128,0.6)"], [1, "rgba(24,44,128,0)"]], -0.1);     // the Great Dark Spot
+    oval(ctx, w * 0.655, h * 0.59, w * 0.034, h * 0.009, [[0, "rgba(240,248,255,0.85)"], [1, "rgba(240,248,255,0)"]], -0.15);   // bright companion clouds
+    for (let k = 0; k < 14; k++) { const R = N.rand; oval(ctx, R() * w, h * (0.3 + R() * 0.45), w * (0.01 + R() * 0.02), h * 0.004, [[0, "rgba(236,244,255,0.6)"], [1, "rgba(236,244,255,0)"]], 0); }
+    return c;
+  };
+  BUILD.sun = function (w, h, N) {
+    const ramp1 = [[0, [150, 34, 0]], [0.35, [236, 104, 8]], [0.62, [255, 168, 40]], [0.85, [255, 224, 130]], [1, [255, 248, 214]]];
+    const c = paint(w, h, function (x, y, z, lat, u, v, out) {
+      const gran = smooth(-0.35, 0.55, N.noise(x * 26, y * 26, z * 26)) * 0.55 + smooth(-0.3, 0.6, N.noise(x * 13 + 4, y * 13, z * 13)) * 0.45;
+      const big = N.fbm(x * 3.2, y * 3.2, z * 3.2, 4) * 0.5 + 0.5;
+      let t = 0.60 + gran * 0.26 + (big - 0.5) * 0.22;
+      const col = ramp(ramp1, clamp(t, 0, 1));
+      out[0] = col[0]; out[1] = col[1]; out[2] = col[2];
+    });
+    const ctx = c.getContext("2d"), R = N.rand;          // sunspots near the equator, in pairs
+    for (let k = 0; k < 7; k++) {
+      const v = 0.5 + (R() - 0.5) * 0.32, x = R() * w, s = w * (0.004 + R() * 0.006);
+      [-1, 1].forEach(function (sg) {
+        const cx = x + sg * s * 2.2, cy = h * v + sg * s * 0.4;
+        oval(ctx, cx, cy, s * 2.4, s * 1.5, [[0, "rgba(28,6,0,0.95)"], [0.5, "rgba(60,16,0,0.8)"], [1, "rgba(120,40,0,0)"]], 0);
+      });
+    }
+    return c;
+  };
+
+  /* Moons, tinted by what they are really like. */
+  const MOON_LOOK = {
+    Moon: { id: "moon" }, Io: { tint: [226, 196, 96], k: 1.15, craters: 0.1 }, Europa: { tint: [222, 206, 184], k: 1.2, craters: 0.1 },
+    Ganymede: { tint: [150, 138, 122], k: 0.95 }, Callisto: { tint: [96, 88, 80], k: 0.8 }, Titan: { tint: [214, 160, 74], k: 1.05, craters: 0.0 },
+    Enceladus: { tint: [244, 248, 252], k: 1.3, craters: 0.2 }, Mimas: { tint: [190, 190, 192], k: 1.0 }, Rhea: { tint: [200, 198, 194], k: 1.05 },
+    Triton: { tint: [214, 190, 184], k: 1.1, craters: 0.2 }, Phobos: { tint: [112, 100, 92], k: 0.7 }, Deimos: { tint: [128, 116, 106], k: 0.75 },
+    Charon: { tint: [150, 140, 134], k: 0.95 }, Miranda: { tint: [180, 182, 186], k: 1.0 }, Titania: { tint: [160, 154, 148], k: 0.95 }
+  };
+  function moonTexture(name, w, h) {
+    const look = MOON_LOOK[name];
+    if (look && look.id) return get(look.id, w || 512);
+    const key = "moon:" + (name || "?") + ":" + (w || 256);
+    if (cache[key]) return cache[key];
+    const lk = look || { tint: [168, 164, 160], k: 1 }, seed = hashStr("moon" + name), N = makeNoise(seed), W = w || 256, H = h || (W >> 1);
+    const c = paint(W, H, function (x, y, z, lat, u, v, out) {
+      const a = N.fbm(x * 2.2, y * 2.2, z * 2.2, 4), b = N.fbm(x * 8, y * 8, z * 8, 3);
+      put(out, lk.tint, (0.86 + a * 0.26 + b * 0.1) * lk.k);
+    });
+    craters(c, N.rand, Math.round(W * 0.35 * (lk.craters == null ? 1 : lk.craters)), W * 0.004, W * 0.04, 0.9, "240,240,236");
+    return (cache[key] = c);
+  }
+
+  /* Saturn's rings: dense B ring, the dark Cassini Division, A ring with the Encke gap. */
+  function ringProfile(t, N) {
+    let d;
+    if (t < 0.05) d = 0.0;
+    else if (t < 0.2) d = 0.16 + (t - 0.05) * 0.5;
+    else if (t < 0.56) d = 0.80 + 0.12 * Math.sin(t * 40);
+    else if (t < 0.61) d = 0.04;
+    else if (t < 0.93) d = 0.62 + 0.1 * Math.sin(t * 90);
+    else if (t < 0.945) d = 0.05;
+    else if (t < 0.985) d = 0.5;
+    else d = 0.0;
+    const fine = N.noise(t * 220, 3.3, 1.7) * 0.5 + N.noise(t * 60, 8.1, 2.2) * 0.5;
+    d = clamp(d * (0.9 + fine * 0.2), 0, 1);
+    const tone = 0.86 + fine * 0.08 + (t > 0.2 && t < 0.56 ? 0.06 : 0);
+    return [d, [236 * tone, 214 * tone, 168 * tone]];
+  }
+  function ringTexture() {
+    if (cache.rings) return cache.rings;
+    const N = makeNoise(hashStr("saturn-rings")), w = 1024, c = canvas(w, 8), ctx = c.getContext("2d"), img = ctx.createImageData(w, 8);
+    for (let i = 0; i < w; i++) {
+      const p = ringProfile(i / (w - 1), N);
+      for (let j = 0; j < 8; j++) { const k = (j * w + i) * 4; img.data[k] = p[1][0]; img.data[k + 1] = p[1][1]; img.data[k + 2] = p[1][2]; img.data[k + 3] = Math.round(p[0] * 235); }
+    }
+    ctx.putImageData(img, 0, 0);
+    return (cache.rings = c);
+  }
+
+  /* ===================== public: texture cache ===================== */
+  const SEEDS = { mercury: 11, venus: 23, earth: 37, mars: 41, jupiter: 53, saturn: 67, uranus: 71, neptune: 83, sun: 97, moon: 101, earthClouds: 113 };
+  function get(id, w, h) {
+    w = w || 512; h = h || (w >> 1);
+    const key = id + ":" + w;
+    if (cache[key]) return cache[key];
+    const build = BUILD[id];
+    if (!build) return null;
+    const c = build(w, h, makeNoise(SEEDS[id] || hashStr(id)));
+    cache[key] = c;
+    return c;
+  }
+  function has(id) { return !!BUILD[id]; }
+
+  /* ===================== the lit, rotating sphere for the Explore page ===================== */
+  const LOOK = {
+    sun:     { self: true, atmo: null, tilt: 0, ring: null },
+    mercury: { atmo: null, tilt: 0.0, spin: 0.012 },
+    venus:   { atmo: [255, 226, 160, 0.5], tilt: 3, spin: -0.006 },
+    earth:   { atmo: [110, 170, 255, 0.85], tilt: 23.4, spin: 0.03, clouds: true, spec: true },
+    mars:    { atmo: [255, 170, 120, 0.3], tilt: 25, spin: 0.03 },
+    jupiter: { atmo: [235, 205, 170, 0.28], tilt: 3, spin: 0.06 },
+    saturn:  { atmo: [240, 222, 170, 0.25], tilt: -22, spin: 0.055, ring: true },
+    uranus:  { atmo: [170, 235, 235, 0.45], tilt: 82, spin: -0.04 },
+    neptune: { atmo: [90, 130, 255, 0.55], tilt: 28, spin: 0.04 }
+  };
+  const LIGHT = (function () { const l = [-0.62, 0.42, 0.66], n = Math.hypot(l[0], l[1], l[2]); return [l[0] / n, l[1] / n, l[2] / n]; })();
+
+  function reducedMotion() { return !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches); }
+
+  function mount(host, id, opts) {
+    const look = LOOK[id];
+    if (!look || !has(id)) return null;
+    opts = opts || {};
+    const W = Math.max(60, Math.round(opts.width || host.clientWidth || 190)), H = Math.max(60, Math.round(opts.height || host.clientHeight || 190));
+    const dpr = Math.min(2, window.devicePixelRatio || 1), cw = Math.round(W * dpr), ch = Math.round(H * dpr);
+    const cv = canvas(cw, ch); cv.className = "planet-art-canvas"; cv.setAttribute("aria-hidden", "true");
+    cv.style.width = W + "px"; cv.style.height = H + "px";
+    host.textContent = ""; host.appendChild(cv); host.classList.add("has-art");
+    const ctx = cv.getContext("2d"), img = ctx.createImageData(cw, ch), out = img.data;
+    const tex = get(id, 512, 256), tw = tex.width, th = tex.height, td = tex.getContext("2d").getImageData(0, 0, tw, th).data;
+    let cld = null, cd = null;
+    if (look.clouds) { cld = get("earthClouds", 512, 256); cd = cld.getContext("2d").getImageData(0, 0, tw, th).data; }
+    const rough = tex.rough ? tex.rough.getContext("2d").getImageData(0, 0, tw, th).data : null;
+    const hasRing = !!look.ring && !opts.noRing;
+    const R = hasRing ? Math.min(ch * 0.5, cw * 0.5 / 2.36) * 0.93 : Math.min(cw, ch) * 0.5 * (look.self ? 0.995 : 0.95);
+    const cx = cw / 2, cy = ch / 2, tilt = (look.tilt || 0) * Math.PI / 180, ct = Math.cos(tilt), st = Math.sin(tilt), elev = 0.34;
+    const ce = Math.cos(elev), se = Math.sin(elev);
+    const N = [];     // per-pixel data for the sphere
+    const x0 = Math.max(0, Math.floor(cx - R - 2)), x1 = Math.min(cw - 1, Math.ceil(cx + R + 2)), y0 = Math.max(0, Math.floor(cy - R - 2)), y1 = Math.min(ch - 1, Math.ceil(cy + R + 2));
+    const idxA = [], lonA = [], rowA = [], shadeA = [], limbA = [], fresA = [], specA = [], edgeA = [];
+    for (let py = y0; py <= y1; py++) for (let px = x0; px <= x1; px++) {
+      const x = (px + 0.5 - cx) / R, y = -(py + 0.5 - cy) / R, r2 = x * x + y * y;
+      if (r2 > 1.0) continue;
+      const z = Math.sqrt(1 - r2);
+      const lam = clamp(LIGHT[0] * x + LIGHT[1] * y + LIGHT[2] * z, -1, 1);   // light is fixed in screen space; the planet's pole is tilted
+      // tilt the pole on screen, then lean the planet toward us a little
+      const xr = x * ct + y * st, yr = -x * st + y * ct;
+      const yy = yr * ce + z * se, zz = -yr * se + z * ce;
+      const lon = Math.atan2(xr, zz), lat = Math.asin(clamp(yy, -1, 1));
+      idxA.push((py * cw + px) * 4); lonA.push(lon); rowA.push((0.5 - lat / Math.PI) * th - 0.5);
+      shadeA.push(look.self ? 1 : smooth(-0.25, 0.5, lam) * 0.9 + 0.1);
+      limbA.push(look.self ? 0.62 + 0.38 * Math.pow(z, 0.4) : 0.66 + 0.34 * Math.pow(z, 0.35));
+      fresA.push(Math.pow(1 - z, 3.2) * (0.55 + 0.45 * smooth(-0.3, 0.6, lam)));
+      const rx = 2 * lam * x - LIGHT[0], ry = 2 * lam * y - LIGHT[1], rz = 2 * lam * z - LIGHT[2];
+      specA.push(look.spec ? Math.pow(Math.max(0, rz), 22) * smooth(0, 0.3, lam) * 0.5 : 0);
+      edgeA.push(r2 > 0.985 ? clamp((1 - r2) / 0.015, 0, 1) : 1);
+    }
+    // ring layer (Saturn): computed once, drawn each frame over the planet
+    let ringIdx = null, ringRGBA = null, ringFront = null;
+    if (hasRing) {
+      const N2 = makeNoise(hashStr("saturn-rings")), L = LIGHT;
+      const list = [], rgba = [], front = [], tr = ringTexture();
+      const rd = tr.getContext("2d").getImageData(0, 0, tr.width, 1).data;
+      for (let py = 0; py < ch; py++) for (let px = 0; px < cw; px++) {
+        const sx = (px + 0.5 - cx) / R, sy = -(py + 0.5 - cy) / R;
+        const X = sx * ct + sy * st, Yv = (-sx * st + sy * ct);       // undo the on-screen tilt
+        const Y = Yv / se, rho = Math.hypot(X, Y);
+        const t = (rho - 1.235) / (2.27 - 1.235);
+        if (t < 0 || t > 1) continue;
+        const k = Math.round(t * (tr.width - 1)) * 4;
+        let a = rd[k + 3] / 255;
+        if (a < 0.02) continue;
+        // 3D point on the ring plane, in the planet frame (x right, y up, z toward us), before tilt
+        const P = [X, Y * se, -Y * ce];
+        // planet's shadow on the rings: light travels along LIGHT, so it is shadowed if the line toward the light hits the planet
+        const Lr = [L[0] * ct + L[1] * st, -L[0] * st + L[1] * ct, L[2]];
+        const dot = P[0] * Lr[0] + P[1] * Lr[1] + P[2] * Lr[2], d2 = P[0] * P[0] + P[1] * P[1] + P[2] * P[2] - dot * dot;
+        const shadow = dot < 0 ? 0.5 + 0.5 * smooth(0.7, 1.05, Math.sqrt(Math.max(0, d2))) : 1;
+        const facing = 0.62 + 0.38 * smooth(-0.2, 0.5, Lr[1] * ce + Lr[2] * se);
+        const sh = shadow * facing;
+        list.push((py * cw + px) * 4); rgba.push(rd[k] * sh, rd[k + 1] * sh, rd[k + 2] * sh, a * 255);
+        front.push(Y < 0 ? 1 : 0);       // below the planet's equator on screen = in front
+      }
+      ringIdx = list; ringRGBA = rgba; ringFront = front;
+    }
+    const n = idxA.length, atmo = look.atmo;
+    let rot = opts.startAngle != null ? opts.startAngle : Math.random() * TAU, raf = 0, last = 0, stopped = false;
+
+    function sample(d, u, v) {       // bilinear, wrapping in longitude
+      const fx = u * tw - 0.5, x0i = Math.floor(fx), a = fx - x0i;
+      const xa = ((x0i % tw) + tw) % tw, xb = (xa + 1) % tw;
+      const y = clamp(v, 0, th - 1), ya = Math.floor(y), yb = Math.min(th - 1, ya + 1), b = y - ya;
+      const i00 = (ya * tw + xa) * 4, i10 = (ya * tw + xb) * 4, i01 = (yb * tw + xa) * 4, i11 = (yb * tw + xb) * 4;
+      sample.r = (d[i00] * (1 - a) + d[i10] * a) * (1 - b) + (d[i01] * (1 - a) + d[i11] * a) * b;
+      sample.g = (d[i00 + 1] * (1 - a) + d[i10 + 1] * a) * (1 - b) + (d[i01 + 1] * (1 - a) + d[i11 + 1] * a) * b;
+      sample.b = (d[i00 + 2] * (1 - a) + d[i10 + 2] * a) * (1 - b) + (d[i01 + 2] * (1 - a) + d[i11 + 2] * a) * b;
+      sample.a = (d[i00 + 3] * (1 - a) + d[i10 + 3] * a) * (1 - b) + (d[i01 + 3] * (1 - a) + d[i11 + 3] * a) * b;
+    }
+    const sampleBuf = sample;
+    function draw() {
+      const inv = 1 / TAU;
+      for (let i = 0; i < n; i++) {
+        let u = (lonA[i] + rot) * inv; u -= Math.floor(u);
+        sample(td, u, rowA[i]);
+        let r = sample.r, g = sample.g, b = sample.b;
+        if (cd) {
+          let u2 = (lonA[i] + rot * 1.18 + 0.4) * inv; u2 -= Math.floor(u2);
+          sample(cd, u2, rowA[i]);
+          const a = sample.a / 255 * 0.92 * (look.self ? 0 : 1);
+          r = r * (1 - a) + 252 * a; g = g * (1 - a) + 252 * a; b = b * (1 - a) + 255 * a;
+        }
+        const sh = shadeA[i] * limbA[i];
+        r *= sh; g *= sh; b *= sh;
+        if (atmo) { const f = fresA[i] * atmo[3]; r += atmo[0] * f * 0.85; g += atmo[1] * f * 0.85; b += atmo[2] * f * 0.85; }
+        if (specA[i] > 0.001 && rough) {
+          let u3 = (lonA[i] + rot) * inv; u3 -= Math.floor(u3);
+          const wet = (255 - rough[(Math.min(th - 1, Math.max(0, Math.round(rowA[i]))) * tw + Math.min(tw - 1, Math.floor(u3 * tw))) * 4]) / 255;
+          const s = specA[i] * wet * 150; r += s; g += s; b += s * 0.95;
+        }
+        const k = idxA[i];
+        if (look.self) { r *= 1.0; g *= 0.97; }
+        out[k] = r; out[k + 1] = g; out[k + 2] = b; out[k + 3] = 255 * edgeA[i];
+      }
+      if (ringIdx) {
+        for (let i = 0; i < ringIdx.length; i++) {
+          const k = ringIdx[i], j = i * 4, a = ringRGBA[j + 3] / 255;
+          if (ringFront[i] || out[k + 3] === 0) {
+            const base = out[k + 3] / 255, oa = a + base * (1 - a);
+            const ia = oa > 0 ? 1 / oa : 0;
+            out[k] = (ringRGBA[j] * a + out[k] * base * (1 - a)) * ia;
+            out[k + 1] = (ringRGBA[j + 1] * a + out[k + 1] * base * (1 - a)) * ia;
+            out[k + 2] = (ringRGBA[j + 2] * a + out[k + 2] * base * (1 - a)) * ia;
+            out[k + 3] = oa * 255;
+          }
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    function frame(t) {
+      if (stopped) return;
+      if (!host.isConnected || !cv.isConnected) { stopped = true; return; }
+      raf = requestAnimationFrame(frame);
+      if (document.hidden) { last = t; return; }
+      if (t - last < 33) return;
+      const dt = Math.min(100, t - (last || t)); last = t;
+      rot += (look.spin || 0.03) * dt * 0.001 * 2.2;
+      draw();
+    }
+    draw();
+    if (!reducedMotion() && opts.animate !== false) raf = requestAnimationFrame(frame);
+    return { stop: function () { stopped = true; cancelAnimationFrame(raf); }, redraw: draw, canvas: cv };
+  }
+
+  return { get: get, has: has, ringTexture: ringTexture, moonTexture: moonTexture, mount: mount, look: LOOK, hash: hashStr };
+})();
+
+/* =========================================================================
    ECLIPTIC — COOKIES MODULE
    Small cookie utility plus the consent banner.
    Everything here is stored on-device only; there is no backend, so the
@@ -2206,7 +2860,7 @@ const Explore = (function () {
       const note = planet.id === "sun"
         ? "Nothing orbits the Sun - it's what everything else orbits."
         : "No known natural moons.";
-      return '<div class="moon-orbit"><div class="moon-orbit__center"></div></div>' +
+      return '<div class="moon-orbit"><div class="moon-orbit__center" data-planet="' + planet.id + '"></div></div>' +
         '<p class="moon-orbit__none">' + note + '</p>';
     }
     const baseSize = 90, step = 26;
@@ -2220,7 +2874,7 @@ const Explore = (function () {
     const legend = moons.map(function (name) {
       return '<span class="moon-legend__chip">' + name + '</span>';
     }).join("");
-    return '<div class="moon-orbit">' + rings + '<div class="moon-orbit__center"></div></div>' +
+    return '<div class="moon-orbit">' + rings + '<div class="moon-orbit__center" data-planet="' + planet.id + '"></div></div>' +
       '<div class="moon-legend">' + legend + '</div>';
   }
 
@@ -2308,7 +2962,7 @@ const Explore = (function () {
         '<span>Listen to this planet</span>' +
       '</button>' +
       '<p class="section__tag reveal">' + planet.tag + '</p>' +
-      '<div class="explore-visual explore-visual--big reveal" data-mode="' + planet.visual + '" aria-hidden="true"></div>' +
+      '<div class="explore-visual explore-visual--big reveal" data-mode="' + planet.visual + '" data-planet="' + planet.id + '" aria-hidden="true"></div>' +
       '<p class="section__hook reveal">' + planet.hook + '</p>' +
       '<div class="stat-grid reveal">' + planet.stats.map(function (s) {
         return '<div class="stat-card"><span class="stat-card__label">' + s.label + '</span><span class="stat-card__value">' + s.value + '</span></div>';
@@ -2337,6 +2991,15 @@ const Explore = (function () {
 
     SceneFX.initScrollReveal(panel);
     Gamification.recordExplored(id);
+
+    // A lit, slowly turning, realistic sphere replaces the flat gradient ball (the gradient stays as a fallback).
+    if (typeof PlanetArt !== "undefined") {
+      const vis = panel.querySelector(".explore-visual--big");
+      if (vis) { try { PlanetArt.mount(vis, id); } catch (e) { /* keep the CSS ball */ } }
+      panel.querySelectorAll(".moon-orbit__center[data-planet]").forEach(function (c) {
+        try { PlanetArt.mount(c, c.getAttribute("data-planet"), { width: 54, height: 54, animate: false, noRing: true }); } catch (e) {}
+      });
+    }
 
     const detailWrap = document.getElementById("exploreDetailWrap");
     if (detailWrap && window.innerWidth < 860) {
@@ -2842,13 +3505,14 @@ const Orrery = (function () {
     renderer.setSize(width, height);
     host.appendChild(renderer.domElement);
 
-    scene.add(new THREE.AmbientLight(0x40424c, 1.1));
-    const sunLight = new THREE.PointLight(0xfff2d6, 2.4, 0, 0);
+    scene.add(new THREE.AmbientLight(0x50525e, 0.34));
+    const sunLight = new THREE.PointLight(0xfff2d6, 0.95, 0, 0);
     scene.add(sunLight);
 
-    const sunTexture = new THREE.CanvasTexture(makeTexture("#ffb454", "sun"));
+    const sunArt = PlanetArt.get("sun", 512);
+    const sunTexture = new THREE.CanvasTexture(sunArt || makeTexture("#ffb454", "sun"));
     const sun = new THREE.Mesh(
-      new THREE.SphereGeometry(1.7, 32, 32),
+      new THREE.SphereGeometry(1.7, 64, 48),
       new THREE.MeshBasicMaterial({ map: sunTexture })
     );
     sun.userData.sectionId = "sun";
@@ -2859,6 +3523,55 @@ const Orrery = (function () {
       new THREE.MeshBasicMaterial({ color: 0xffb454, transparent: true, opacity: 0.18 })
     );
     scene.add(glow);
+
+    // a soft corona that always faces the camera
+    const haloCanvas = document.createElement("canvas");
+    haloCanvas.width = haloCanvas.height = 256;
+    (function () {
+      const hc = haloCanvas.getContext("2d"), g = hc.createRadialGradient(128, 128, 20, 128, 128, 128);
+      g.addColorStop(0, "rgba(255,226,160,0.95)"); g.addColorStop(0.3, "rgba(255,170,70,0.38)"); g.addColorStop(0.65, "rgba(255,120,30,0.08)"); g.addColorStop(1, "rgba(255,100,20,0)");
+      hc.fillStyle = g; hc.fillRect(0, 0, 256, 256);
+    })();
+    const sunHalo = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(haloCanvas), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false }));
+    sunHalo.scale.set(10, 10, 1);
+    scene.add(sunHalo);
+
+    // Planet maps arrive in two steps: a quick small map so the scene appears at once,
+    // then a sharper one swapped in a little later, one planet at a time.
+    const upgradeQueue = [];
+    let maxAniso = 1;
+    try { maxAniso = Math.min(8, renderer.capabilities.getMaxAnisotropy()); } catch (e) {}
+    function upgradeLater(mesh, id) { upgradeQueue.push({ mesh: mesh, id: id }); }
+    function runUpgrades() {
+      const job = upgradeQueue.shift();
+      if (!job) return;
+      try {
+        const art = PlanetArt.get(job.id, 512), m = job.mesh.material;
+        if (art) {
+          if (m.map) m.map.dispose();
+          m.map = new THREE.CanvasTexture(art); m.map.anisotropy = maxAniso;
+          if (art.rough) { if (m.roughnessMap) m.roughnessMap.dispose(); m.roughnessMap = new THREE.CanvasTexture(art.rough); }
+          m.needsUpdate = true;
+        }
+      } catch (e) {}
+      setTimeout(runUpgrades, 140);
+    }
+    setTimeout(runUpgrades, 900);
+
+    // a blue-ish glow just outside a world's edge, lit from the sun's side
+    const ATMOSPHERES = { venus: [1.0, 0.85, 0.55, 0.55], earth: [0.35, 0.62, 1.0, 1.0], mars: [1.0, 0.65, 0.45, 0.4], jupiter: [0.95, 0.8, 0.62, 0.35], saturn: [0.95, 0.85, 0.6, 0.3], uranus: [0.55, 0.9, 0.9, 0.55], neptune: [0.3, 0.45, 1.0, 0.7] };
+    function makeAtmosphere(size, c) {
+      return new THREE.Mesh(
+        new THREE.SphereGeometry(size * 1.13, 48, 48),
+        new THREE.ShaderMaterial({
+          uniforms: { glowColor: { value: new THREE.Vector3(c[0], c[1], c[2]) }, strength: { value: c[3] } },
+          vertexShader: "varying vec3 vN; void main() { vN = normalize(normalMatrix * normal); gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }",
+          fragmentShader: "uniform vec3 glowColor; uniform float strength; varying vec3 vN; void main() { float i = pow(max(0.0, 0.74 - dot(vN, vec3(0.0, 0.0, 1.0))), 3.2); gl_FragColor = vec4(glowColor * strength * 1.5, 1.0) * clamp(i, 0.0, 1.0); }",
+          side: THREE.BackSide, blending: THREE.AdditiveBlending, transparent: true, depthWrite: false
+        })
+      );
+    }
+    const cloudMeshes = [];
 
     const clickable = [sun];
     const pivots = [];
@@ -2876,7 +3589,7 @@ const Orrery = (function () {
     // objects pushed into one of these as they're built below, so a
     // checkbox can just walk its list and flip .visible.
     const layerGroups = {
-      planets: [sun, glow], asteroids: [], dwarfPlanets: [], comets: [],
+      planets: [sun, glow, sunHalo], asteroids: [], dwarfPlanets: [], comets: [],
       constellations: [], craftIcons: [], orbitLines: [], craftTrails: []
     };
     const trailTracked = []; // { mesh, points: Vector3[] } - comets + spacecraft only
@@ -2922,8 +3635,8 @@ const Orrery = (function () {
         parent.add(moonPivot);
 
         const moonMesh = new THREE.Mesh(
-          new THREE.SphereGeometry(moonSize, 10, 10),
-          new THREE.MeshStandardMaterial({ color: 0xbfc4cc, roughness: 0.95 })
+          new THREE.SphereGeometry(moonSize, 24, 24),
+          new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(PlanetArt.moonTexture(name, 128)), roughness: 0.95, metalness: 0 })
         );
         moonMesh.position.x = orbitR;
         moonPivot.add(moonMesh);
@@ -2993,11 +3706,16 @@ const Orrery = (function () {
       pivot.rotation.y = Math.random() * Math.PI * 2;
       scene.add(pivot);
 
-      const texture = new THREE.CanvasTexture(makeTexture(body.color, body.textureMode));
+      const art = PlanetArt.get(body.id, 128);
+      const texture = new THREE.CanvasTexture(art || makeTexture(body.color, body.textureMode));
+      texture.anisotropy = maxAniso;
+      const matOpts = { map: texture, roughness: body.id === "earth" ? 1 : 0.88, metalness: 0 };
+      if (art && art.rough) matOpts.roughnessMap = new THREE.CanvasTexture(art.rough);
       const mesh = new THREE.Mesh(
-        new THREE.SphereGeometry(body.size, 24, 24),
-        new THREE.MeshStandardMaterial({ map: texture, roughness: 0.85, metalness: 0.05 })
+        new THREE.SphereGeometry(body.size, 48, 48),
+        new THREE.MeshStandardMaterial(matOpts)
       );
+      if (art) upgradeLater(mesh, body.id);
       mesh.position.x = body.orbitRadius;
       mesh.rotation.z = (body.tilt || 0) * (Math.PI / 180);
       mesh.userData.sectionId = body.id;
@@ -3008,14 +3726,32 @@ const Orrery = (function () {
       collidables.push({ mesh: mesh, radius: body.size * 1.5 });
       addLabel(mesh, nameOf(body.id), "planet", body.id);
 
+      if (ATMOSPHERES[body.id]) mesh.add(makeAtmosphere(body.size, ATMOSPHERES[body.id]));
+      if (body.id === "earth") {
+        const cloudArt = PlanetArt.get("earthClouds", 512);
+        if (cloudArt) {
+          const cloudMesh = new THREE.Mesh(
+            new THREE.SphereGeometry(body.size * 1.011, 48, 48),
+            new THREE.MeshStandardMaterial({ map: new THREE.CanvasTexture(cloudArt), transparent: true, depthWrite: false, roughness: 1, metalness: 0 })
+          );
+          mesh.add(cloudMesh);
+          cloudMeshes.push(cloudMesh);
+        }
+      }
+
       if (body.hasRing) {
-        const ring = new THREE.Mesh(
-          new THREE.RingGeometry(body.size * 1.4, body.size * 2.2, 48),
-          new THREE.MeshBasicMaterial({ color: 0xe3cd8f, side: THREE.DoubleSide, transparent: true, opacity: 0.65 })
-        );
-        ring.rotation.x = Math.PI / 2.3;
-        ring.position.x = body.orbitRadius;
-        pivot.add(ring);
+        // Saturn's rings: dense B ring, the dark Cassini Division, the A ring. Lies in the planet's own equator plane.
+        const inner = body.size * 1.24, outer = body.size * 2.27;
+        const rg = new THREE.RingGeometry(inner, outer, 128, 1);
+        const rp = rg.attributes.position, ruv = rg.attributes.uv;
+        for (let i = 0; i < rp.count; i++) ruv.setXY(i, (Math.hypot(rp.getX(i), rp.getY(i)) - inner) / (outer - inner), 0.5);
+        const ring = new THREE.Mesh(rg, new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(PlanetArt.ringTexture()), color: 0xe6e6e6, side: THREE.DoubleSide, transparent: true, depthWrite: false }));
+        ring.rotation.x = -Math.PI / 2;
+        const ringTilt = new THREE.Object3D();
+        ringTilt.position.x = body.orbitRadius;
+        ringTilt.rotation.z = (body.tilt || 0) * (Math.PI / 180);
+        ringTilt.add(ring);
+        pivot.add(ringTilt);
       }
 
       if (body.faintRing) {
@@ -3242,7 +3978,7 @@ const Orrery = (function () {
     let flyTarget = null;  // Vector3 | null - camPos eases toward this while auto-piloting
     let lookTarget = null; // Vector3 | null - point to face while auto-piloting
     let mode2D = false;
-    let followId = null, followProfile = null;
+    let followId = null, followProfile = null, focusedMesh = null, lastFocusedWorldPos = new THREE.Vector3();
     let dragging = false, lastX = 0, lastY = 0, moved = 0;
 
     function clampFromCollisions() {
@@ -3377,9 +4113,11 @@ const Orrery = (function () {
     function focusOnPlanet(id) {
       const mesh = focusMeshById[id];
       if (!mesh) return;
+      focusedMesh = mesh;
       const planet = bodyInfo(id);
       const worldPos = new THREE.Vector3();
       mesh.getWorldPosition(worldPos);
+      lastFocusedWorldPos.copy(worldPos);
       flyToward(worldPos, focusRadiusByBody[id] || 6);
       followId = id;
       if (focusPanel && planet) {
@@ -3404,6 +4142,7 @@ const Orrery = (function () {
 
     function unfocus() {
       followId = null;
+      focusedMesh = null;
       flyTarget = DEFAULT_CAM_POS.clone();
       lookTarget = new THREE.Vector3(0, 0, 0);
       if (focusPanel) focusPanel.classList.remove("is-visible");
@@ -3464,6 +4203,8 @@ const Orrery = (function () {
       if (moved > 4 && label && !label.hidden) label.hidden = true;
       orientTarget = null; // a manual drag cancels any in-progress mode snap
       flyTarget = null;    // ...and any in-progress "flying toward a body"
+      followId = null;     // manual drag breaks follow lock
+      focusedMesh = null;
       if (mode2D) {
         // Flattened view only spins around the vertical axis, like turning
         // a paper map, rather than tipping it up onto its edge.
@@ -3570,6 +4311,19 @@ const Orrery = (function () {
         spinners.forEach(function (s) { s.mesh.rotation.y += dt * 0.6 * s.spin; });
         moonPivotsAll.forEach(function (m) { m.pivot.rotation.y += dt * 1.3 * m.speed; });
         sun.rotation.y += dt * 0.05;
+        cloudMeshes.forEach(function (c) { c.rotation.y += dt * 0.07; });
+      }
+
+      // Continuous tracking: if a planet is focused, translate camera position
+      // and fly target in lockstep with the planet's orbital motion.
+      if (followId && focusedMesh) {
+        const curWorldPos = new THREE.Vector3();
+        focusedMesh.getWorldPosition(curWorldPos);
+        const shift = curWorldPos.clone().sub(lastFocusedWorldPos);
+        camPos.add(shift);
+        if (flyTarget) flyTarget.add(shift);
+        lookTarget = curWorldPos.clone();
+        lastFocusedWorldPos.copy(curWorldPos);
       }
 
       // Auto-pilot: only active right after clicking a body or pressing
@@ -4538,6 +5292,7 @@ const Cloud = (function () {
     signOut: signOut,
     pushToCloud: pushToCloud,
     getUser: function () { return currentUser; },
+    getProfile: function () { return currentProfile; },
     isAdmin: function () { return adminFlag; }
   };
 })();
@@ -4707,6 +5462,11 @@ const EXTERNAL_LINKS = {
      Why a Worker and not a key in this file: anything in this page can be read
      and copied by a visitor, so an AI key placed here would be stolen. */
 
+  /* Chat manager (added later): many saved chats with rename, pin, delete and search;
+     projects with standing instructions; a library; an answer style; image, lesson
+     and video tools; PDF / Word / Markdown export; share and import; and reminders
+     that run while the site is open. All of it is stored in this browser only. */
+
   // Paste your deployed Worker URL between the quotes, e.g.
   // "https://ecliptic-chat.your-name.workers.dev". Left empty, the Mentor runs
   // on the built-in rules only and nothing else about the site changes.
@@ -4805,20 +5565,81 @@ const EXTERNAL_LINKS = {
       return html;
     }
 
-    /* ----- storage (best effort: private windows can block it) ----- */
-    function loadHistory() {
+    /* ----- saved chats (best effort: private windows can block storage) -----
+       Everything lives in this browser only: chats, projects, the library and
+       scheduled tasks. Use Export / Share / Import to move a chat to another
+       device. The first visit after this update brings the old single chat in. */
+    const DB_KEY = "ecliptic:mentor:v2";
+    const MAX_CHATS = 80;
+    const MAX_MSGS = 160;
+    let db = { chats: [], projects: [], library: [], tasks: [], active: null };
+    let chat = null;               // the chat on screen; history is always chat.msgs
+    let storageWarned = false;
+
+    function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+    function newChatObj() {
+      return { id: uid(), title: "New chat", auto: true, pinned: false, project: "", persona: "", created: Date.now(), updated: Date.now(), msgs: [] };
+    }
+    function cleanMsgs(list) {
+      return (Array.isArray(list) ? list : []).filter(function (m) {
+        return m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string";
+      }).map(function (m) { return { role: m.role, content: m.content.slice(0, 12000) }; }).slice(-MAX_MSGS);
+    }
+    function cleanChat(c) {
+      if (!c || typeof c !== "object" || typeof c.id !== "string") return null;
+      return {
+        id: c.id.slice(0, 40), title: String(c.title || "New chat").slice(0, 80), auto: c.auto !== false,
+        pinned: !!c.pinned, project: String(c.project || "").slice(0, 40), persona: String(c.persona || "").slice(0, 20),
+        created: Number(c.created) || Date.now(), updated: Number(c.updated) || Date.now(), msgs: cleanMsgs(c.msgs)
+      };
+    }
+    function loadDB() {
       try {
-        const raw = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
-        if (Array.isArray(raw)) {
-          history = raw.filter(function (m) {
-            return m && (m.role === "user" || m.role === "assistant") && typeof m.content === "string";
-          }).slice(-MAX_KEEP);
+        const raw = JSON.parse(localStorage.getItem(DB_KEY) || "null");
+        if (raw && Array.isArray(raw.chats)) {
+          db.chats = raw.chats.map(cleanChat).filter(Boolean);
+          db.projects = (Array.isArray(raw.projects) ? raw.projects : []).filter(function (p) { return p && typeof p.id === "string" && typeof p.name === "string"; })
+            .map(function (p) { return { id: p.id.slice(0, 40), name: p.name.slice(0, 60), instructions: String(p.instructions || "").slice(0, 800) }; });
+          db.library = (Array.isArray(raw.library) ? raw.library : []).filter(function (x) { return x && typeof x.id === "string" && typeof x.kind === "string"; });
+          db.tasks = (Array.isArray(raw.tasks) ? raw.tasks : []).filter(function (x) { return x && typeof x.id === "string" && Number(x.at) > 0 && typeof x.text === "string"; });
+          db.active = typeof raw.active === "string" ? raw.active : null;
         }
-      } catch (e) { history = []; }
+      } catch (e) {}
+      if (!db.chats.length) {
+        try {
+          const old = JSON.parse(localStorage.getItem(STORE_KEY) || "[]");
+          const msgs = cleanMsgs(old);
+          if (msgs.length) {
+            const c = newChatObj();
+            c.msgs = msgs;
+            const first = msgs.filter(function (m) { return m.role === "user"; })[0];
+            if (first) c.title = first.content.replace(/\s+/g, " ").slice(0, 40);
+            db.chats.push(c);
+            db.active = c.id;
+          }
+        } catch (e) {}
+      }
+      chat = db.chats.filter(function (c) { return c.id === db.active; })[0] || null;
+      if (!chat) { chat = newChatObj(); db.chats.unshift(chat); db.active = chat.id; }
+      history = chat.msgs;
+      if (db.chats.length === 1 && db.chats[0].msgs.length && !localStorage.getItem(DB_KEY)) saveDB();   // keep the migrated chat
     }
-    function saveHistory() {
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(history.slice(-MAX_KEEP))); } catch (e) {}
+    function saveDB() {
+      // Empty chats are never written, and the oldest unpinned chats go first if there are too many.
+      let chats = db.chats.filter(function (c) { return c.msgs.length; });
+      if (chats.length > MAX_CHATS) {
+        const keep = chats.slice().sort(function (a, b) { return (b.pinned - a.pinned) || (b.updated - a.updated); }).slice(0, MAX_CHATS);
+        chats = chats.filter(function (c) { return keep.indexOf(c) !== -1; });
+      }
+      const out = { chats: chats, projects: db.projects, library: db.library, tasks: db.tasks, active: db.active };
+      try { localStorage.setItem(DB_KEY, JSON.stringify(out)); return true; }
+      catch (e) {
+        if (!storageWarned && body) { storageWarned = true; addNote("This browser's storage is full or blocked, so new changes may not be saved. Delete old chats or library items to make room."); }
+        return false;
+      }
     }
+    function loadHistory() { loadDB(); }
+    function saveHistory() { chat.updated = Date.now(); saveDB(); renderSide(); }
 
     /* ----- message bubbles ----- */
     function scrollToEnd(force) {
@@ -4948,8 +5769,23 @@ const EXTERNAL_LINKS = {
     }
 
     /* ----- the AI brain ----- */
+    // The signed-in learner's first name, so the AI can address them. It comes
+    // from the profile (or the sign-up details), is cut down to letters, digits
+    // and a few name characters, and is sent as plain data - never as an instruction.
+    function learnerName() {
+      try {
+        const prof = (typeof Cloud !== "undefined" && Cloud.getProfile && Cloud.getProfile()) || null;
+        const u = (typeof Cloud !== "undefined" && Cloud.getUser && Cloud.getUser()) || null;
+        const full = (prof && prof.name) || (u && u.user_metadata && u.user_metadata.name) || "";
+        return String(full).trim().split(/\s+/)[0].replace(/[^\p{L}\p{M}\p{N}.'-]/gu, "").slice(0, 30);
+      } catch (e) {}
+      return "";
+    }
+
     function buildContext() {
       const ctx = {};
+      const who = learnerName();
+      if (who) ctx.name = who;
       try {
         const s = Gamification.exportState();
         const parts = (window.location.hash || "").replace(/^#\/?/, "").split("/").filter(Boolean);
@@ -4998,6 +5834,7 @@ const EXTERNAL_LINKS = {
       let buffer = "", full = "", painted = false;
       function paint() {
         painted = false;
+        if (bubble.dataset.done) return;
         bubble.classList.remove("is-typing");
         bubble.dataset.raw = full;
         bubble.innerHTML = md(full);
@@ -5038,7 +5875,7 @@ const EXTERNAL_LINKS = {
     function localReply(text, why) {
       const reply = respond(text) || "I did not catch that.";
       if (why && !noticeShown) { noticeShown = true; addNote(why); }
-      addBot(reply, false);
+      decorate(addBot(reply, false), reply);
       history.push({ role: "assistant", content: reply });
       saveHistory();
       sayLocal(reply);
@@ -5051,10 +5888,14 @@ const EXTERNAL_LINKS = {
       speechIdle();
     }
 
-    function askAI(text, attachments) {
+    function askAI(text, attachments, opts) {
+      opts = opts || {};
       const gen = chatGen;
       setBusy(true);
       spokenUpTo = 0; streamDone = false;
+      if (opts.label) {                      // a tool such as Mini-lesson: show what was asked, remember it
+        addUser(opts.label); history.push({ role: "user", content: opts.label }); touchChat(opts.label); hideChips();
+      }
       const bubble = addBot("", false);
       bubble.classList.add("is-typing");
       bubble.innerHTML = '<span class="mentor-dots"><i></i><i></i><i></i></span>';
@@ -5067,7 +5908,7 @@ const EXTERNAL_LINKS = {
         return fetch(CHAT_ENDPOINT, {
           method: "POST",
           headers: headers,
-          body: JSON.stringify({ messages: history.slice(-SEND_LIMIT), context: buildContext(), attachments: attachments || [] }),
+          body: JSON.stringify(opts.body || chatBody(attachments)),
           signal: controller.signal
         });
       }).then(function (res) {
@@ -5078,6 +5919,9 @@ const EXTERNAL_LINKS = {
         if (!full.trim()) throw { status: 0 };
         history.push({ role: "assistant", content: full });
         saveHistory();
+        decorate(bubble, full);
+        if (opts.saveKind) saveToLibrary({ kind: opts.saveKind, title: opts.saveTitle || "Lesson", text: full });
+        maybeTitle();
       }).catch(function (err) {
         if (gen !== chatGen) return;
         const stopped = controller && controller.signal.aborted && controller.signal.reason !== "timeout";
@@ -5095,6 +5939,11 @@ const EXTERNAL_LINKS = {
         }
         bubble.remove();
         const s = err && err.status;
+        if (opts.mode) {                    // tools have no built-in fallback
+          const m = errText(s, "make that");
+          addBot(m, false); history.push({ role: "assistant", content: m }); saveHistory();
+          return;
+        }
         if (attachments && attachments.length) {
           const sawImage = attachments.some(function (a) { return a.kind === "image"; });
           const msg = s === 429 ? "The AI has used up its free allowance for now, so I can't read your file. It resets daily."
@@ -5111,6 +5960,7 @@ const EXTERNAL_LINKS = {
         localReply(text, why);
       }).then(function () {
         clearTimeout(timer);
+        if (gen !== chatGen) return;
         controller = null;
         streamDone = true;
         setBusy(false);
@@ -5134,6 +5984,7 @@ const EXTERNAL_LINKS = {
       docs.forEach(function (dd) { attachments.push({ kind: "text", name: dd.name, text: dd.text }); });
       addUser(text, image && image.dataUrl, image && image.name);
       history.push({ role: "user", content: text });
+      touchChat(text);
       input.value = "";
       pendingImage = null;
       renderTray();
@@ -5462,37 +6313,21 @@ const EXTERNAL_LINKS = {
 
     /* ----- window ----- */
     function greet() {
+      const who = learnerName();
+      const hi = who ? "Hi " + who + ", I'm" : "Hi, I'm";
       addBot(CHAT_ENDPOINT
-        ? "Hi, I'm Mission Mentor. Ask me anything: planets and space, homework, coding, ideas, or how you're doing here."
-        : "Hi, I'm your Mission Mentor. Ask me about any planet, how your last test went, or what to try next.", false);
+        ? hi + " Mission Mentor. Ask me anything: planets and space, homework, coding, ideas, or how you're doing here."
+        : hi + " your Mission Mentor. Ask me about any planet, how your last test went, or what to try next.", false);
     }
 
-    function clearChat() {
-      chatGen++;
-      if (busy && controller) controller.abort();
-      exitVoiceMode();
-      docs = []; pendingImage = null; renderTray();
-      history = [];
-      saveHistory();
-      body.innerHTML = "";
-      noticeShown = false;
-      const q = document.getElementById("mentorQuick");
-      if (q) q.hidden = false;
-      greet();
-    }
+    function clearChat() { newChat(); }
 
     function open() {
       panel.classList.add("is-open");
       toggle.setAttribute("aria-expanded", "true");
-      if (!opened) {
-        opened = true;
-        if (history.length) {
-          history.forEach(function (m) { if (m.role === "user") addUser(m.content); else addBot(m.content, true); });
-          hideChips();
-        } else {
-          greet();
-        }
-      }
+      toggle.classList.remove("has-news");
+      if (!opened) { opened = true; renderChat(); }
+      renderSide();
       setTimeout(function () { if (input) input.focus(); }, 50);
     }
 
@@ -5507,6 +6342,972 @@ const EXTERNAL_LINKS = {
       input.style.height = "auto";
       input.style.height = Math.min(input.scrollHeight, 110) + "px";
     }
+
+    /* =====================================================================
+       Chat manager, tools, export, share and scheduled tasks
+       ===================================================================== */
+    const PERSONA_LIST = [["", "Default"], ["teacher", "Teacher"], ["coder", "Coder"], ["scientist", "Scientist"], ["storyteller", "Storyteller"], ["quizmaster", "Quizmaster"]];
+    const WIDE_KEY = "ecliptic:mentor:wide";
+    let side, sideList, sideSearch, sideView = "chats", sideProject = "all", menu, toast;
+    let taskTimer = null;
+
+    function el(tag, cls, text) {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text != null) n.textContent = text;
+      return n;
+    }
+    function fmtDate(t) {
+      try { return new Date(t).toLocaleString([], { dateStyle: "medium", timeStyle: "short" }); } catch (e) { return ""; }
+    }
+    function flash(msg) {
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.hidden = false;
+      clearTimeout(flash.t);
+      flash.t = setTimeout(function () { toast.hidden = true; }, 3500);
+    }
+    function download(name, blob) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url; a.download = name;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 4000);
+    }
+    function safeName(s) {
+      return (String(s || "chat").replace(/[^\w\- ]+/g, "").trim().replace(/\s+/g, "-").slice(0, 40)) || "chat";
+    }
+    function copyText(t) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(t).then(function () { return true; }, function () { return false; });
+      }
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0";
+        document.body.appendChild(ta); ta.select();
+        const ok = document.execCommand("copy");
+        ta.remove();
+        return Promise.resolve(ok);
+      } catch (e) { return Promise.resolve(false); }
+    }
+
+    /* ----- a small in-panel dialog (no browser pop-ups, works on phones) ----- */
+    function dialog(o) {
+      return new Promise(function (resolve) {
+        const wrap = el("div", "mentor-modal");
+        const form = el("form", "mentor-modal__box");
+        form.setAttribute("role", "dialog");
+        form.setAttribute("aria-label", o.title);
+        form.appendChild(el("h3", "mentor-modal__title", o.title));
+        if (o.text) form.appendChild(el("p", "mentor-modal__text", o.text));
+        if (o.node) form.appendChild(o.node);
+        const inputs = {};
+        (o.fields || []).forEach(function (f) {
+          const lab = el("label", "mentor-field");
+          lab.appendChild(el("span", "mentor-field__label", f.label));
+          let c;
+          if (f.type === "textarea") { c = el("textarea"); c.rows = 4; }
+          else if (f.type === "select") {
+            c = el("select");
+            f.options.forEach(function (op) { const x = el("option", null, op[1]); x.value = op[0]; c.appendChild(x); });
+          } else { c = el("input"); c.type = f.type || "text"; }
+          if (f.max) c.maxLength = f.max;
+          if (f.min) c.min = f.min;
+          if (f.placeholder) c.placeholder = f.placeholder;
+          if (f.value != null) c.value = f.value;
+          c.name = f.name;
+          inputs[f.name] = c;
+          lab.appendChild(c);
+          form.appendChild(lab);
+        });
+        const row = el("div", "mentor-modal__buttons");
+        const buttons = o.buttons || [{ label: o.ok || "OK", value: "ok", primary: true }];
+        let pressed = buttons[0].value;
+        buttons.forEach(function (b, i) {
+          const btn = el("button", "mentor-btn" + (b.primary ? " is-primary" : "") + (b.danger ? " is-danger" : ""), b.label);
+          btn.type = i === 0 || b.primary ? "submit" : "button";
+          btn.addEventListener("click", function () { pressed = b.value; });
+          if (b.primary) btn.setAttribute("data-primary", "1");
+          row.appendChild(btn);
+        });
+        if (o.cancel !== false) {
+          const cancel = el("button", "mentor-btn", o.cancel || "Cancel");
+          cancel.type = "button";
+          cancel.addEventListener("click", function () { done(null); });
+          row.appendChild(cancel);
+        }
+        form.appendChild(row);
+        function onKey(e) { if (e.key === "Escape") { e.stopPropagation(); done(null); } }
+        function done(v) {
+          document.removeEventListener("keydown", onKey, true);
+          wrap.remove();
+          resolve(v);
+        }
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          const values = {};
+          let bad = null;
+          (o.fields || []).forEach(function (f) {
+            values[f.name] = inputs[f.name].value.trim();
+            if (f.required && !values[f.name] && !bad) bad = inputs[f.name];
+          });
+          if (bad && pressed !== "cancel") { bad.focus(); bad.classList.add("is-bad"); return; }
+          done({ button: pressed, values: values });
+        });
+        wrap.addEventListener("mousedown", function (e) { if (e.target === wrap) done(null); });
+        document.addEventListener("keydown", onKey, true);
+        wrap.appendChild(form);
+        panel.appendChild(wrap);
+        const first = form.querySelector("input,textarea,select") || form.querySelector("button");
+        if (first) setTimeout(function () { first.focus(); }, 30);
+      });
+    }
+
+    /* ----- talking to the Worker ----- */
+    function callWorker(payload, signal) {
+      return getToken().then(function (token) {
+        const headers = { "Content-Type": "application/json" };
+        if (token) headers.Authorization = "Bearer " + token;
+        const base = { context: buildContext() };
+        return fetch(CHAT_ENDPOINT, { method: "POST", headers: headers, body: JSON.stringify(Object.assign(base, payload)), signal: signal });
+      });
+    }
+    function currentProject() {
+      return db.projects.filter(function (p) { return p.id === chat.project; })[0] || null;
+    }
+    function chatBody(attachments) {
+      const b = { messages: history.slice(-SEND_LIMIT), context: buildContext(), attachments: attachments || [] };
+      if (chat.persona) b.persona = chat.persona;
+      const p = currentProject();
+      if (p && p.instructions) b.project = { name: p.name, instructions: p.instructions };
+      return b;
+    }
+
+    /* ----- chat list helpers ----- */
+    function touchChat(firstText) {
+      if (chat.auto && chat.title === "New chat") chat.title = String(firstText).replace(/\s+/g, " ").trim().slice(0, 40) || "New chat";
+      if (!db.chats.some(function (c) { return c === chat; })) db.chats.unshift(chat);
+      db.active = chat.id;
+    }
+    function maybeTitle() {
+      if (!chat.auto || !CHAT_ENDPOINT || navigator.onLine === false) return;
+      const target = chat;
+      const firstUser = target.msgs.filter(function (m) { return m.role === "user"; })[0];
+      const firstBot = target.msgs.filter(function (m) { return m.role === "assistant"; })[0];
+      if (!firstUser || !firstBot || target.msgs.length > 6) return;
+      callWorker({ mode: "title", messages: [{ role: "user", content: firstUser.content }, { role: "assistant", content: firstBot.content.slice(0, 300) }] })
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (j) {
+          if (j && typeof j.title === "string" && j.title.trim() && target.auto) {
+            target.title = j.title.trim().slice(0, 60);
+            target.auto = false;
+            saveDB(); renderSide();
+            if (target === chat) paintHeader();
+          }
+        }).catch(function () {});
+    }
+    function paintHeader() {
+      const t = document.getElementById("mentorChatTitle");
+      if (t) t.textContent = chat.title === "New chat" ? "Mission Mentor" : chat.title;
+      const sub = document.getElementById("mentorSub");
+      if (sub) {
+        const p = currentProject();
+        const per = PERSONA_LIST.filter(function (x) { return x[0] === chat.persona; })[0];
+        const bits = [];
+        if (p) bits.push("Project: " + p.name);
+        if (chat.persona && per) bits.push(per[1] + " mode");
+        sub.textContent = bits.length ? bits.join(" · ") : (CHAT_ENDPOINT ? "AI study buddy · ask anything" : "Your solar system study buddy");
+      }
+    }
+    function resetVoiceForSwitch() {
+      chatGen++;
+      if (busy && controller) controller.abort("switch");
+      busy = false; setBusy(false);
+      exitVoiceMode();
+      stopSpeaking();
+      docs = []; pendingImage = null; renderTray();
+    }
+    function newChat() {
+      if (!chat.msgs.length) { open(); showSide(false); input.focus(); return; }   // an empty chat is reused
+      resetVoiceForSwitch();
+      chat = newChatObj();
+      chat.project = sideProject !== "all" && sideProject !== "none" ? sideProject : "";
+      db.chats.unshift(chat);
+      db.active = chat.id;
+      history = chat.msgs;
+      noticeShown = false;
+      renderChat();
+      saveDB(); renderSide();
+      showSide(false);
+      input.focus();
+    }
+    function openChat(id) {
+      const c = db.chats.filter(function (x) { return x.id === id; })[0];
+      if (!c || c === chat) { showSide(false); return; }
+      resetVoiceForSwitch();
+      if (!chat.msgs.length) db.chats = db.chats.filter(function (x) { return x !== chat; });
+      chat = c; db.active = c.id; history = c.msgs;
+      noticeShown = false;
+      renderChat();
+      saveDB(); renderSide();
+      showSide(false);
+    }
+    function renderChat() {
+      body.innerHTML = "";
+      if (history.length) {
+        history.forEach(function (m) {
+          if (m.role === "user") addUser(m.content);
+          else decorate(addBot(m.content, true), m.content);
+        });
+        hideChips();
+      } else {
+        greet();
+        const q = document.getElementById("mentorQuick");
+        if (q) q.hidden = false;
+      }
+      body.scrollTop = body.scrollHeight;
+      paintHeader();
+    }
+    function deleteChat(id) {
+      const c = db.chats.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      dialog({ title: "Delete this chat?", text: "“" + c.title + "” will be removed from this device.", buttons: [{ label: "Delete", value: "del", primary: true, danger: true }] }).then(function (r) {
+        if (!r) return;
+        db.chats = db.chats.filter(function (x) { return x !== c; });
+        if (c === chat) {
+          chat = newChatObj(); db.chats.unshift(chat); db.active = chat.id; history = chat.msgs;
+          resetVoiceForSwitch(); renderChat();
+        }
+        saveDB(); renderSide();
+      });
+    }
+    function renameChat(id) {
+      const c = db.chats.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      dialog({ title: "Rename chat", fields: [{ name: "t", label: "Title", value: c.title, max: 60, required: true }], ok: "Save" }).then(function (r) {
+        if (!r) return;
+        c.title = r.values.t.slice(0, 60); c.auto = false;
+        saveDB(); renderSide(); if (c === chat) paintHeader();
+      });
+    }
+    function togglePin(id) {
+      const c = db.chats.filter(function (x) { return x.id === id; })[0];
+      if (!c) return;
+      c.pinned = !c.pinned; saveDB(); renderSide();
+    }
+
+    /* ----- projects ----- */
+    function manageProjects() {
+      const node = el("div", "mentor-plist");
+      function paint() {
+        node.innerHTML = "";
+        if (!db.projects.length) node.appendChild(el("p", "mentor-modal__text", "No projects yet. A project keeps chats together and gives the AI standing instructions, like “Explain simply, with examples”."));
+        db.projects.forEach(function (p) {
+          const r = el("div", "mentor-plist__row");
+          r.appendChild(el("span", "mentor-plist__name", p.name));
+          const e = el("button", "mentor-mini", "Edit"); e.type = "button";
+          e.addEventListener("click", function () { projectForm(p).then(paint); });
+          const d = el("button", "mentor-mini", "Delete"); d.type = "button";
+          d.addEventListener("click", function () {
+            db.projects = db.projects.filter(function (x) { return x !== p; });
+            db.chats.forEach(function (c) { if (c.project === p.id) c.project = ""; });
+            if (sideProject === p.id) sideProject = "all";
+            saveDB(); paint(); renderSide(); paintHeader();
+          });
+          r.appendChild(e); r.appendChild(d); node.appendChild(r);
+        });
+      }
+      paint();
+      const add = el("button", "mentor-btn is-primary", "+ New project"); add.type = "button";
+      add.addEventListener("click", function () { projectForm(null).then(paint); });
+      node.appendChild(add);
+      return dialog({ title: "Projects", node: node, ok: "Done", cancel: false });
+    }
+    function projectForm(p) {
+      return dialog({
+        title: p ? "Edit project" : "New project",
+        fields: [
+          { name: "name", label: "Name", value: p ? p.name : "", max: 60, required: true },
+          { name: "ins", label: "Instructions for the AI (optional)", type: "textarea", value: p ? p.instructions : "", max: 800, placeholder: "e.g. I'm preparing for my class 10 science exam. Keep answers short and end with one practice question." }
+        ], ok: "Save"
+      }).then(function (r) {
+        if (!r) return;
+        if (p) { p.name = r.values.name; p.instructions = r.values.ins; }
+        else db.projects.push({ id: uid(), name: r.values.name, instructions: r.values.ins });
+        saveDB(); renderSide(); paintHeader();
+      });
+    }
+    function chooseProject() {
+      const opts = [["", "No project"]].concat(db.projects.map(function (p) { return [p.id, p.name]; }));
+      return dialog({ title: "Put this chat in a project", fields: [{ name: "p", label: "Project", type: "select", options: opts, value: chat.project }], ok: "Apply",
+        text: db.projects.length ? "" : "You have no projects yet. Use “Projects” in the side panel to create one." }).then(function (r) {
+        if (!r) return;
+        chat.project = r.values.p; saveDB(); renderSide(); paintHeader();
+      });
+    }
+    function choosePersona() {
+      return dialog({ title: "How should the Mentor answer?", fields: [{ name: "p", label: "Style", type: "select", options: PERSONA_LIST, value: chat.persona }], ok: "Apply" }).then(function (r) {
+        if (!r) return;
+        chat.persona = r.values.p; saveDB(); paintHeader();
+        flash(chat.persona ? "Style set for this chat" : "Back to the default style");
+      });
+    }
+
+    /* ----- side panel ----- */
+    function showSide(v) { panel.classList.toggle("show-side", !!v); }
+    function setView(v) {
+      sideView = v;
+      side.querySelectorAll(".mentor-tab").forEach(function (b) { b.setAttribute("aria-selected", b.getAttribute("data-view") === v ? "true" : "false"); });
+      renderSide();
+    }
+    function renderSide() {
+      if (!sideList) return;
+      sideList.innerHTML = "";
+      const q = (sideSearch.value || "").trim().toLowerCase();
+      document.getElementById("mentorProjectBar").hidden = sideView !== "chats";
+      if (sideView === "chats") {
+        let list = db.chats.filter(function (c) { return c.msgs.length || c === chat; });
+        if (sideProject === "none") list = list.filter(function (c) { return !c.project; });
+        else if (sideProject !== "all") list = list.filter(function (c) { return c.project === sideProject; });
+        if (q) list = list.filter(function (c) {
+          return c.title.toLowerCase().indexOf(q) !== -1 || c.msgs.some(function (m) { return m.content.toLowerCase().indexOf(q) !== -1; });
+        });
+        list.sort(function (a, b) { return (b.pinned - a.pinned) || (b.updated - a.updated); });
+        if (!list.length) sideList.appendChild(el("p", "mentor-empty", q ? "No chats match." : "No saved chats yet."));
+        list.forEach(function (c) {
+          const row = el("div", "mentor-row" + (c === chat ? " is-active" : ""));
+          const t = el("button", "mentor-row__title", (c.pinned ? "📌 " : "") + c.title);
+          t.type = "button"; t.title = c.title;
+          t.addEventListener("click", function () { openChat(c.id); });
+          row.appendChild(t);
+          [["pin", c.pinned ? "Unpin" : "Pin", c.pinned ? "📌" : "📍", togglePin], ["ren", "Rename", "✎", renameChat], ["del", "Delete", "🗑", deleteChat]].forEach(function (a) {
+            const b = el("button", "mentor-mini mentor-row__act", a[2]);
+            b.type = "button"; b.setAttribute("aria-label", a[1] + " chat: " + c.title); b.title = a[1];
+            b.setAttribute("data-act", a[0]);
+            b.addEventListener("click", function (e) { e.stopPropagation(); a[3](c.id); });
+            row.appendChild(b);
+          });
+          sideList.appendChild(row);
+        });
+        const sel = document.getElementById("mentorProjectSel");
+        sel.innerHTML = "";
+        [["all", "All chats"], ["none", "No project"]].concat(db.projects.map(function (p) { return [p.id, "📁 " + p.name]; })).forEach(function (o) {
+          const x = el("option", null, o[1]); x.value = o[0]; sel.appendChild(x);
+        });
+        sel.value = sideProject;
+      } else if (sideView === "library") {
+        let list = db.library.slice().sort(function (a, b) { return b.created - a.created; });
+        if (q) list = list.filter(function (x) { return String(x.title).toLowerCase().indexOf(q) !== -1; });
+        if (!list.length) sideList.appendChild(el("p", "mentor-empty", "Your library is empty. Save an answer, a lesson or a picture and it shows up here."));
+        list.forEach(function (x) {
+          const row = el("div", "mentor-row");
+          const icon = { image: "🎨", lesson: "🎓", answer: "📄", videos: "▶" }[x.kind] || "📄";
+          const t = el("button", "mentor-row__title", icon + " " + x.title); t.type = "button";
+          t.addEventListener("click", function () { viewLibraryItem(x); });
+          const d = el("button", "mentor-mini mentor-row__act", "🗑"); d.type = "button"; d.title = "Delete"; d.setAttribute("aria-label", "Delete " + x.title);
+          d.addEventListener("click", function (e) { e.stopPropagation(); db.library = db.library.filter(function (y) { return y !== x; }); saveDB(); renderSide(); });
+          row.appendChild(t); row.appendChild(d); sideList.appendChild(row);
+        });
+      } else {
+        const add = el("button", "mentor-btn is-primary", "+ New reminder or task"); add.type = "button";
+        add.addEventListener("click", taskForm);
+        sideList.appendChild(add);
+        sideList.appendChild(el("p", "mentor-empty", "Tasks run only while Ecliptic is open in a browser tab. If one comes due while the site is closed, it runs the next time you open it."));
+        db.tasks.slice().sort(function (a, b) { return a.at - b.at; }).forEach(function (tk) {
+          const row = el("div", "mentor-row");
+          const lab = (tk.kind === "ask" ? "🤖 " : "⏰ ") + tk.text.slice(0, 50) + "\n" + fmtDate(tk.at) + (tk.repeat !== "none" ? " · " + tk.repeat : "");
+          const t = el("span", "mentor-row__title mentor-row__title--static", lab);
+          const d = el("button", "mentor-mini mentor-row__act", "🗑"); d.type = "button"; d.title = "Delete"; d.setAttribute("aria-label", "Delete task " + tk.text.slice(0, 30));
+          d.addEventListener("click", function () { db.tasks = db.tasks.filter(function (y) { return y !== tk; }); saveDB(); renderSide(); });
+          row.appendChild(t); row.appendChild(d); sideList.appendChild(row);
+        });
+      }
+    }
+    function viewLibraryItem(x) {
+      const node = el("div", "mentor-viewer");
+      if (x.kind === "image" && /^data:image\/(jpeg|png|webp);base64,/.test(x.data || "")) {
+        const im = el("img"); im.src = x.data; im.alt = x.title; node.appendChild(im);
+      } else {
+        node.innerHTML = md(String(x.text || ""));
+      }
+      const buttons = [{ label: x.kind === "image" ? "Download" : "Export…", value: "go", primary: true }, { label: "Copy", value: "copy" }];
+      dialog({ title: x.title, node: node, buttons: buttons, cancel: "Close" }).then(function (r) {
+        if (!r) return;
+        if (r.button === "copy") { copyText(x.kind === "image" ? x.title : x.text).then(function (ok) { flash(ok ? "Copied" : "Could not copy"); }); return; }
+        if (x.kind === "image") {
+          const a = x.data.split(","); const bin = atob(a[1]); const u = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+          download(safeName(x.title) + ".jpg", new Blob([u], { type: "image/jpeg" }));
+        } else exportDialog(x.title, [{ role: "assistant", content: x.text }]);
+      });
+    }
+    function saveToLibrary(item) {
+      item.id = uid(); item.created = Date.now();
+      db.library.unshift(item);
+      db.library = db.library.slice(0, 60);
+      if (!saveDB()) {
+        // Pictures are the heavy items: drop the oldest ones and try once more.
+        db.library = db.library.filter(function (x, i) { return x.kind !== "image" || i < 6; });
+        if (!saveDB()) { db.library.shift(); flash("Not saved: browser storage is full."); return false; }
+      }
+      renderSide();
+      flash("Saved to your library");
+      return true;
+    }
+
+    /* ----- message actions: copy, save, export ----- */
+    function decorate(bubble, raw) {
+      if (!bubble || bubble.querySelector(".mentor-acts")) return;
+      const text = String(raw != null ? raw : (bubble.dataset.raw || bubble.textContent || ""));
+      if (!text.trim()) return;
+      bubble.dataset.raw = text;
+      bubble.dataset.done = "1";
+      const bar = el("div", "mentor-acts");
+      [["Copy", function (b) { copyText(text).then(function (ok) { b.textContent = ok ? "Copied" : "Failed"; setTimeout(function () { b.textContent = "Copy"; }, 1500); }); }],
+       ["Save", function (b) { if (saveToLibrary({ kind: "answer", title: text.replace(/[#*`>\-\n]+/g, " ").trim().slice(0, 40) || "Answer", text: text })) { b.textContent = "Saved"; } }],
+       ["Export", function () { exportDialog(chat.title === "New chat" ? "Mentor answer" : chat.title, [{ role: "assistant", content: text }]); }]
+      ].forEach(function (a) {
+        const b = el("button", "mentor-act", a[0]); b.type = "button";
+        b.addEventListener("click", function () { a[1](b); });
+        bar.appendChild(b);
+      });
+      bubble.appendChild(bar);
+    }
+
+    /* ----- tools: images, lessons, videos ----- */
+    function toolBubble(userText) {
+      stopSpeaking(); hideChips();
+      addUser(userText);
+      history.push({ role: "user", content: userText });
+      touchChat(userText);
+      const bubble = addBot("", false);
+      bubble.classList.add("is-typing");
+      bubble.innerHTML = '<span class="mentor-dots"><i></i><i></i><i></i></span>';
+      return bubble;
+    }
+    function toolFail(bubble, msg) {
+      bubble.classList.remove("is-typing");
+      bubble.textContent = msg;
+      history.push({ role: "assistant", content: msg });
+      saveHistory();
+    }
+    function errText(status, what) {
+      if (status === 429) return "The AI has used up its free allowance for now, so I can't " + what + ". It resets daily.";
+      if (status === 401) return "Please sign in to use this.";
+      return "I couldn't " + what + " right now. Please try again in a moment.";
+    }
+    function shrinkDataUrl(url, side, quality) {
+      return new Promise(function (resolve) {
+        const im = new Image();
+        im.onload = function () {
+          try {
+            const k = Math.min(1, side / Math.max(im.width, im.height));
+            const c = document.createElement("canvas");
+            c.width = Math.max(1, Math.round(im.width * k)); c.height = Math.max(1, Math.round(im.height * k));
+            c.getContext("2d").drawImage(im, 0, 0, c.width, c.height);
+            resolve(c.toDataURL("image/jpeg", quality));
+          } catch (e) { resolve(url); }
+        };
+        im.onerror = function () { resolve(url); };
+        im.src = url;
+      });
+    }
+    function createImage() {
+      dialog({ title: "Create an image", text: "Describe the picture. Be specific: what, where, style.", fields: [{ name: "p", label: "Description", type: "textarea", max: 300, required: true, placeholder: "e.g. Saturn at sunrise seen from one of its icy moons, realistic" }], ok: "Create" }).then(function (r) {
+        if (!r || busy) return;
+        const prompt = r.values.p;
+        const gen = chatGen;
+        setBusy(true);
+        const bubble = toolBubble("🎨 Create an image: " + prompt);
+        controller = new AbortController();
+        const timer = setTimeout(function () { controller.abort("timeout"); }, 60000);
+        callWorker({ mode: "image", prompt: prompt }, controller.signal).then(function (res) {
+          if (!res.ok) throw { status: res.status };
+          return res.json();
+        }).then(function (j) {
+          if (gen !== chatGen) return;
+          if (!j || !/^data:image\/jpeg;base64,/.test(j.image || "")) throw { status: 0 };
+          bubble.classList.remove("is-typing"); bubble.textContent = "";
+          const im = el("img", "mentor-gen"); im.src = j.image; im.alt = prompt;
+          bubble.appendChild(im);
+          const bar = el("div", "mentor-acts");
+          const dl = el("button", "mentor-act", "Download"); dl.type = "button";
+          dl.addEventListener("click", function () {
+            const bin = atob(j.image.split(",")[1]); const u = new Uint8Array(bin.length);
+            for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+            download(safeName(prompt) + ".jpg", new Blob([u], { type: "image/jpeg" }));
+          });
+          const sv = el("button", "mentor-act", "Save"); sv.type = "button";
+          sv.addEventListener("click", function () {
+            shrinkDataUrl(j.image, 640, 0.72).then(function (small) {
+              if (saveToLibrary({ kind: "image", title: prompt.slice(0, 40), data: small })) sv.textContent = "Saved";
+            });
+          });
+          bar.appendChild(dl); bar.appendChild(sv); bubble.appendChild(bar);
+          history.push({ role: "assistant", content: "🖼 Image created: " + prompt });
+          saveHistory(); scrollToEnd(true);
+        }).catch(function (err) {
+          if (gen !== chatGen) return;
+          const stopped = controller && controller.signal.aborted && controller.signal.reason === "user";
+          toolFail(bubble, stopped ? "Stopped." : errText(err && err.status, "draw that"));
+        }).then(function () { clearTimeout(timer); controller = null; if (gen === chatGen) setBusy(false); });
+      });
+    }
+    function miniLesson() {
+      dialog({ title: "Mini-lesson", text: "Get a short lesson with key points, an example and a quick check.", fields: [
+        { name: "t", label: "Topic", max: 120, required: true, placeholder: "e.g. Why do we have seasons?" },
+        { name: "l", label: "Level", type: "select", options: [["beginner", "Beginner"], ["intermediate", "Intermediate"], ["advanced", "Advanced"]], value: "beginner" }
+      ], ok: "Teach me" }).then(function (r) {
+        if (!r || busy) return;
+        askAI("Mini-lesson: " + r.values.t, [], { mode: "lesson", label: "🎓 Mini-lesson (" + r.values.l + "): " + r.values.t, body: Object.assign(chatBodyMeta(), { mode: "lesson", topic: r.values.t, level: r.values.l }), saveKind: "lesson", saveTitle: r.values.t });
+      });
+    }
+    function chatBodyMeta() {
+      const b = { context: buildContext() };
+      if (chat.persona) b.persona = chat.persona;
+      const p = currentProject();
+      if (p && p.instructions) b.project = { name: p.name, instructions: p.instructions };
+      return b;
+    }
+    function findVideos() {
+      dialog({ title: "Find videos", text: "Look up videos about a topic.", fields: [{ name: "q", label: "Topic", max: 100, required: true, placeholder: "e.g. how black holes form" }], ok: "Search" }).then(function (r) {
+        if (!r || busy) return;
+        const q = r.values.q;
+        const gen = chatGen;
+        setBusy(true);
+        const bubble = toolBubble("▶ Find videos: " + q);
+        controller = new AbortController();
+        const timer = setTimeout(function () { controller.abort("timeout"); }, 15000);
+        callWorker({ mode: "videos", query: q }, controller.signal).then(function (res) {
+          if (!res.ok) throw { status: res.status };
+          return res.json();
+        }).then(function (j) {
+          if (gen !== chatGen) return;
+          const vids = (j && Array.isArray(j.videos) ? j.videos : []).filter(function (v) { return /^https:\/\/www\.youtube\.com\/watch\?v=[\w-]{11}$/.test(v.url || ""); });
+          const link = j && /^https:\/\/www\.youtube\.com\/results\?search_query=/.test(j.searchUrl || "") ? j.searchUrl : "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+          let text = vids.length ? "Here are some videos about **" + q.replace(/[*_`\[\]]/g, "") + "**:\n\n" : "Here is a YouTube search for **" + q.replace(/[*_`\[\]]/g, "") + "**:\n\n";
+          vids.forEach(function (v) { text += "- [" + String(v.title).replace(/[\[\]()]/g, "") + "](" + v.url + ")" + (v.channel ? " — " + String(v.channel).replace(/[\[\]()*_`]/g, "") : "") + "\n"; });
+          text += "- [More results on YouTube](" + link + ")\n";
+          bubble.classList.remove("is-typing"); bubble.dataset.raw = text; bubble.innerHTML = md(text);
+          decorate(bubble, text);
+          history.push({ role: "assistant", content: text });
+          saveHistory(); scrollToEnd(true);
+        }).catch(function (err) {
+          if (gen !== chatGen) return;
+          toolFail(bubble, errText(err && err.status, "look up videos"));
+        }).then(function () { clearTimeout(timer); controller = null; if (gen === chatGen) setBusy(false); });
+      });
+    }
+
+    /* =====================================================================
+       Export: Markdown, Word (.docx), PDF, JSON. Built in the browser with no
+       library, so the file never leaves the device.
+       ===================================================================== */
+    function toMarkdown(title, msgs) {
+      let out = "# " + title + "\n\n*Exported from Ecliptic Mission Mentor, " + new Date().toLocaleDateString() + "*\n\n";
+      msgs.forEach(function (m) { out += (m.role === "user" ? "**You:** " : "**Mentor:**\n\n") + m.content.trim() + "\n\n"; });
+      return out;
+    }
+    /* Markdown -> simple blocks used by both the Word and PDF writers. */
+    function mdBlocks(title, msgs) {
+      const out = [{ t: "title", runs: [{ s: title }] }];
+      function runs(line) {
+        const r = [];
+        line.split(/(\*\*[^*]+\*\*|`[^`]+`)/g).forEach(function (p) {
+          if (!p) return;
+          if (/^\*\*[^*]+\*\*$/.test(p)) r.push({ s: p.slice(2, -2), b: true });
+          else if (/^`[^`]+`$/.test(p)) r.push({ s: p.slice(1, -1), c: true });
+          else r.push({ s: p.replace(/\*([^*]+)\*/g, "$1").replace(/\[([^\]]+)\]\((https?:[^)\s]+)\)/g, "$1 ($2)") });
+        });
+        return r;
+      }
+      msgs.forEach(function (m) {
+        out.push({ t: "who", runs: [{ s: m.role === "user" ? "You" : "Mission Mentor", b: true }] });
+        let inCode = false;
+        m.content.replace(/\r/g, "").split("\n").forEach(function (line) {
+          if (/^\s*```/.test(line)) { inCode = !inCode; return; }
+          if (inCode) { out.push({ t: "code", runs: [{ s: line || " ", c: true }] }); return; }
+          if (!line.trim()) return;
+          let h = line.match(/^(#{1,3})\s+(.*)$/);
+          if (h) { out.push({ t: "h" + h[1].length, runs: [{ s: h[2].replace(/\*\*/g, ""), b: true }] }); return; }
+          let li = line.match(/^\s*[-*•]\s+(.*)$/);
+          if (li) { out.push({ t: "li", runs: [{ s: "• " }].concat(runs(li[1])) }); return; }
+          li = line.match(/^\s*(\d+)[.)]\s+(.*)$/);
+          if (li) { out.push({ t: "li", runs: [{ s: li[1] + ". " }].concat(runs(li[2])) }); return; }
+          out.push({ t: "p", runs: runs(line.replace(/^>\s?/, "")) });
+        });
+      });
+      return out;
+    }
+    /* --- minimal ZIP (stored, no compression) for .docx --- */
+    const CRC_T = (function () {
+      const t = []; for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; } return t;
+    })();
+    function crc32(u) { let c = 0xFFFFFFFF; for (let i = 0; i < u.length; i++) c = CRC_T[(c ^ u[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; }
+    function zipStore(files) {
+      const enc = new TextEncoder(); const parts = []; const central = []; let offset = 0;
+      function u16(n) { return [n & 255, (n >>> 8) & 255]; }
+      function u32(n) { return [n & 255, (n >>> 8) & 255, (n >>> 16) & 255, (n >>> 24) & 255]; }
+      files.forEach(function (f) {
+        const name = enc.encode(f.name); const data = enc.encode(f.data); const crc = crc32(data);
+        const head = [0x50, 0x4B, 3, 4].concat(u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(crc), u32(data.length), u32(data.length), u16(name.length), u16(0));
+        parts.push(new Uint8Array(head), name, data);
+        central.push({ name: name, crc: crc, size: data.length, offset: offset });
+        offset += head.length + name.length + data.length;
+      });
+      let cdSize = 0;
+      central.forEach(function (c) {
+        const h = [0x50, 0x4B, 1, 2].concat(u16(20), u16(20), u16(0x0800), u16(0), u16(0), u16(0x21), u32(c.crc), u32(c.size), u32(c.size), u16(c.name.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(c.offset));
+        parts.push(new Uint8Array(h), c.name); cdSize += h.length + c.name.length;
+      });
+      parts.push(new Uint8Array([0x50, 0x4B, 5, 6].concat(u16(0), u16(0), u16(central.length), u16(central.length), u32(cdSize), u32(offset), u16(0))));
+      return new Blob(parts, { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+    }
+    function xmlEsc(s) { return String(s).replace(/[\u0000-\u0008\u000b\u000c\u000e-\u001f]/g, "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
+    function toDocx(title, msgs) {
+      const blocks = mdBlocks(title, msgs);
+      const style = { title: "Title", h1: "Heading1", h2: "Heading2", h3: "Heading3", who: "Heading3", code: "Code", li: "ListItem", p: null };
+      const bodyXml = blocks.map(function (b) {
+        const st = style[b.t];
+        const rs = b.runs.map(function (r) {
+          const props = (r.b ? "<w:b/>" : "") + (r.c ? '<w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/><w:sz w:val="20"/>' : "");
+          return "<w:r>" + (props ? "<w:rPr>" + props + "</w:rPr>" : "") + '<w:t xml:space="preserve">' + xmlEsc(r.s) + "</w:t></w:r>";
+        }).join("");
+        return "<w:p>" + (st ? '<w:pPr><w:pStyle w:val="' + st + '"/></w:pPr>' : "") + rs + "</w:p>";
+      }).join("");
+      const NS = 'xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"';
+      const styles = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:styles ' + NS + '>' +
+        '<w:docDefaults><w:rPrDefault><w:rPr><w:rFonts w:ascii="Calibri" w:hAnsi="Calibri" w:cs="Calibri"/><w:sz w:val="22"/></w:rPr></w:rPrDefault><w:pPrDefault><w:pPr><w:spacing w:after="120" w:line="276" w:lineRule="auto"/></w:pPr></w:pPrDefault></w:docDefaults>' +
+        '<w:style w:type="paragraph" w:default="1" w:styleId="Normal"><w:name w:val="Normal"/></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="Title"><w:name w:val="Title"/><w:basedOn w:val="Normal"/><w:pPr><w:spacing w:after="240"/></w:pPr><w:rPr><w:b/><w:sz w:val="40"/></w:rPr></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="Heading1"><w:name w:val="heading 1"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="240"/><w:outlineLvl w:val="0"/></w:pPr><w:rPr><w:b/><w:sz w:val="32"/></w:rPr></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="Heading2"><w:name w:val="heading 2"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="200"/><w:outlineLvl w:val="1"/></w:pPr><w:rPr><w:b/><w:sz w:val="28"/></w:rPr></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="Heading3"><w:name w:val="heading 3"/><w:basedOn w:val="Normal"/><w:pPr><w:keepNext/><w:spacing w:before="160"/><w:outlineLvl w:val="2"/></w:pPr><w:rPr><w:b/><w:sz w:val="24"/></w:rPr></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="ListItem"><w:name w:val="List Item"/><w:basedOn w:val="Normal"/><w:pPr><w:ind w:left="360" w:hanging="240"/><w:spacing w:after="60"/></w:pPr></w:style>' +
+        '<w:style w:type="paragraph" w:styleId="Code"><w:name w:val="Code"/><w:basedOn w:val="Normal"/><w:pPr><w:shd w:val="clear" w:color="auto" w:fill="F2F2F2"/><w:spacing w:after="0" w:line="240" w:lineRule="auto"/><w:ind w:left="240"/></w:pPr><w:rPr><w:rFonts w:ascii="Consolas" w:hAnsi="Consolas" w:cs="Consolas"/><w:sz w:val="20"/></w:rPr></w:style></w:styles>';
+      const doc = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><w:document ' + NS + '><w:body>' + bodyXml + '<w:sectPr><w:pgSz w:w="11906" w:h="16838"/><w:pgMar w:top="1134" w:right="1134" w:bottom="1134" w:left="1134" w:header="708" w:footer="708" w:gutter="0"/></w:sectPr></w:body></w:document>';
+      return zipStore([
+        { name: "[Content_Types].xml", data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/word/document.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml"/><Override PartName="/word/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml"/></Types>' },
+        { name: "_rels/.rels", data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="word/document.xml"/></Relationships>' },
+        { name: "word/_rels/document.xml.rels", data: '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>' },
+        { name: "word/styles.xml", data: styles },
+        { name: "word/document.xml", data: doc }
+      ]);
+    }
+    /* --- PDF: hand-written, Latin text only (other scripts use Print > Save as PDF) --- */
+    const HELV = [278,278,355,556,556,889,667,191,333,333,389,584,278,333,278,278,556,556,556,556,556,556,556,556,556,556,278,278,584,584,584,556,1015,667,667,722,722,667,611,778,722,278,500,667,556,833,722,778,667,778,722,667,611,722,667,944,667,667,611,278,278,278,469,556,333,556,556,500,556,556,278,556,556,222,222,500,222,833,556,556,556,556,333,500,278,556,500,722,500,500,500,334,260,334,584];
+    const WIN1252 = { 0x2018: 0x91, 0x2019: 0x92, 0x201C: 0x93, 0x201D: 0x94, 0x2013: 0x96, 0x2014: 0x97, 0x2022: 0x95, 0x2026: 0x85, 0x20AC: 0x80, 0x2122: 0x99 };
+    function pdfChar(ch) {
+      const c = ch.charCodeAt(0);
+      if (c === 9) return 32;
+      if (c >= 32 && c <= 126) return c;
+      if (c >= 160 && c <= 255) return c;
+      if (WIN1252[c]) return WIN1252[c];
+      return 63;
+    }
+    function pdfLatinOnly(text) {
+      let bad = 0, n = 0;
+      for (let i = 0; i < text.length; i++) {
+        const c = text.charCodeAt(i);
+        if (c <= 32) continue;
+        n++;
+        if (!((c <= 126) || (c >= 160 && c <= 255) || WIN1252[c])) bad++;
+      }
+      return n === 0 || bad / n < 0.02;
+    }
+    function toPdf(title, msgs) {
+      const blocks = mdBlocks(title, msgs);
+      const W = 595, H = 842, M = 56, maxW = W - 2 * M;
+      const pages = []; let cur = [], y = H - M;
+      function width(s, size, bold, code) {
+        if (code) return s.length * 600 * size / 1000;
+        let w = 0; for (let i = 0; i < s.length; i++) { const c = pdfChar(s[i]); w += (c >= 32 && c <= 126 ? HELV[c - 32] : 556); }
+        return w * size / 1000 * (bold ? 1.08 : 1);
+      }
+      function esc(s) { let o = ""; for (let i = 0; i < s.length; i++) { const c = pdfChar(s[i]); o += (c === 40 || c === 41 || c === 92) ? "\\" + String.fromCharCode(c) : (c < 32 ? " " : String.fromCharCode(c)); } return o; }
+      function newPage() { pages.push(cur); cur = []; y = H - M; }
+      blocks.forEach(function (b) {
+        const size = { title: 20, h1: 16, h2: 14, h3: 12, who: 12, code: 9, li: 11, p: 11 }[b.t];
+        const lead = size * (b.t === "code" ? 1.25 : 1.4);
+        const font = (b.t === "code") ? "F3" : ((b.t === "title" || /^h\d|who/.test(b.t)) ? "F2" : "F1");
+        const indent = b.t === "li" ? 14 : (b.t === "code" ? 8 : 0);
+        const gapBefore = (b.t === "who") ? 10 : (/^h\d$/.test(b.t) ? 8 : 0);
+        const words = []; b.runs.forEach(function (r) { (b.t === "code" ? [r.s] : r.s.split(/(\s+)/)).forEach(function (w) { if (w) words.push({ s: w, b: !!r.b || font === "F2", c: !!r.c || font === "F3" }); }); });
+        let lines = [[]], lw = 0; const avail = maxW - indent;
+        words.forEach(function (w) {
+          let ww = width(w.s, size, w.b, w.c);
+          if (b.t === "code" && ww > avail) {                      // long code lines are cut into pieces
+            const per = Math.max(1, Math.floor(avail / (0.6 * size)));
+            for (let i = 0; i < w.s.length; i += per) { if (lines[lines.length - 1].length) { lines.push([]); lw = 0; } lines[lines.length - 1].push({ s: w.s.slice(i, i + per), b: w.b, c: w.c }); lw = 1e9; }
+            return;
+          }
+          if (lw + ww > avail && lines[lines.length - 1].length && !/^\s+$/.test(w.s)) { lines.push([]); lw = 0; }
+          if (/^\s+$/.test(w.s) && !lines[lines.length - 1].length) return;
+          lines[lines.length - 1].push(w); lw += ww;
+        });
+        y -= gapBefore;
+        lines.forEach(function (ln, idx) {
+          if (y - lead < M) newPage();
+          y -= lead;
+          let x = M + indent + (b.t === "li" && idx > 0 ? 10 : 0);
+          ln.forEach(function (w) {
+            const f = w.c ? "F3" : (w.b ? "F2" : "F1");
+            cur.push("BT /" + f + " " + size + " Tf " + x.toFixed(1) + " " + y.toFixed(1) + " Td (" + esc(w.s) + ") Tj ET");
+            x += width(w.s, size, w.b, w.c);
+          });
+        });
+        y -= (b.t === "code" ? 0 : 4);
+      });
+      pages.push(cur);
+      const objs = []; const kids = [];
+      objs[1] = "<< /Type /Catalog /Pages 2 0 R >>";
+      objs[3] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>";
+      objs[4] = "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>";
+      objs[5] = "<< /Type /Font /Subtype /Type1 /BaseFont /Courier /Encoding /WinAnsiEncoding >>";
+      pages.forEach(function (ops, i) {
+        const pageNo = 6 + i * 2, contNo = pageNo + 1;
+        const stream = ops.join("\n");
+        objs[pageNo] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 " + W + " " + H + "] /Resources << /Font << /F1 3 0 R /F2 4 0 R /F3 5 0 R >> >> /Contents " + contNo + " 0 R >>";
+        objs[contNo] = "<< /Length " + stream.length + " >>\nstream\n" + stream + "\nendstream";
+        kids.push(pageNo + " 0 R");
+      });
+      objs[2] = "<< /Type /Pages /Kids [" + kids.join(" ") + "] /Count " + kids.length + " >>";
+      let out = "%PDF-1.4\n"; const offs = [];
+      for (let i = 1; i < objs.length; i++) { offs[i] = out.length; out += i + " 0 obj\n" + objs[i] + "\nendobj\n"; }
+      const xref = out.length;
+      out += "xref\n0 " + objs.length + "\n0000000000 65535 f \n";
+      for (let i = 1; i < objs.length; i++) out += String(offs[i]).padStart(10, "0") + " 00000 n \n";
+      out += "trailer\n<< /Size " + objs.length + " /Root 1 0 R >>\nstartxref\n" + xref + "\n%%EOF";
+      const bytes = new Uint8Array(out.length);
+      for (let i = 0; i < out.length; i++) bytes[i] = out.charCodeAt(i) & 255;
+      return new Blob([bytes], { type: "application/pdf" });
+    }
+    function printAsPdf(title, msgs) {
+      const f = document.createElement("iframe");
+      f.style.cssText = "position:fixed;right:0;bottom:0;width:0;height:0;border:0";
+      document.body.appendChild(f);
+      const d = f.contentDocument;
+      d.open();
+      d.write('<!doctype html><meta charset="utf-8"><title></title><style>body{font:14px/1.5 sans-serif;margin:24px;color:#111}h1{font-size:22px}.w{font-weight:700;margin-top:14px}pre{background:#f2f2f2;padding:8px;white-space:pre-wrap}</style>');
+      d.title = title;
+      const h = d.createElement("h1"); h.textContent = title; d.body.appendChild(h);
+      msgs.forEach(function (m) {
+        const w = d.createElement("div"); w.className = "w"; w.textContent = m.role === "user" ? "You" : "Mission Mentor"; d.body.appendChild(w);
+        const c = d.createElement("div"); c.innerHTML = md(m.content); d.body.appendChild(c);
+      });
+      d.close();
+      setTimeout(function () { try { f.contentWindow.focus(); f.contentWindow.print(); } catch (e) {} setTimeout(function () { f.remove(); }, 60000); }, 250);
+    }
+    function exportAs(fmt, title, msgs) {
+      const base = safeName(title);
+      if (fmt === "md") download(base + ".md", new Blob([toMarkdown(title, msgs)], { type: "text/markdown" }));
+      else if (fmt === "docx") download(base + ".docx", toDocx(title, msgs));
+      else if (fmt === "json") download(base + ".ecliptic-chat.json", new Blob([JSON.stringify(chatPackage(title, msgs))], { type: "application/json" }));
+      else if (fmt === "pdf") {
+        const all = title + " " + msgs.map(function (m) { return m.content; }).join(" ");
+        if (pdfLatinOnly(all)) download(base + ".pdf", toPdf(title, msgs));
+        else { flash("This text uses another alphabet, so the print dialog opens: choose Save as PDF."); printAsPdf(title, msgs); }
+      }
+    }
+    function exportDialog(title, msgs) {
+      dialog({ title: "Export", text: "Choose a file type.", fields: [{ name: "f", label: "Format", type: "select", options: [["pdf", "PDF document"], ["docx", "Word document (.docx)"], ["md", "Markdown (.md)"], ["json", "Ecliptic chat file (.json, can be imported)"]], value: "pdf" }], ok: "Download" }).then(function (r) {
+        if (r) exportAs(r.values.f, title, msgs);
+      });
+    }
+    function exportThisChat() {
+      if (!history.length) { flash("Nothing to export yet. Say something first."); return; }
+      exportDialog(chat.title === "New chat" ? "Mission Mentor chat" : chat.title, history.map(function (m) { return { role: m.role, content: m.content }; }));
+    }
+
+    /* =====================================================================
+       Share and import. A small chat becomes a link; a bigger one becomes a
+       file. Opening someone's link never runs anything: it only asks whether
+       you want to add that chat to your list.
+       ===================================================================== */
+    function chatPackage(title, msgs) {
+      return { ecliptic: "chat", v: 1, title: String(title).slice(0, 60), msgs: cleanMsgs(msgs) };
+    }
+    function b64url(bytes) { let s = ""; for (let i = 0; i < bytes.length; i++) s += String.fromCharCode(bytes[i]); return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, ""); }
+    function unb64url(t) { t = t.replace(/-/g, "+").replace(/_/g, "/"); while (t.length % 4) t += "="; const s = atob(t); const u = new Uint8Array(s.length); for (let i = 0; i < s.length; i++) u[i] = s.charCodeAt(i); return u; }
+    function streamBytes(stream, cap) {
+      const reader = stream.getReader(); const chunks = []; let n = 0;
+      return (function pump() {
+        return reader.read().then(function (r) {
+          if (r.done) { const out = new Uint8Array(n); let o = 0; chunks.forEach(function (c) { out.set(c, o); o += c.length; }); return out; }
+          n += r.value.length;
+          if (n > cap) { reader.cancel(); throw new Error("too big"); }
+          chunks.push(r.value); return pump();
+        });
+      })();
+    }
+    function packChat(pkg) {
+      const bytes = new TextEncoder().encode(JSON.stringify(pkg));
+      if (typeof CompressionStream === "undefined") return Promise.resolve("p" + b64url(bytes));
+      const cs = new CompressionStream("deflate-raw");
+      const w = cs.writable.getWriter(); w.write(bytes); w.close();
+      return streamBytes(cs.readable, 400000).then(function (z) { return "z" + b64url(z); });
+    }
+    function unpackChat(token) {
+      return Promise.resolve().then(function () {
+        if (typeof token !== "string" || token.length > 60000 || !/^[zp][\w-]+$/.test(token)) throw new Error("bad");
+        const raw = unb64url(token.slice(1));
+        if (token[0] === "p") return raw;
+        if (typeof DecompressionStream === "undefined") throw new Error("unsupported");
+        const ds = new DecompressionStream("deflate-raw");
+        const w = ds.writable.getWriter(); w.write(raw); w.close();
+        return streamBytes(ds.readable, 300000);
+      }).then(function (bytes) { return JSON.parse(new TextDecoder().decode(bytes)); });
+    }
+    function validPackage(p) {
+      if (!p || p.ecliptic !== "chat" || !Array.isArray(p.msgs)) return null;
+      const msgs = cleanMsgs(p.msgs);
+      if (!msgs.length) return null;
+      return { title: String(p.title || "Imported chat").replace(/[\r\n<>]+/g, " ").slice(0, 60), msgs: msgs };
+    }
+    function confirmImport(pkg, from) {
+      return dialog({ title: "Add this chat?", text: "“" + pkg.title + "” (" + pkg.msgs.length + " messages" + (from ? ", " + from : "") + ") will be added to your chats on this device. It is only text; nothing in it runs.", buttons: [{ label: "Add chat", value: "add", primary: true }] }).then(function (r) {
+        if (!r) return false;
+        const c = newChatObj();
+        c.title = pkg.title; c.auto = false; c.msgs = pkg.msgs.slice();
+        db.chats.unshift(c);
+        saveDB(); renderSide();
+        openChat(c.id);
+        open();
+        return true;
+      });
+    }
+    function shareThisChat() {
+      if (!history.length) { flash("Nothing to share yet. Say something first."); return; }
+      const pkg = chatPackage(chat.title, history);
+      packChat(pkg).then(function (tok) {
+        const link = location.origin + location.pathname + "?share=" + tok;
+        const smallEnough = link.length <= 1900;
+        const text = "Mission Mentor chat: " + pkg.title;
+        if (smallEnough) {
+          if (navigator.share) { navigator.share({ title: pkg.title, text: text, url: link }).catch(function () {}); return; }
+          copyText(link).then(function (ok) { flash(ok ? "Share link copied. Anyone who opens it can add this chat." : "Could not copy the link"); });
+        } else {
+          exportAs("json", chat.title, history);
+          flash("This chat is too long for a link, so a file was saved. Send it to your friend to import.");
+        }
+      }).catch(function () { flash("Could not create a share link."); });
+    }
+    function importFile(file) {
+      if (!file) return;
+      if (file.size > 2000000) { flash("That file is too big to be a chat."); return; }
+      readAs(file, "text").then(function (txt) {
+        let p = null;
+        try { p = validPackage(JSON.parse(txt)); } catch (e) {}
+        if (!p) { flash("That file is not an Ecliptic chat."); return; }
+        confirmImport(p, "from a file");
+      }).catch(function () { flash("Could not read that file."); });
+    }
+    function checkShareLink() {
+      let tok = "";
+      try { tok = new URLSearchParams(location.search).get("share") || ""; } catch (e) {}
+      if (!tok) return;
+      try {
+        const u = new URL(location.href); u.searchParams.delete("share");
+        history_replace(u.pathname + (u.search || "") + u.hash);
+      } catch (e) {}
+      unpackChat(tok).then(function (j) {
+        const p = validPackage(j);
+        if (!p) throw new Error("bad");
+        open();
+        confirmImport(p, "from a shared link");
+      }).catch(function () { open(); flash("That share link is damaged or too old."); });
+    }
+    function history_replace(url) { try { window.history.replaceState(null, "", url); } catch (e) {} }
+
+    /* =====================================================================
+       Scheduled tasks. They run while the site is open in a tab. If one falls
+       due while the site is closed, it runs once the next time you open it.
+       ===================================================================== */
+    function taskForm() {
+      const soon = new Date(Date.now() + 3600000 - (new Date().getTimezoneOffset() * 60000));
+      const def = soon.toISOString().slice(0, 16);
+      dialog({ title: "New reminder or task", text: "Runs while Ecliptic is open in a browser tab.", fields: [
+        { name: "k", label: "What should happen?", type: "select", options: [["remind", "Remind me of something"], ["ask", "Ask the Mentor something at that time"]], value: "remind" },
+        { name: "t", label: "Text", max: 200, required: true, placeholder: "e.g. Revise the planets  /  Give me a fun space fact" },
+        { name: "w", label: "When", type: "datetime-local", value: def, required: true },
+        { name: "r", label: "Repeat", type: "select", options: [["none", "Once"], ["daily", "Every day"], ["weekly", "Every week"]], value: "none" }
+      ], ok: "Add" }).then(function (r) {
+        if (!r) return;
+        const at = new Date(r.values.w).getTime();
+        if (!isFinite(at)) { flash("Pick a valid date and time."); return; }
+        if (r.values.k === "ask" && !CHAT_ENDPOINT) { flash("Ask tasks need the AI connection."); return; }
+        db.tasks.push({ id: uid(), kind: r.values.k === "ask" ? "ask" : "remind", text: r.values.t.slice(0, 200), at: at, repeat: r.values.r });
+        saveDB(); renderSide();
+        flash("Added. It runs while Ecliptic is open.");
+        try { if ("Notification" in window && Notification.permission === "default") Notification.requestPermission(); } catch (e) {}
+      });
+    }
+    function fireTask(tk, late) {
+      const label = (late ? "(missed while Ecliptic was closed) " : "");
+      if (tk.kind === "ask") {
+        flash("⏰ Running: " + tk.text.slice(0, 40));
+        if (!busy && CHAT_ENDPOINT && navigator.onLine !== false) {
+          if (chat.msgs.length) newChat();
+          open();
+          chat.title = tk.text.slice(0, 40); chat.auto = false;
+          send(tk.text);
+        } else {
+          history.push({ role: "assistant", content: "⏰ " + label + "I couldn't run your scheduled question just now: " + tk.text });
+          saveHistory(); if (opened) renderChat();
+        }
+      } else {
+        const msg = "⏰ " + label + "Reminder: " + tk.text;
+        history.push({ role: "assistant", content: msg });
+        touchChat(tk.text); saveHistory();
+        if (opened) { decorate(addBot(msg, true), msg); }
+        flash(msg);
+        try {
+          if ("Notification" in window && Notification.permission === "granted" && document.hidden) new Notification("Ecliptic reminder", { body: tk.text });
+        } catch (e) {}
+      }
+      toggle.classList.add("has-news");
+    }
+    function tickTasks() {
+      const now = Date.now(); let changed = false;
+      db.tasks.slice().forEach(function (tk) {
+        if (tk.at > now) return;
+        const late = now - tk.at > 90000;
+        fireTask(tk, late);
+        changed = true;
+        if (tk.repeat === "daily" || tk.repeat === "weekly") {
+          const step = tk.repeat === "daily" ? 86400000 : 604800000;
+          while (tk.at <= now) tk.at += step;
+        } else db.tasks = db.tasks.filter(function (x) { return x !== tk; });
+      });
+      if (changed) { saveDB(); renderSide(); }
+    }
+    function startTasks() {
+      setTimeout(tickTasks, 1500);
+      taskTimer = setInterval(tickTasks, 15000);
+      document.addEventListener("visibilitychange", function () { if (!document.hidden) tickTasks(); });
+    }
+
+    /* ----- tools menu ----- */
+    function toggleMenu(force) {
+      const show = typeof force === "boolean" ? force : menu.hidden;
+      menu.hidden = !show;
+      document.getElementById("mentorTools").setAttribute("aria-expanded", show ? "true" : "false");
+    }
+    function buildMenu() {
+      const items = [];
+      if (CHAT_ENDPOINT) {
+        items.push(["🎨", "Create an image", createImage], ["🎓", "Mini-lesson", miniLesson], ["▶", "Find videos", findVideos], ["🎭", "Answer style…", choosePersona]);
+      }
+      items.push(["📁", "Put in a project…", chooseProject], ["⏰", "Reminders and tasks…", function () { setView("tasks"); showSide(true); }],
+        ["⬇", "Export this chat…", exportThisChat], ["🔗", "Share this chat", shareThisChat], ["⬆", "Import a chat file…", function () { document.getElementById("mentorImport").click(); }]);
+      items.forEach(function (it) {
+        const b = el("button", "mentor-menu__item"); b.type = "button";
+        b.appendChild(el("span", "mentor-menu__icon", it[0])); b.appendChild(el("span", null, it[1]));
+        b.addEventListener("click", function () { toggleMenu(false); it[2](); });
+        menu.appendChild(b);
+      });
+    }
+
 
     function ensureUI() {
       loadHistory();
@@ -5523,13 +7324,24 @@ const EXTERNAL_LINKS = {
       panel.setAttribute("aria-label", "Mission Mentor chat");
       panel.innerHTML =
         '<div class="mentor-panel__header">' +
-        '<div><p class="mentor-panel__title">Mission Mentor</p><p class="mentor-panel__subtitle">' + (CHAT_ENDPOINT ? "AI study buddy · ask anything" : "Your solar system study buddy") + '</p></div>' +
+        '<button type="button" class="mentor-panel__tool mentor-sidebtn" id="mentorSideBtn" aria-label="Show saved chats" title="Chats and library">☰</button>' +
+        '<div class="mentor-panel__head-text"><p class="mentor-panel__title" id="mentorChatTitle">Mission Mentor</p><p class="mentor-panel__subtitle" id="mentorSub"></p></div>' +
         '<div class="mentor-panel__tools">' +
-        (SR ? '<button type="button" class="mentor-panel__tool" id="mentorVoice" aria-label="Voice chat (hands-free)" aria-pressed="false" title="Voice chat">\uD83C\uDFA7</button>' : '') +
-        (HAS_TTS ? '<button type="button" class="mentor-panel__tool" id="mentorSpeak" aria-label="Read answers aloud" aria-pressed="false" title="Read answers aloud">\uD83D\uDD07</button>' : '') +
-        '<button type="button" class="mentor-panel__tool" id="mentorClear" aria-label="Start a new chat" title="New chat">↻</button>' +
+        (SR ? '<button type="button" class="mentor-panel__tool" id="mentorVoice" aria-label="Voice chat (hands-free)" aria-pressed="false" title="Voice chat">🎧</button>' : '') +
+        (HAS_TTS ? '<button type="button" class="mentor-panel__tool" id="mentorSpeak" aria-label="Read answers aloud" aria-pressed="false" title="Read answers aloud">🔇</button>' : '') +
+        '<button type="button" class="mentor-panel__tool" id="mentorClear" aria-label="Start a new chat" title="New chat">＋</button>' +
+        '<button type="button" class="mentor-panel__tool mentor-widebtn" id="mentorWide" aria-label="Make the chat bigger" aria-pressed="false" title="Bigger / smaller">⤢</button>' +
         '<button type="button" class="mentor-panel__close" aria-label="Close">✕</button>' +
         '</div></div>' +
+        '<div class="mentor-split">' +
+        '<aside class="mentor-side" id="mentorSide" aria-label="Saved chats">' +
+        '<button type="button" class="mentor-btn is-primary mentor-side__new" id="mentorNewBtn">＋ New chat</button>' +
+        '<input type="search" id="mentorSearch" class="mentor-search" placeholder="Search…" aria-label="Search" maxlength="60">' +
+        '<div class="mentor-tabs" role="tablist"><button type="button" class="mentor-tab" role="tab" data-view="chats" aria-selected="true">Chats</button><button type="button" class="mentor-tab" role="tab" data-view="library" aria-selected="false">Library</button><button type="button" class="mentor-tab" role="tab" data-view="tasks" aria-selected="false">Tasks</button></div>' +
+        '<div class="mentor-projectbar" id="mentorProjectBar"><select id="mentorProjectSel" aria-label="Show chats from project"></select><button type="button" class="mentor-mini" id="mentorProjBtn" title="Manage projects">Projects</button></div>' +
+        '<div class="mentor-side__list" id="mentorSideList"></div>' +
+        '</aside>' +
+        '<div class="mentor-col">' +
         '<div class="mentor-panel__body" id="mentorBody" role="log" aria-live="polite"></div>' +
         '<div class="mentor-panel__quick" id="mentorQuick">' +
         '<button type="button" class="mentor-chip" data-q="Explain black holes simply">Black holes?</button>' +
@@ -5539,19 +7351,26 @@ const EXTERNAL_LINKS = {
         '<button type="button" class="mentor-chip" data-q="What should I do next?">What next?</button>' +
         '</div>' +
         '<div class="mentor-tray" id="mentorTray" hidden></div>' +
+        '<div class="mentor-inputwrap">' +
+        '<div class="mentor-menu" id="mentorMenu" hidden role="menu"></div>' +
         '<div class="mentor-panel__input">' +
-        (CHAT_ENDPOINT ? '<button type="button" class="mentor-icon" id="mentorAttach" aria-label="Attach a picture or document" title="Attach a picture or document">\uD83D\uDCCE</button>' +
+        '<button type="button" class="mentor-icon" id="mentorTools" aria-label="Tools" aria-expanded="false" title="Tools: images, lessons, export, share">⚙</button>' +
+        (CHAT_ENDPOINT ? '<button type="button" class="mentor-icon" id="mentorAttach" aria-label="Attach a picture or document" title="Attach a picture or document">📎</button>' +
           '<input type="file" id="mentorFile" multiple hidden accept="image/*,.pdf,.docx,.txt,.md,.csv,.tsv,.json,.xml,.html,.css,.js,.ts,.py,.java,.c,.cpp,.cs,.go,.rs,.rb,.php,.sh,.sql,.yml,.yaml,.log">' : '') +
+        '<input type="file" id="mentorImport" hidden accept=".json,application/json">' +
         '<textarea id="mentorInput" rows="1" maxlength="2000" placeholder="Ask anything…" aria-label="Message"></textarea>' +
-        (SR ? '<button type="button" class="mentor-icon" id="mentorMic" aria-label="Speak your message" aria-pressed="false" title="Speak your message">\uD83C\uDFA4</button>' : '') +
+        (SR ? '<button type="button" class="mentor-icon" id="mentorMic" aria-label="Speak your message" aria-pressed="false" title="Speak your message">🎤</button>' : '') +
         '<button type="button" id="mentorSend" aria-label="Send">→</button>' +
         '<button type="button" id="mentorStop" aria-label="Stop" hidden>■</button>' +
+        '</div>' +
         '</div>' +
         '<p class="mentor-panel__foot">' + (CHAT_ENDPOINT ? "AI can make mistakes. Check important facts." : "Offline mode: built-in answers only.") +
         ((SR || HAS_TTS) ? ' <select id="mentorLang" aria-label="Voice language" title="Voice language">' +
           [["en-US", "English (US)"], ["en-GB", "English (UK)"], ["en-IN", "English (India)"], ["hi-IN", "Hindi"], ["mr-IN", "Marathi"], ["ur-PK", "Urdu"], ["ar-SA", "Arabic"], ["es-ES", "Spanish"], ["fr-FR", "French"], ["de-DE", "German"]].map(function (l) {
             return '<option value="' + l[0] + '">' + l[1] + '</option>';
-          }).join("") + '</select>' : '') + '</p>';
+          }).join("") + '</select>' : '') + '</p>' +
+        '<div class="mentor-toast" id="mentorToast" hidden role="status"></div>' +
+        '</div></div>';
 
       document.body.appendChild(toggle);
       document.body.appendChild(panel);
@@ -5559,12 +7378,35 @@ const EXTERNAL_LINKS = {
       input = document.getElementById("mentorInput");
       sendBtn = document.getElementById("mentorSend");
       stopBtn = document.getElementById("mentorStop");
+      side = document.getElementById("mentorSide");
+      sideList = document.getElementById("mentorSideList");
+      sideSearch = document.getElementById("mentorSearch");
+      menu = document.getElementById("mentorMenu");
+      toast = document.getElementById("mentorToast");
+      buildMenu();
 
       toggle.addEventListener("click", function () {
         if (panel.classList.contains("is-open")) close(); else open();
       });
       panel.querySelector(".mentor-panel__close").addEventListener("click", close);
-      document.getElementById("mentorClear").addEventListener("click", clearChat);
+      document.getElementById("mentorClear").addEventListener("click", newChat);
+      document.getElementById("mentorNewBtn").addEventListener("click", newChat);
+      document.getElementById("mentorSideBtn").addEventListener("click", function () { showSide(!panel.classList.contains("show-side")); renderSide(); });
+      const wideBtn = document.getElementById("mentorWide");
+      function setWide(v) {
+        panel.classList.toggle("is-wide", v);
+        wideBtn.setAttribute("aria-pressed", v ? "true" : "false");
+        try { localStorage.setItem(WIDE_KEY, v ? "1" : "0"); } catch (e) {}
+      }
+      wideBtn.addEventListener("click", function () { setWide(!panel.classList.contains("is-wide")); });
+      try { if (localStorage.getItem(WIDE_KEY) === "1") setWide(true); } catch (e) {}
+      sideSearch.addEventListener("input", renderSide);
+      side.querySelectorAll(".mentor-tab").forEach(function (b) { b.addEventListener("click", function () { setView(b.getAttribute("data-view")); }); });
+      document.getElementById("mentorProjectSel").addEventListener("change", function (e) { sideProject = e.target.value; renderSide(); });
+      document.getElementById("mentorProjBtn").addEventListener("click", manageProjects);
+      document.getElementById("mentorTools").addEventListener("click", function (e) { e.stopPropagation(); toggleMenu(); });
+      panel.addEventListener("click", function (e) { if (!menu.hidden && !menu.contains(e.target)) toggleMenu(false); });
+      document.getElementById("mentorImport").addEventListener("change", function (e) { importFile(e.target.files && e.target.files[0]); e.target.value = ""; });
       sendBtn.addEventListener("click", function () { send(input.value); });
       stopBtn.addEventListener("click", function () { if (controller) controller.abort("user"); stopSpeaking(); if (voiceMode) exitVoiceMode(); });
       input.addEventListener("input", autosize);
@@ -5615,6 +7457,10 @@ const EXTERNAL_LINKS = {
       panel.querySelectorAll(".mentor-chip").forEach(function (chip) {
         chip.addEventListener("click", function () { send(chip.getAttribute("data-q")); });
       });
+      paintHeader();
+      renderSide();
+      startTasks();
+      checkShareLink();
     }
 
     function init() { ensureUI(); }
